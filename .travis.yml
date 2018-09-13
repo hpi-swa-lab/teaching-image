@@ -1,0 +1,10 @@
+language: bash
+os: osx
+
+addons:
+  homebrew:
+    packages:
+    - python
+
+script:
+  - bash MAKE.command
