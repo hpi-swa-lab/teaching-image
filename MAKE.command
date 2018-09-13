@@ -5,8 +5,7 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
 set -e
 
-trap "/bin/echo -n \"Hit return to exit\"; read RETURN" EXIT
-
+trap cat *.log; "/bin/echo -n \"Something went wrong\"" EXIT
 
 # # Point-release
 RELEASE="5.2alpha"
