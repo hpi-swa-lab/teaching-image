@@ -121,30 +121,30 @@ mkdir -p dist || true
 if [ \! -f "${DIST_DIR}/${BASE}.txz" ]; then
     if type xz 2>/dev/null >/dev/null; then
         $E -n "[....] $(tput setaf 3)Compressing txz $(tput op)"
-        COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}"  2>>$LOG >>$LOG
+        COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}" 
         check
     fi
 fi
 
 if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
     $E -n "[....] $(tput setaf 3)Compressing ${APP} $(tput op)"
-    ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"  2>>$LOG >>$LOG
+    ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
     check
 fi
 
 if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     $E -n "[....] $(tput setaf 3)Creating Disk Image ${DMG} $(tput op)"
     hdiutil create -size 256m -volname "${BASE}" -srcfolder "${AIO_DIR}" \
-        -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}"  2>>$LOG >>$LOG && \
+        -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}" && \
     DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
     VOLUME="$(mount | grep "$DEVICE" | sed 's/^[^ ]* on //;s/ ([^)]*)$//')" && \
     rm -f "${VOLUME}/squeak.bat" "${VOLUME}/squeak.sh" && \
     cp "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${VOLUME}/.VolumeIcon.icns" && \
     SetFile -c icnC "${VOLUME}/.VolumeIcon.icns" && \
     SetFile -a C "${VOLUME}" && \
-    hdiutil detach "$DEVICE" 2>>$LOG >>$LOG  && \
-    hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" 2>>$LOG >>$LOG && \
-    ./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"  2>>$LOG >>$LOG
+    hdiutil detach "$DEVICE" && \
+    hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
+    #./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"  
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
