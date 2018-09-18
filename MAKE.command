@@ -100,7 +100,7 @@ if [ \! -d "${AIO_DIR}" ]; then
     ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"  2>>$LOG >>$LOG && \
     ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"  2>>$LOG >>$LOG && \
     ditto -v TEMPLATE.app "${AIO_DIR}/${APP}"  2>>$LOG >>$LOG && \
-    ./set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}"  2>>$LOG >>$LOG && \
+    #./set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources"  2>>$LOG >>$LOG && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win32/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
