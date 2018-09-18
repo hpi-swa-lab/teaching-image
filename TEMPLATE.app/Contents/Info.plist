@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>NSSupportsAutomaticGraphicsSwitching</key>
-	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -349,34 +345,6 @@
 			<string>Viewer</string>
 		</dict>
 	</array>
-	<key>CFBundleExecutable</key>
-	<string>Squeak</string>
-	<key>CFBundleGetInfoString</key>
-	<string>%NAME%, Squeak %RELEASE%, cog_macos32x86_squeak.cog.spur_201701281910</string>
-	<key>CFBundleShortVersionString</key>
-	<string>%NAME%</string>
-	<key>CFBundleIconFile</key>
-	<string>Smalltalk.icns</string>
-	<key>CFBundleIdentifier</key>
-	<string>de.uni-potsdam.hpi.swa.swt2017</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>%NAME%</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>FAST</string>
-	<key>CFBundleVersion</key>
-	<string></string>
-	<key>LSBackgroundOnly</key>
-	<false/>
-	<key>LSMinimumSystemVersion</key>
-	<string>10.9.0</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSPrincipalClass</key>
-	<string>SqueakOSXApplication</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -485,6 +453,40 @@
 			</dict>
 		</dict>
 	</array>
+	<key>CFBundleExecutable</key>
+	<string>Squeak</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Squeak5.2beta-18194-64bit-All-in-One</string>
+	<key>CFBundleShortVersionString</key>
+	<string>5.2beta</string>
+	<key>CFBundleIconFile</key>
+	<string>Squeak.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.squeak.Squeak5.2beta.64.All-in-One</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Squeak</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>FAST</string>
+	<key>CFBundleVersion</key>
+	<string>64 bit</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CGDisableCoalescedUpdates</key>
+	<true/>
+	<key>LSBackgroundOnly</key>
+	<false/>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Licensed under the MIT License with parts under the Apache License.</string>
+	<key>NSPrincipalClass</key>
+	<string>SqueakOSXApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 	<key>SqueakBrowserMouseCmdButton1</key>
 	<integer>3</integer>
 	<key>SqueakBrowserMouseCmdButton2</key>
@@ -515,8 +517,12 @@
 	<string>UTF-8</string>
 	<key>SqueakExplicitWindowOpenNeeded</key>
 	<false/>
+	<key>SqueakFloatingWindowGetsFocus</key>
+	<true/>
 	<key>SqueakImageName</key>
-	<string>%BASE%.image</string>
+	<string>Squeak5.2beta-18194-64bit.image</string>
+	<key>SqueakMaxHeapSize</key>
+	<integer>536870912</integer>
 	<key>SqueakMouseCmdButton1</key>
 	<integer>3</integer>
 	<key>SqueakMouseCmdButton2</key>
@@ -542,13 +548,21 @@
 	<key>SqueakMouseOptionButton3</key>
 	<integer>2</integer>
 	<key>SqueakPluginsBuiltInOrLocalOnly</key>
-	<false/>
+	<true/>
 	<key>SqueakQuitOnQuitAppleEvent</key>
 	<false/>
 	<key>SqueakTrustedDirectory</key>
-	<string>/foobar/tooBar/forSqueak/bogus/</string>
+	<string>~/Library/Application Support/Squeak/</string>
+	<key>SqueakUIFlushPrimaryDeferNMilliseconds</key>
+	<integer>20</integer>
+	<key>SqueakUIFlushSecondaryCheckForPossibleNeedEveryNMilliseconds</key>
+	<integer>20</integer>
+	<key>SqueakUIFlushSecondaryCleanupDelayMilliseconds</key>
+	<integer>25</integer>
+	<key>SqueakUIFlushUseHighPercisionClock</key>
+	<false/>
 	<key>SqueakUnTrustedDirectory</key>
-	<string>~/Library/Preferences/Squeak/Internet/My Squeak/</string>
+	<string>~/Documents/Squeak/</string>
 	<key>SqueakWindowAttribute</key>
 	<data>ggAAHw==</data>
 	<key>SqueakWindowHasTitle</key>
