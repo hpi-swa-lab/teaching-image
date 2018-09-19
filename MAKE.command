@@ -21,6 +21,7 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 CONFIGURE_SCRIPT="SwaImageConfiguration"
 BASE="SWA2018"
 NAME="SWA 2018"
+DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
 CACHE_DIR="./_cache"
@@ -154,6 +155,10 @@ fi
 if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
 fi
+
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && print_info ".zip uploaded."
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && print_info ".txz uploaded."
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && print_info ".txz uploaded."
 
 $E "Files are in the $(tput setaf 9)dist/$(tput op) directory"
 
