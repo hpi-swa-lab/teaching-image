@@ -60,13 +60,13 @@ if [ \! -d "${CACHE_DIR}" ]; then
 
     if [ \! -f "${CACHE_DIR}/${SRC_IMAGE}.zip" ]; then
         $E -n "[....] $(tput setaf 4)Fetching ${SRC_IMAGE} $(tput op)"
-        curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL" 2>>$LOG >>$LOG
+        curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL"
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
         $E -n "[....] $(tput setaf 4)Fetching sources $(tput op)"
-        curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz 2>>$LOG >>$LOG
+        curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
 
@@ -75,7 +75,7 @@ if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
 
     $E -n "[....] $(tput setaf 4)Extracting ${SRC_IMAGE} $(tput op)"
-    ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"  2>>$LOG >>$LOG
+    ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
     check
 
     $E -n "[....] $(tput setaf 4)Decompressing sources $(tput op)"
@@ -97,11 +97,11 @@ fi
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
     $E -n "[....] $(tput setaf 3)Building all-in-one $(tput op)"
-    ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"  2>>$LOG >>$LOG && \
-    ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"  2>>$LOG >>$LOG && \
-    ditto -v TEMPLATE.app "${AIO_DIR}/${APP}"  2>>$LOG >>$LOG && \
+    ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
+    ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
+    ditto -v TEMPLATE.app "${AIO_DIR}/${APP}"    && \
     #./set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
-    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources"  2>>$LOG >>$LOG && \
+    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources"    && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win32/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
         $E Patching $template_file >> $LOG
@@ -121,7 +121,7 @@ mkdir -p dist || true
 if [ \! -f "${DIST_DIR}/${BASE}.txz" ]; then
     if type xz 2>/dev/null >/dev/null; then
         $E -n "[....] $(tput setaf 3)Compressing txz $(tput op)"
-        COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}" 
+        COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}"
         check
     fi
 fi
@@ -144,7 +144,7 @@ if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     SetFile -a C "${VOLUME}" && \
     hdiutil detach "$DEVICE" && \
     hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
-    #./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"  
+    #./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
