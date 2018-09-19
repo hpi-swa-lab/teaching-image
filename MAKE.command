@@ -79,7 +79,7 @@ if [ \! -d "${TMP_DIR}" ]; then
     check
 
     $E -n "[....] $(tput setaf 4)Decompressing sources $(tput op)"
-    gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources" 2>>$LOG
+    gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
     check
 
     $E -n "[....] $(tput setaf 6)Building image $(tput op)"
@@ -104,7 +104,7 @@ if [ \! -d "${AIO_DIR}" ]; then
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources"    && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win32/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
-        $E Patching $template_file >> $LOG
+        $E Patching $template_file
         grep -q '%BASE%' $template_file && printf '%s\n' ",s/%BASE%/${BASE}/g" w q | ed -s $template_file
         grep -q '%NAME%' $template_file && printf '%s\n' ",s/%NAME%/${NAME}/g" w q | ed -s $template_file
         grep -q '%RELEASE%' $template_file && printf '%s\n' ",s/%RELEASE%/${RELEASE}/g" w q | ed -s $template_file
