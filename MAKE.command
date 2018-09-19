@@ -112,8 +112,8 @@ if [ \! -d "${AIO_DIR}" ]; then
     check
 
     xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
-    codesign --force --sign "Squeak Deutschland e.V." "${AIO_DIR}/${APP}"
-    codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+    #codesign --force --sign "Squeak Deutschland e.V." "${AIO_DIR}/${APP}"
+    #codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
 fi
 
 mkdir -p dist || true
