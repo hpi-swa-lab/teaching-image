@@ -38,7 +38,7 @@ cd "$PROGDIR"
 
 ann() {
     tput civis || true
-    tput sc && tput hpa 0 && $E -n "$1" && tput rc || true
+    tput sc && tput hpa 0 && $E "$1" && tput rc || true
     tput cnorm || true
     $E ""
 }
@@ -60,13 +60,13 @@ if [ \! -d "${CACHE_DIR}" ]; then
     mkdir "${CACHE_DIR}"
 
     if [ \! -f "${CACHE_DIR}/${SRC_IMAGE}.zip" ]; then
-        $E -n "[....] $(tput setaf 4)Fetching ${SRC_IMAGE} $(tput op)"
+        $E "[....] $(tput setaf 4)Fetching ${SRC_IMAGE} $(tput op)"
         curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL"
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
-        $E -n "[....] $(tput setaf 4)Fetching sources $(tput op)"
+        $E "[....] $(tput setaf 4)Fetching sources $(tput op)"
         curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
@@ -75,15 +75,15 @@ fi
 if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
 
-    $E -n "[....] $(tput setaf 4)Extracting ${SRC_IMAGE} $(tput op)"
+    $E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE} $(tput op)"
     ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
     check
 
-    $E -n "[....] $(tput setaf 4)Decompressing sources $(tput op)"
+    $E "[....] $(tput setaf 4)Decompressing sources $(tput op)"
     gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
     check
 
-    $E -n "[....] $(tput setaf 6)Building image $(tput op)"
+    $E "[....] $(tput setaf 6)Building image $(tput op)"
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
     ./TEMPLATE.app/Contents/MacOS/Squeak "${TMP_DIR}/${SRC_IMAGE}.image" "../${CONFIG}" "${PROGDIR}" "${BASE}"
@@ -97,7 +97,7 @@ fi
 
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
-    $E -n "[....] $(tput setaf 3)Building all-in-one $(tput op)"
+    $E "[....] $(tput setaf 3)Building all-in-one $(tput op)"
     ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
     ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
     ditto -v TEMPLATE.app "${AIO_DIR}/${APP}"    && \
@@ -121,20 +121,20 @@ mkdir -p dist || true
 
 if [ \! -f "${DIST_DIR}/${BASE}.txz" ]; then
     if type xz 2>/dev/null >/dev/null; then
-        $E -n "[....] $(tput setaf 3)Compressing txz $(tput op)"
+        $E "[....] $(tput setaf 3)Compressing txz $(tput op)"
         COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}"
         check
     fi
 fi
 
 if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
-    $E -n "[....] $(tput setaf 3)Compressing ${APP} $(tput op)"
+    $E "[....] $(tput setaf 3)Compressing ${APP} $(tput op)"
     ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
     check
 fi
 
 if [ \! -f "${DIST_DIR}/${DMG}" ]; then
-    $E -n "[....] $(tput setaf 3)Creating Disk Image ${DMG} $(tput op)"
+    $E "[....] $(tput setaf 3)Creating Disk Image ${DMG} $(tput op)"
     hdiutil create -size 256m -volname "${BASE}" -srcfolder "${AIO_DIR}" \
         -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}" && \
     DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
@@ -156,9 +156,9 @@ if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
 fi
 
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && print_info ".zip uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && print_info ".txz uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && print_info ".txz uploaded."
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
+curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && $E ".txz uploaded."
 
 $E "Files are in the $(tput setaf 9)dist/$(tput op) directory"
 
