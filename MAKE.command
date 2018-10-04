@@ -5,9 +5,6 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
 set -e
 
-trap "cat *.log; /bin/echo -n \"Hit return to exit\"" EXIT
-
-
 # # Point-release
 RELEASE="5.2alpha"
 SRC_IMAGE="Squeak5.2alpha-18184-64bit"
@@ -54,7 +51,6 @@ check() {
 }
 
 $E "Start at $(date)"
-
 
 if [ \! -d "${CACHE_DIR}" ]; then
     mkdir "${CACHE_DIR}"
