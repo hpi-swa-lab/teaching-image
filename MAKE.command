@@ -6,8 +6,8 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 set -e
 
 # # Point-release
-RELEASE="5.2alpha"
-SRC_IMAGE="Squeak5.2alpha-18184-64bit"
+RELEASE="5.2"
+SRC_IMAGE="Squeak5.2-18221-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
