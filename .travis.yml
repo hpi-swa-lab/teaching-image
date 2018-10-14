@@ -1,10 +1,10 @@
-language: bash
+language: objective-c
 os: osx
 
 addons:
   homebrew:
     packages:
     - python
-
+before_script:  - pip install -U pyobjc
 script:
   - bash MAKE.command

@@ -141,7 +141,7 @@ if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     SetFile -a C "${VOLUME}" && \
     hdiutil detach "$DEVICE" && \
     hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
-    #./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
+    ./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
