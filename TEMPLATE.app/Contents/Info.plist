@@ -456,13 +456,13 @@
 	<key>CFBundleExecutable</key>
 	<string>Squeak</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Squeak5.2beta-18194-64bit-All-in-One</string>
+	<string>Squeak5.2-18221-64bit-All-in-One</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.2beta</string>
+	<string>5.2</string>
 	<key>CFBundleIconFile</key>
 	<string>Squeak.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.squeak.Squeak5.2beta.64.All-in-One</string>
+	<string>org.squeak.Squeak5.2.64.All-in-One</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -520,7 +520,7 @@
 	<key>SqueakFloatingWindowGetsFocus</key>
 	<true/>
 	<key>SqueakImageName</key>
-	<string>Squeak5.2beta-18194-64bit.image</string>
+	<string>Squeak5.2-18221-64bit.image</string>
 	<key>SqueakMaxHeapSize</key>
 	<integer>536870912</integer>
 	<key>SqueakMouseCmdButton1</key>
