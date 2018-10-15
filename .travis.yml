@@ -5,6 +5,10 @@ addons:
   homebrew:
     packages:
     - python
-before_script:  - pip install -U pyobjc
-script:
-  - bash MAKE.command
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_6e698d0010b7_key -iv $encrypted_6e698d0010b7_iv
+    -in .encrypted.zip.enc -out .encrypted.zip -d
+
+before_script: pip install -U pyobjc
+script: bash MAKE.command

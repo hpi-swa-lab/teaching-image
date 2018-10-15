@@ -112,8 +112,26 @@ if [ \! -d "${AIO_DIR}" ]; then
     check
 
     xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
-    #codesign --force --sign "Squeak Deutschland e.V." "${AIO_DIR}/${APP}"
-    #codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+
+    if [[ -f ".encrypted.zip" ]]; then
+        $E "Signing macOS bundles..."
+        unzip ".encrypted.zip"
+        KEY_CHAIN=macos-build.keychain
+        security create-keychain -p travis "${KEY_CHAIN}"
+        security default-keychain -s "${KEY_CHAIN}"
+        security unlock-keychain -p travis "${KEY_CHAIN}"
+        security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
+        security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
+        security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
+
+        codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
+        codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+        # Remove sensitive files again
+        rm -rf ./.encrypted.zip ./encrypted*
+        security delete-keychain "${KEY_CHAIN}"
+    else
+        $E "Skipping codesign on macOS..."
+    fi
 fi
 
 mkdir -p dist || true
