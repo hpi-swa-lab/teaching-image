@@ -89,7 +89,9 @@ if [ \! -d "${TMP_DIR}" ]; then
         $E "BUILD FAILED"
         exit 1
     fi
-fichmod -v a+x set_icon.py
+fi
+
+chmod -v a+x set_icon.py
 
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
