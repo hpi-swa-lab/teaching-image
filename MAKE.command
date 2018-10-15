@@ -89,7 +89,7 @@ if [ \! -d "${TMP_DIR}" ]; then
         $E "BUILD FAILED"
         exit 1
     fi
-fi
+fichmod -v a+x set_icon.py
 
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
@@ -97,11 +97,11 @@ if [ \! -d "${AIO_DIR}" ]; then
     ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
     ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
     ditto -v TEMPLATE.app "${AIO_DIR}/${APP}"    && \    chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
-    ./set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
+    python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win32/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
-        $E Patching $template_file
+        $E "Patching ${template_file}"
         grep -q '%BASE%' $template_file && printf '%s\n' ",s/%BASE%/${BASE}/g" w q | ed -s $template_file
         grep -q '%NAME%' $template_file && printf '%s\n' ",s/%NAME%/${NAME}/g" w q | ed -s $template_file
         grep -q '%RELEASE%' $template_file && printf '%s\n' ",s/%RELEASE%/${RELEASE}/g" w q | ed -s $template_file
@@ -141,7 +141,7 @@ if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     SetFile -a C "${VOLUME}" && \
     hdiutil detach "$DEVICE" && \
     hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \    chmod -v a+rwx "${DIST_DIR}/${DMG}" && \
-    ./set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
+    python set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
