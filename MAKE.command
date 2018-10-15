@@ -123,6 +123,7 @@ if [ \! -d "${AIO_DIR}" ]; then
         security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
         security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
         security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
 
         codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
         codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
