@@ -115,7 +115,7 @@ if [ \! -d "${AIO_DIR}" ]; then
 
     if [[ -f ".encrypted.zip" ]]; then
         $E "Signing macOS bundles..."
-        unzip ".encrypted.zip"
+        unzip -q ".encrypted.zip"
         KEY_CHAIN=macos-build.keychain
         security create-keychain -p travis "${KEY_CHAIN}"
         security default-keychain -s "${KEY_CHAIN}"
@@ -126,7 +126,7 @@ if [ \! -d "${AIO_DIR}" ]; then
         security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
 
         codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
-        codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+        # codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
         # Remove sensitive files again
         rm -rf ./.encrypted.zip ./encrypted*
         security delete-keychain "${KEY_CHAIN}"
