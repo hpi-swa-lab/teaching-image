@@ -16,8 +16,8 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWA2018"
-NAME="SWA 2018"
+BASE="SWA-2018"
+NAME="SWA - 2018"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
