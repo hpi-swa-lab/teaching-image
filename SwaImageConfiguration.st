@@ -103,7 +103,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "Install Squot-develop for latest fixes"
 [(Smalltalk at: #Metacello) new
   baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:develop/src';
+  repository: 'github://hpi-swa/Squot:master/src';
   load.
 ] on: Warning do: [:e | e resume].
 
