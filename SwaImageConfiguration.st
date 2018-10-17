@@ -85,7 +85,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	configuration: 'OCompletion';
 	load.
 
-"Disabled until refactored
+"Disables until refactored
 (Smalltalk at: #Metacello) new
 	baseline: 'MorphicTutorial';
 	githubUser: 'HPI-SWA-Teaching' project: 'SWT18-Project-06' commitish: '' path: 'packages';
@@ -103,7 +103,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "Install Squot-develop for latest fixes"
 [(Smalltalk at: #Metacello) new
   baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:develop/src';
+  repository: 'github://hpi-swa/Squot:master/src';
   load.
 ] on: Warning do: [:e | e resume].
 
