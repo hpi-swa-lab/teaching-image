@@ -117,6 +117,8 @@ SystemBrowser default: Browser.
 TextEditor autoEnclose: false.
 TextEditor destructiveBackWord: true.
 
+"To account for an issue together with the current SwaSource"
+MCHttpRepository useSharedWebClientInstance: false.
 "-=-=-=-=-="
 
 Project current resourceManager reset.
