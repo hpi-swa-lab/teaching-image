@@ -7,7 +7,7 @@ set -e
 
 # # Point-release
 RELEASE="5.2"
-SRC_IMAGE="Squeak5.2-18221-64bit"
+SRC_IMAGE="Squeak5.2-18225-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
