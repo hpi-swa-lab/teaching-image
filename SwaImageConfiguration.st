@@ -6,6 +6,9 @@ FileStream startUp: true.
 TranscriptStream redirectToStdOut: true.
 Deprecation showDeprecationWarnings: false.
 
+"To account for an issue together with the current SwaSource"
+MCHttpRepository useSharedWebClientInstance: false.
+
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
