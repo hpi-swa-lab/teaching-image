@@ -17,6 +17,12 @@ base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
 "-=-=-=-=-="
 
+"For all trunk repositories add the inbox repository."
+(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
+	g addRepository: ReleaseBuilder inboxRepository].
+
+"-=-=-=-=-="
+
 "Get the Metacello configuration (for Squeak users)"
 Installer gemsource
     project: 'metacello';
