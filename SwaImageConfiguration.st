@@ -17,6 +17,12 @@ base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
 "-=-=-=-=-="
 
+"For all trunk repositories add the inbox repository."
+(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
+	g addRepository: ReleaseBuilder inboxRepository].
+
+"-=-=-=-=-="
+
 "Get the Metacello configuration (for Squeak users)"
 Installer gemsource
     project: 'metacello';
@@ -85,21 +91,12 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	load.
 
 (Smalltalk at: #Metacello) new
-	configuration: 'OCompletion';
+	repository: 'github://MrModder/Autocompletion:master/packages';
+	baseline: 'Autocompletion';
 	load.
 
-"Disables until refactored
-(Smalltalk at: #Metacello) new
-	baseline: 'MorphicTutorial';
-	githubUser: 'HPI-SWA-Teaching' project: 'SWT18-Project-06' commitish: '' path: 'packages';
-	load."
-	
-(Smalltalk at: #Metacello) new
-	baseline: 'GM';
-	repository: 'github://hpi-swa-teaching/GameMecha/source';
-	load: 'test'.
-
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
+(Smalltalk at: #ECPreferences) matchSubStrings: true.
 
 "-=-=-=-=-="
 
