@@ -90,14 +90,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	configuration: 'RefactoringTools';
 	load.
 
-(Smalltalk at: #Metacello) new
-	repository: 'github://MrModder/Autocompletion:master/packages';
-	baseline: 'Autocompletion';
-	load.
-
-(Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
-(Smalltalk at: #ECPreferences) matchSubStrings: true.
-
 "-=-=-=-=-="
 
 "Install Squot-develop for latest fixes"
@@ -136,6 +128,23 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	baseline: 'Vivide';
 	load.
 ] on: AssertionFailure do: [:e | e resume].
+
+"-=-=-=-=-="
+
+Metacello new
+	repository: 'github://Salami555/Squeak-ToolIconsPlus:master';
+	baseline: 'ToolIconsPlus';
+	load.
+
+"-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://MrModder/Autocompletion:master/packages';
+	baseline: 'Autocompletion';
+	load.
+
+(Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
+(Smalltalk at: #ECPreferences) matchSubStrings: true.
 
 "-=-=-=-=-="
 
