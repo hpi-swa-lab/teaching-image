@@ -101,7 +101,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-Metacello new
+(Smalltalk at: #Metacello) new
   baseline: 'AutoTDD';
   repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
   onConflict: [:ex | ex allow];
@@ -139,7 +139,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-Metacello new
+(Smalltalk at: #Metacello) new
 	repository: 'github://Salami555/Squeak-ToolIconsPlus:master';
 	baseline: 'ToolIconsPlus';
 	load.
