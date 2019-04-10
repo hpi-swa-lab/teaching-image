@@ -101,6 +101,14 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
+Metacello new
+  baseline: 'AutoTDD';
+  repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
+  onConflict: [:ex | ex allow];
+  load
+
+"-=-=-=-=-="
+
 Preferences disable: #projectZoom.
 Preferences enable: #mouseOverForKeyboardFocus.
 
