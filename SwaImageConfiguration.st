@@ -112,7 +112,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
   baseline: 'AutoTDD';
   repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
   onConflict: [:ex | ex allow];
-  load
+  load.
 
 "-=-=-=-=-="
 
