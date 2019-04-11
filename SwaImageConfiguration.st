@@ -63,13 +63,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
-    baseline: 'LBGit';
-    repository: 'github://LeonBein/SmalltalkGitTesting';
-    load.
-
-"-=-=-=-=-="
-
-(Smalltalk at: #Metacello) new
   baseline: 'AutoTDD';
   repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
   onConflict: [:ex | ex allow];
