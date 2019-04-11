@@ -23,46 +23,7 @@ base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
 "-=-=-=-=-="
 
-"Get the Metacello configuration (for Squeak users)"
-Installer gemsource
-    project: 'metacello';
-    addPackage: 'ConfigurationOfMetacello';
-    install.
-
-"Bootstrap Metacello Preview, using mcz files (#'previewBootstrap' symbolic version"
-((Smalltalk at: #ConfigurationOfMetacello) project 
-  version: #'previewBootstrap') load.
-
-"Quickfix"
-Installer squeak
-	project: 'trunk';
-	install: 'SqueakSSL-Core';
-	install: 'WebClient-Core';
-	yourself.
-
-"Load the Preview version of Metacello from GitHub"
-(Smalltalk at: #Metacello) new
-  configuration: 'MetacelloPreview';
-  version: #stable;
-  repository: 'github://Metacello/metacello:configuration';
-  load.
-
-"Quickfix"
-Installer squeak
-	project: 'trunk';
-	install: 'SqueakSSL-Core';
-	install: 'WebClient-Core';
-	yourself.
-
-"Now load latest version of Metacello"
-(Smalltalk at: #Metacello) new
-  baseline: 'Metacello';
-  repository: 'github://Metacello/metacello:master/repository';
-  get.
-(Smalltalk at: #Metacello) new
-  baseline: 'Metacello';
-  repository: 'github://Metacello/metacello:master/repository';
-  load.
+Installer ensureRecentMetacello.
 
 "-=-=-=-=-="
 Preferences removeAllPreferencesSuchThat: [:ea | ea provider == (Smalltalk at: #MCGitBasedNetworkRepository)].
@@ -90,14 +51,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	configuration: 'RefactoringTools';
 	load.
 
-(Smalltalk at: #Metacello) new
-	repository: 'github://MrModder/Autocompletion:master/packages';
-	baseline: 'Autocompletion';
-	load.
-
-(Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
-(Smalltalk at: #ECPreferences) matchSubStrings: true.
-
 "-=-=-=-=-="
 
 "Install Squot-develop for latest fixes"
@@ -114,6 +67,13 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	repository: 'github://hpi-swa-lab/learning-liveness/packages';
 	load: 'client'.
 	
+
+(Smalltalk at: #Metacello) new
+  baseline: 'AutoTDD';
+  repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
+  onConflict: [:ex | ex allow];
+  load.
+
 "-=-=-=-=-="
 
 Preferences disable: #projectZoom.
@@ -146,9 +106,25 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
+(Smalltalk at: #Metacello) new
+	repository: 'github://Salami555/Squeak-ToolIconsPlus:master';
+	baseline: 'ToolIconsPlus';
+	load.
+
+"-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://MrModder/Autocompletion:master/packages';
+	baseline: 'Autocompletion';
+	load.
+
+(Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
+(Smalltalk at: #ECPreferences) matchSubStrings: true.
+
+"-=-=-=-=-="
+
 MCFileBasedRepository flushAllCaches.
 MCCacheRepository instVarNamed: 'default' put: nil.
-Categorizer sortAllCategories.
 ChangeSet current clear.
 ChangeSet current name: 'Unnamed1'.
 Smalltalk garbageCollect.
