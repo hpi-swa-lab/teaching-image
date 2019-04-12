@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|balloon progdir base|
+|progdir base|
 
 "Initial Setup"
 FileStream startUp: true.
