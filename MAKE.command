@@ -6,8 +6,8 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 set -e
 
 # # Point-release
-RELEASE="5.2"
-SRC_IMAGE="Squeak5.2-18225-64bit"
+RELEASE="5.3alpha"
+SRC_IMAGE="Squeak5.3alpha-18490-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
@@ -16,10 +16,9 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWT-2019"
-NAME="SWT - 2019"
+BASE="SWT-2019Trunk"
+NAME="SWT - 2019Trunk"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
-############################################################
 DIST_DIR="./dist"
 CACHE_DIR="./_cache"
 TMP_DIR="./_tmp"
