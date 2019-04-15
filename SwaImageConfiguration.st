@@ -100,12 +100,10 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-"
 (Smalltalk at: #Metacello) new
 	repository: 'github://Salami555/Squeak-ToolIconsPlus:master';
 	baseline: 'ToolIconsPlus';
 	load.
-"
 
 "-=-=-=-=-="
 
