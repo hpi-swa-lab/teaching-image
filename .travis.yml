@@ -11,4 +11,4 @@ before_install:
     -in .encrypted.zip.enc -out .encrypted.zip -d
 
 before_script: pip install -U pyobjc
-script: travis_wait 30 bash MAKE.command
+script: travis_wait 60 bash MAKE.command
