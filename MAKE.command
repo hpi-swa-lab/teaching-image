@@ -6,8 +6,8 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 set -e
 
 # # Point-release
-RELEASE="5.2"
-SRC_IMAGE="Squeak5.2-18225-64bit"
+RELEASE="5.3alpha"
+SRC_IMAGE="Squeak5.3alpha-18490-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
@@ -19,7 +19,6 @@ CONFIGURE_SCRIPT="SwaImageConfiguration"
 BASE="SWT-2019"
 NAME="SWT - 2019"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
-############################################################
 DIST_DIR="./dist"
 CACHE_DIR="./_cache"
 TMP_DIR="./_tmp"
@@ -102,7 +101,7 @@ if [ \! -d "${AIO_DIR}" ]; then
     chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
     python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
-    for template_file in "${AIO_DIR}/${APP}/Contents/Win32/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
+    for template_file in "${AIO_DIR}/${APP}/Contents/Win64/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
         $E "Patching ${template_file}"
         grep -q '%BASE%' $template_file && printf '%s\n' ",s/%BASE%/${BASE}/g" w q | ed -s $template_file
