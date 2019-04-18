@@ -2,13 +2,14 @@
 # File:        squeak.sh (All-in-One version)
 # Authors:     Bert Freudenberg, Paul DeBruicker, Craig Latta, Chris Muller,
 #              Fabio Niephaus
-# Version:     2.1 (patched for SWA/SWT)
-# Date:        04/18/2019
+# Version:     2.1
+# Date:        08/19/2016
 # Description: Script to run Squeak from the all-in-one app structure
 #              (based on Etoys-To-Go)
 
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/%BASE%.app" && pwd )"
 IMAGE="${APP_DIR}/Contents/Resources/%BASE%.image"
+IMAGE_BITS="32"
 CPU="$(uname -m)"
 CONF_FILE="/etc/security/limits.d/squeak.conf"
 
@@ -20,6 +21,20 @@ showerror() {
   else
     dialog --msgbox "$1" 0 0
   fi
+}
+
+check_cpu() {
+  case "${CPU}" in
+    "x86_64")
+      if [[ "${IMAGE_BITS}" == "32" ]]; then
+        CPU="i686"
+        echo "Running 32-bit Squeak on a 64-bit System. install-libs32 may install them."
+      fi
+      ;;
+    "armv6l"|"armv7l")
+      CPU="ARM"
+      ;;
+  esac
 }
 
 ensure_vm() {
@@ -47,6 +62,7 @@ ensure_image() {
   fi
 }
 
+check_cpu
 VM="${APP_DIR}/Contents/Linux-${CPU}/bin/squeak"
 ensure_vm
 ensure_image
