@@ -7,7 +7,7 @@ set -e
 
 # # Point-release
 RELEASE="5.3alpha"
-SRC_IMAGE="Squeak5.3alpha-18490-64bit"
+SRC_IMAGE="Squeak5.3alpha-19064-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
@@ -16,8 +16,8 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWT2019Trunk"
-NAME="SWT 2019Trunk"
+BASE="SWA2019"
+NAME="SWA 2019"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
