@@ -103,7 +103,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 (Smalltalk at: #Metacello) new
 	repository: 'github://LinqLover/Squeak-TipOfTheDay/packages';
 	baseline: 'TipOfTheDay';
-	load
+	load.
 
 "-=-=-=-=-="
 
