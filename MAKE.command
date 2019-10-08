@@ -5,8 +5,12 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
 set -e
 
-echo "testing echo"
-printenv RELEASE
+if [ "$RELEASE" == "Trunk" ]
+then
+    echo "This is a trunk build"
+else
+    echo "Build on release: $RELEASE"
+fi
 
 # # Point-release
 RELEASE="5.3alpha"
