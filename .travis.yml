@@ -2,13 +2,10 @@ language: objective-c
 os: osx
 
 env:
-  - STARTRACK=true
-  - STARTRACK=false
-  
-matrix:
-  include:
-    - env: RELEASE=5.3alpha
-    - env: RELEASE=Trunk
+  - RELEASE=5.3alpha STARTRACK=true
+  - RELEASE=5.3alpha STARTRACK=false
+  - RELEASE=Trunk STARTRACK=true
+  - RELEASE=Trunk STARTRACK=false
 
 addons:
   homebrew:
