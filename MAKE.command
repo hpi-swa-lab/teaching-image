@@ -24,9 +24,9 @@ fi
 
 if [ "$STARTRACK" == "true" ]
 then
-    INFIX = "-"
+    INFIX="-"
 else
-    INFIX = ""
+    INFIX=""
 fi
 
 # OR Trunk:
