@@ -22,6 +22,13 @@ else
     SUFFIX=""
 fi
 
+if [ "$STARTRACK" == "true" ]
+then
+    INFIX = "-"
+else
+    INFIX = ""
+fi
+
 # OR Trunk:
 # RELEASE="Trunk"
 # SRC_IMAGE="TrunkImage"
@@ -29,8 +36,8 @@ fi
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWA2019${SUFFIX}"
-NAME="SWA 2019 ${SUFFIX}"
+BASE="SWA${INFIX}2019${SUFFIX}"
+NAME="SWA ${INFIX}2019 ${SUFFIX}"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
