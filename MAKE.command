@@ -5,6 +5,9 @@ PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
 set -e
 
+echo "testing echo"
+printenv RELEASE
+
 # # Point-release
 RELEASE="5.3alpha"
 SRC_IMAGE="Squeak5.3alpha-19064-64bit"
