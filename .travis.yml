@@ -1,6 +1,10 @@
 language: objective-c
 os: osx
 
+env:
+  - STARTRACK=true
+  - STARTRACK=false
+
 addons:
   homebrew:
     packages:
