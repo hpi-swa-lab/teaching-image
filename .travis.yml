@@ -6,8 +6,9 @@ env:
   - STARTRACK=false
   
 matrix:
-  - env: RELEASE=5.3alpha
-  - env: RELEASE=Trunk
+  include:
+    - env: RELEASE=5.3alpha
+    - env: RELEASE=Trunk
 
 addons:
   homebrew:
