@@ -4,6 +4,10 @@ os: osx
 env:
   - STARTRACK=true
   - STARTRACK=false
+  
+env:
+  - RELEASE=5.3alpha
+  - RELEASE=Trunk
 
 addons:
   homebrew:
