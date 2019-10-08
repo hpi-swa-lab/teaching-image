@@ -7,15 +7,21 @@ set -e
 
 if [ "$RELEASE" == "Trunk" ]
 then
+    # # Trunk release
     echo "This is a trunk build"
+    RELEASE="Trunk"
+    SRC_IMAGE="TrunkImage"
+    SRC_URL="http://build.squeak.org/job/SqueakTrunk/lastSuccessfulBuild/artifact/target/${SRC_IMAGE}.zip"
+    SUFFIX="Trunk"
 else
     echo "Build on release: $RELEASE"
+    # # Point-release
+    RELEASE="5.3alpha"
+    SRC_IMAGE="Squeak5.3alpha-19064-64bit"
+    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
+    SUFFIX=""
 fi
 
-# # Point-release
-RELEASE="5.3alpha"
-SRC_IMAGE="Squeak5.3alpha-19064-64bit"
-SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 # OR Trunk:
 # RELEASE="Trunk"
 # SRC_IMAGE="TrunkImage"
@@ -23,8 +29,8 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWA2019"
-NAME="SWA 2019"
+BASE="SWA2019${SUFFIX}"
+NAME="SWA 2019 ${SUFFIX}"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
