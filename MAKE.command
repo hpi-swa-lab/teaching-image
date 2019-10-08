@@ -7,15 +7,15 @@ set -e
 
 if [ "$RELEASE" == "Trunk" ]
 then
-    # # Trunk release
+    # # Trunk release - for now using same version as normal ones
     echo "This is a trunk build"
-    RELEASE="Trunk"
-    SRC_IMAGE="TrunkImage"
-    SRC_URL="http://build.squeak.org/job/SqueakTrunk/lastSuccessfulBuild/artifact/target/${SRC_IMAGE}.zip"
+    RELEASE="5.3alpha"
+    SRC_IMAGE="Squeak5.3alpha-19064-64bit"
+    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
     SUFFIX="Trunk"
 else
-    echo "Build on release: $RELEASE"
     # # Point-release
+    echo "Build on release: $RELEASE"
     RELEASE="5.3alpha"
     SRC_IMAGE="Squeak5.3alpha-19064-64bit"
     SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
