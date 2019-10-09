@@ -102,7 +102,7 @@ if [ \! -d "${TMP_DIR}" ]; then
     $E "[....] $(tput setaf 6)Building image "
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
-    ./TEMPLATE.app/Contents/MacOS/Squeak "${TMP_DIR}/${SRC_IMAGE}.image" "../${CONFIG}" "${PROGDIR}" "${BASE}"
+    ./TEMPLATE.app/Contents/MacOS/Squeak "${TMP_DIR}/${SRC_IMAGE}.image ../${CONFIG} ${PROGDIR} ${BASE}"
     check
 
     if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
