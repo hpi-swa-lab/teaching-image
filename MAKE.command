@@ -38,6 +38,7 @@ fi
 CONFIGURE_SCRIPT="SwaImageConfiguration"
 BASE="SWA${INFIX}2019${SUFFIX}"
 NAME="SWA ${INFIX}2019 ${SUFFIX}"
+SQUEAK_ARGUMENTS=" '${PROGDIR}' '${BASE}'"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
@@ -102,8 +103,7 @@ if [ \! -d "${TMP_DIR}" ]; then
     $E "[....] $(tput setaf 6)Building image "
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
-    SQUEAK_ARGUMENTS="'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}' '${PROGDIR}' '${BASE}'"
-    eval ./TEMPLATE.app/Contents/MacOS/Squeak $SQUEAK_ARGUMENTS
+    eval ./TEMPLATE.app/Contents/MacOS/Squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
     check
 
     if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
