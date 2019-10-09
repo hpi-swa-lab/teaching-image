@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base|
+|progdir base options|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -9,6 +9,7 @@ Deprecation showDeprecationWarnings: false.
 "To account for an issue together with the current SwaSource"
 MCHttpRepository useSharedWebClientInstance: false.
 
+options = Smalltalk commandLine arguments.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
@@ -114,6 +115,15 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
+
+"-=-=-=-=-="
+
+(options includes: '-startrack') ifTrue:
+	[(Smalltalk at: #Metacello) new
+		baseline: 'StarTrack';
+		repository: 'github://hpi-swa-lab/learning-liveness/packages';
+		load: 'client'].
+
 
 "-=-=-=-=-="
 
