@@ -9,7 +9,15 @@ Deprecation showDeprecationWarnings: false.
 "To account for an issue together with the current SwaSource"
 MCHttpRepository useSharedWebClientInstance: false.
 
-options = Smalltalk commandLine arguments.
+"The following code is copied from SmalltalkImage>>arguments which seems to return nil here ..."
+options = Array streamContents: [:str |
+		| arg i |
+		i := 1.
+		[i > 998 or: [(arg := Smalltalk commandLine argumentAt: i) == nil]]
+			whileFalse:
+				[str nextPut: arg.
+				i := i + 1]].
+				
 Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
