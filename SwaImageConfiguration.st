@@ -10,6 +10,7 @@ Deprecation showDeprecationWarnings: false.
 MCHttpRepository useSharedWebClientInstance: false.
 
 options = Smalltalk commandLine arguments.
+Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
