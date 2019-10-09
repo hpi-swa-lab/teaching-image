@@ -3,6 +3,9 @@
 PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
+# This string is later passed as arguments to the smalltalk configuration scripts
+SQUEAK_ARGUMENTS=""
+
 set -e
 
 if [ "$RELEASE" == "Trunk" ]
@@ -24,6 +27,8 @@ fi
 
 if [ "$STARTRACK" == "true" ]
 then
+    # Set startrack option for smalltalk configuration file
+    SQUEAK_ARGUMENTS="${SQUEAK_ARGUMENTS} '-startrack'"
     INFIX="-"
 else
     INFIX=""
@@ -38,7 +43,8 @@ fi
 CONFIGURE_SCRIPT="SwaImageConfiguration"
 BASE="SWA${INFIX}2019${SUFFIX}"
 NAME="SWA ${INFIX}2019 ${SUFFIX}"
-SQUEAK_ARGUMENTS=" '${PROGDIR}' '${BASE}'"
+# These arguments are first because expected by configuration script 
+SQUEAK_ARGUMENTS=" '${PROGDIR}' '${BASE}' ${SQUEAK_ARGUMENTS}"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
