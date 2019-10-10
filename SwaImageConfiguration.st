@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base options|
+|progdir base options2|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -10,9 +10,9 @@ Deprecation showDeprecationWarnings: false.
 MCHttpRepository useSharedWebClientInstance: false.
 
 "The following code is copied from SmalltalkImage>>arguments which seems to return nil here ..."
-options = [].
+options2 = [].
 				
-Transcript showln: 'Received options: ', options.
+Transcript showln: 'Received options: ', options2.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
@@ -121,7 +121,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-(options includes: '-startrack') ifTrue:
+(options2 includes: '-startrack') ifTrue:
 	[(Smalltalk at: #Metacello) new
 		baseline: 'StarTrack';
 		repository: 'github://hpi-swa-lab/learning-liveness/packages';
