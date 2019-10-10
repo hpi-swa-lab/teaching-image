@@ -13,7 +13,7 @@ then
     # # Trunk release - for now using same version as normal ones
     echo "This is a trunk build"
     RELEASE="5.3alpha"
-    SRC_IMAGE="Squeak5.3alpha-19064-64bit"
+    SRC_IMAGE="Squeak5.3alpha-19082-64bit"
     SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
     SUFFIX="Trunk"
 else
