@@ -10,7 +10,7 @@ Deprecation showDeprecationWarnings: false.
 MCHttpRepository useSharedWebClientInstance: false.
 
 "The following code is copied from SmalltalkImage>>arguments which seems to return nil here ..."
-options2 = [].
+options2 = {}.
 				
 Transcript showln: 'Received options: ', options2.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
