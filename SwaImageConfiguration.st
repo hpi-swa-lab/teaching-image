@@ -10,13 +10,7 @@ Deprecation showDeprecationWarnings: false.
 MCHttpRepository useSharedWebClientInstance: false.
 
 "The following code is copied from SmalltalkImage>>arguments which seems to return nil here ..."
-options = Array streamContents: [:str |
-		| arg i |
-		i := 1.
-		[i > 998 or: [(arg := Smalltalk commandLine argumentAt: i) == nil]]
-			whileFalse:
-				[str nextPut: arg.
-				i := i + 1]].
+options = [].
 				
 Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
