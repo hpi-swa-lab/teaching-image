@@ -41,8 +41,8 @@ fi
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWA${INFIX}2019${SUFFIX}"
-NAME="SWA ${INFIX}2019 ${SUFFIX}"
+BASE="${LECTURE}${INFIX}${YEAR}${SUFFIX}"
+NAME="${LECTURE} ${INFIX}${YEAR} ${SUFFIX}"
 # These arguments are first because expected by configuration script 
 SQUEAK_ARGUMENTS=" '${PROGDIR}' '${BASE}' ${SQUEAK_ARGUMENTS}"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
