@@ -120,6 +120,13 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
 
 "-=-=-=-=-="
+	
+(Smalltalk at: #Metacello) new
+	baseline: 'GM';
+	repository: 'github://hpi-swa-teaching/GameMecha/source';
+	load.
+	
+"-=-=-=-=-="
 
 (options includes: '-startrack') ifTrue:
 	[(Smalltalk at: #Metacello) new
