@@ -121,10 +121,10 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 	
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
 	baseline: 'GM';
 	repository: 'github://hpi-swa-teaching/GameMecha/source';
-	load.
+	load."
 	
 "-=-=-=-=-="
 
