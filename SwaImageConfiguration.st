@@ -127,6 +127,13 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	load: 'core'.
 	
 "-=-=-=-=-="
+	
+(Smalltalk at: #Metacello) new
+	baseline: 'MorphicTutorial';
+	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
+	load.
+	
+"-=-=-=-=-="
 
 (options includes: '-startrack') ifTrue:
 	[(Smalltalk at: #Metacello) new
