@@ -13,7 +13,7 @@ set -e
 # PATCH: The build number of the specific image to be downloaded (e.g. 19432)
 # SUFFIX: Additional information about the image (e.g. "Trunk") (optional)
 function assert_env_variable {
-    if [[ -z $1 ]]
+    if [ -z $1 ]
     then
         echo "Error: Missing environment variable: $2"
         exit 1
@@ -23,7 +23,7 @@ assert_env_variable "$RELEASE" "RELEASE"
 assert_env_variable "$PATCH" "PATCH"
 
 echo "This is a Squeak $RELEASE build (patch: $PATCH)."
-if [[ -v "$SUFFIX" ]]
+if [ -v "$SUFFIX" ]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
