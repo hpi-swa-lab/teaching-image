@@ -3,7 +3,7 @@ os: osx
 
 env:
   global:
-    - LECTURE=SWA YEAR=2020
+    - LECTURE=SWT YEAR=2020
   matrix:
     - RELEASE=5.3alpha STARTRACK=true
     - RELEASE=5.3alpha STARTRACK=false
