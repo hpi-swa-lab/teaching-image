@@ -23,7 +23,7 @@ assert_env_variable "$RELEASE" "RELEASE"
 assert_env_variable "$PATCH" "PATCH"
 
 echo "This is a Squeak $RELEASE build (patch: $PATCH)."
-if [[ -v $SUFFIX ]]
+if [[ -v "$SUFFIX" ]]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
