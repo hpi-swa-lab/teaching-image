@@ -3,12 +3,37 @@
 PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
+# This string is later passed as arguments to the smalltalk configuration scripts
+SQUEAK_ARGUMENTS=""
+
 set -e
 
-# # Point-release
-RELEASE="5.3alpha"
-SRC_IMAGE="Squeak5.3alpha-18490-64bit"
-SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
+if [ "$RELEASE" == "Trunk" ]
+then
+    # # Trunk release - for now using same version as normal ones
+    echo "This is a trunk build"
+    RELEASE="5.3alpha"
+    SRC_IMAGE="Squeak5.3alpha-19082-64bit"
+    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
+    SUFFIX="Trunk"
+else
+    # # Point-release
+    echo "Build on release: $RELEASE"
+    RELEASE="5.3alpha"
+    SRC_IMAGE="Squeak5.3alpha-19064-64bit"
+    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
+    SUFFIX=""
+fi
+
+if [ "$STARTRACK" == "true" ]
+then
+    # Set startrack option for smalltalk configuration file
+    SQUEAK_ARGUMENTS="${SQUEAK_ARGUMENTS} '-startrack'"
+    INFIX="-"
+else
+    INFIX=""
+fi
+
 # OR Trunk:
 # RELEASE="Trunk"
 # SRC_IMAGE="TrunkImage"
@@ -16,8 +41,10 @@ SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
-BASE="SWT2019Trunk"
-NAME="SWT 2019Trunk"
+BASE="${LECTURE}${INFIX}${YEAR}${SUFFIX}"
+NAME="${LECTURE} ${INFIX}${YEAR} ${SUFFIX}"
+# These arguments are first because expected by configuration script 
+SQUEAK_ARGUMENTS=" '${PROGDIR}' '${BASE}' ${SQUEAK_ARGUMENTS}"
 DEPLOY_TARGET="https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/"
 ############################################################
 DIST_DIR="./dist"
@@ -82,7 +109,7 @@ if [ \! -d "${TMP_DIR}" ]; then
     $E "[....] $(tput setaf 6)Building image "
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
-    ./TEMPLATE.app/Contents/MacOS/Squeak "${TMP_DIR}/${SRC_IMAGE}.image" "../${CONFIG}" "${PROGDIR}" "${BASE}"
+    eval ./TEMPLATE.app/Contents/MacOS/Squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
     check
 
     if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then

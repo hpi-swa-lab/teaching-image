@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base|
+|progdir base options|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -9,6 +9,10 @@ Deprecation showDeprecationWarnings: false.
 "To account for an issue together with the current SwaSource"
 MCHttpRepository useSharedWebClientInstance: false.
 
+"The following code is copied from SmalltalkImage>>arguments which seems to return nil here ..."
+options := Smalltalk commandLine arguments.
+				
+Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
@@ -101,8 +105,8 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
-	repository: 'github://Salami555/Squeak-ToolIconsPlus:master';
-	baseline: 'ToolIconsPlus';
+	repository: 'github://LinqLover/Squeak-TipOfTheDay/packages';
+	baseline: 'TipOfTheDay';
 	load.
 
 "-=-=-=-=-="
@@ -114,6 +118,29 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
+
+"-=-=-=-=-="
+	
+(Smalltalk at: #Metacello) new
+	baseline: 'GM';
+	repository: 'github://hpi-swa-teaching/GameMecha/source';
+	load: 'core'.
+	
+"-=-=-=-=-="
+	
+(Smalltalk at: #Metacello) new
+	baseline: 'MorphicTutorial';
+	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
+	load.
+	
+"-=-=-=-=-="
+
+(options includes: '-startrack') ifTrue:
+	[(Smalltalk at: #Metacello) new
+		baseline: 'StarTrack';
+		repository: 'github://hpi-swa-lab/learning-liveness/packages';
+		load: 'client'].
+
 
 "-=-=-=-=-="
 

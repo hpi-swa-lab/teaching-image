@@ -1,6 +1,15 @@
 language: objective-c
 os: osx
 
+env:
+  global:
+    - LECTURE=SWA YEAR=2020
+  matrix:
+    - RELEASE=5.3alpha STARTRACK=true
+    - RELEASE=5.3alpha STARTRACK=false
+    - RELEASE=Trunk STARTRACK=true
+    - RELEASE=Trunk STARTRACK=false
+
 addons:
   homebrew:
     packages:
@@ -11,4 +20,4 @@ before_install:
     -in .encrypted.zip.enc -out .encrypted.zip -d
 
 before_script: pip install -U pyobjc
-script: travis_wait 60 bash MAKE.command
+script: bash MAKE.command
