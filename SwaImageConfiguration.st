@@ -193,6 +193,7 @@ Project current in: [:oldProject |
 		ProjectHistory forget: oldProject.
 		Project forget: oldProject.
 		Project current setParent: Project current.
+		Project rebuildAllProjects.
 		Preferences disable: #showSharedFlaps.
 		UIManager default builderClass: MorphicToolBuilder.
 		"-=-=-=-=-="
