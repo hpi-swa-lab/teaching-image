@@ -458,7 +458,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>%NAME%, Squeak %RELEASE%, squeak.cog.spur_macos64x64</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.2</string>
+	<string>5.3</string>
 	<key>CFBundleIconFile</key>
 	<string>Squeak.icns</string>
 	<key>CFBundleIdentifier</key>
