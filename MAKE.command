@@ -8,22 +8,27 @@ SQUEAK_ARGUMENTS=""
 
 set -e
 
-if [ "$RELEASE" == "Trunk" ]
+# Environment variables expected by this script:
+# RELEASE: The overall release version (e.g. 5.3 or 5.2, etc.)
+# PATCH: The build number of the specific image to be downloaded (e.g. 19432)
+# SUFFIX: Additional information about the image (e.g. "Trunk") (optional)
+function assert_env_variable {
+    if [ -z "$1" ]
+    then
+        echo "Error: Missing environment variable: $2"
+        exit 1
+    fi
+}
+assert_env_variable "$RELEASE" "RELEASE"
+assert_env_variable "$PATCH" "PATCH"
+
+echo "This is a Squeak $RELEASE build (patch: $PATCH)."
+if [ -n "$SUFFIX" ]
 then
-    # # Trunk release - for now using same version as normal ones
-    echo "This is a trunk build"
-    RELEASE="5.3alpha"
-    SRC_IMAGE="Squeak5.3alpha-19082-64bit"
-    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
-    SUFFIX="Trunk"
-else
-    # # Point-release
-    echo "Build on release: $RELEASE"
-    RELEASE="5.3alpha"
-    SRC_IMAGE="Squeak5.3alpha-19064-64bit"
-    SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
-    SUFFIX=""
+    echo "Build is marked as '$SUFFIX'"
 fi
+SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
+SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 if [ "$STARTRACK" == "true" ]
 then

@@ -85,7 +85,7 @@ TextEditor destructiveBackWord: true.
 "-=-=-=-=-="
 
 Project current resourceManager reset.
-Smalltalk cleanUp: true.
+Smalltalk cleanUp: true except: {Warning}.
 MCHttpRepository clearCredentials.
 Environment allInstancesDo: [:env | env purgeUndeclared].
 Undeclared removeUnreferencedKeys.
@@ -193,6 +193,7 @@ Project current in: [:oldProject |
 		ProjectHistory forget: oldProject.
 		Project forget: oldProject.
 		Project current setParent: Project current.
+		Project rebuildAllProjects.
 		Preferences disable: #showSharedFlaps.
 		UIManager default builderClass: MorphicToolBuilder.
 		"-=-=-=-=-="

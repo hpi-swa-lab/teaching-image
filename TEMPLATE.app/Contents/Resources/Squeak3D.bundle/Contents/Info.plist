@@ -5,20 +5,20 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>$(LIBNAME)</string>
+	<string>Squeak3D</string>
 	<key>CFBundleIconFile</key>
 	<string>SqueakPlugin.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.squeak.$(LIBNAME)</string>
+	<string>org.squeak.Squeak3D</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.0-201810190412</string>
+	<string>5.0-202003021730</string>
 	<key>CFBundleSignature</key>
 	<string>FAST</string>
 	<key>CFBundleVersion</key>
-	<string>5.0-201810190412</string>
+	<string>5.0-202003021730</string>
 </dict>
 </plist>

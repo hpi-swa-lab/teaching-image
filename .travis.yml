@@ -3,12 +3,10 @@ os: osx
 
 env:
   global:
-    - LECTURE=SWA YEAR=2020
+    - LECTURE=SWT YEAR=2020
   matrix:
-    - RELEASE=5.3alpha STARTRACK=true
-    - RELEASE=5.3alpha STARTRACK=false
-    - RELEASE=Trunk STARTRACK=true
-    - RELEASE=Trunk STARTRACK=false
+    - RELEASE=5.3 PATCH=19432 STARTRACK=true
+    - RELEASE=5.3 PATCH=19432 STARTRACK=false
 
 addons:
   homebrew:
