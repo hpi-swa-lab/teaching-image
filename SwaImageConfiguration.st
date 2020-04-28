@@ -64,6 +64,21 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
   load.
 ] on: Warning do: [:e | e resume].
 
+"Remove after bug is fixed in Squot-master --pre"
+(Smalltalk at: #SquitBrowser) compile: 'refresh
+	Cursor wait showWhile:
+		[self changed: #projectList.
+		self changed: #projectIndex.
+		self loadBranchList.
+		self loadCommitList.
+		self changed: #hasProjectSelection.
+		self changed: #hasBranchSelection.
+		self changed: #hasCommitSelection.
+		self changed: #hasSearchTerm.
+		self changed: #contents.
+		self changed: #labelString.
+		self objectCacheRefreshAsync].'
+	
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
