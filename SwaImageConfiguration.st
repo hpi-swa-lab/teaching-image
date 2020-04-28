@@ -77,7 +77,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 		self changed: #hasSearchTerm.
 		self changed: #contents.
 		self changed: #labelString.
-		self objectCacheRefreshAsync].'
+		self objectCacheRefreshAsync].'.
 	
 "-=-=-=-=-="
 
