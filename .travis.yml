@@ -5,7 +5,7 @@ env:
   global:
     - LECTURE=SWA YEAR=2021
   matrix:
-    - RELEASE=5.3 PATCH=19452 STARTRACK=false
+    - RELEASE=5.3 PATCH=19452 STARTRACK=true
 
 addons:
   homebrew:
