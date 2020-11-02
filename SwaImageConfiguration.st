@@ -96,6 +96,8 @@ Preferences disable: #alternativeBrowseIt.
 SystemBrowser default: Browser.
 TextEditor autoEnclose: false.
 TextEditor destructiveBackWord: true.
+	
+SoundPlayer stopReverb.
 
 "-=-=-=-=-="
 
