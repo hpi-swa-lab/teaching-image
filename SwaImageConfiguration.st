@@ -97,6 +97,8 @@ SystemBrowser default: Browser.
 TextEditor autoEnclose: false.
 TextEditor destructiveBackWord: true.
 	
+Workspace shouldStyle: true.
+	
 SoundPlayer stopReverb.
 
 "-=-=-=-=-="
