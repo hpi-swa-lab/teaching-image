@@ -40,7 +40,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 [(Smalltalk at: #Metacello) new
 	baseline: 'SwaLint';
-	repository: 'github://hpi-swa-teaching/SwaLint:master/packages';
+	repository: 'github://hpi-swa-teaching/SwaLint:main/packages';
 	get;
 	load: #default]
 		on: (Smalltalk at: #MetacelloSkipDirtyPackageLoad) new 
