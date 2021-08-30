@@ -1,0 +1,32 @@
+name: tests
+on: [push, pull_request]
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: macOS
+    strategy:
+      matrix:
+        starTrack: [true, false]
+    name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U pyobjc
+      - run: bash MAKE.command
+        timeout-minutes: 20
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STARTRACK: ${{ matrix.starTrack }}
+          RELEASE: 5.3
+          PATCH: 19459 
+          LECTURE: SWA
+          YEAR: 2022
