@@ -6,11 +6,11 @@ on: [push, pull_request]
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: macOS
+    runs-on: macos-latest
     strategy:
       matrix:
-        starTrack: [true, false]
-    name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
+        star_track: [true, false]
+    name: Build with StarTrack ${{ matrix.star_track }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
         timeout-minutes: 20
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STARTRACK: ${{ matrix.starTrack }}
+          STARTRACK: ${{ matrix.star_track }}
           RELEASE: 5.3
           PATCH: 19459 
           LECTURE: SWA
