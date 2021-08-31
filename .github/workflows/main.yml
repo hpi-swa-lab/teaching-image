@@ -1,14 +1,15 @@
 name: tests
+
+# Triggers the workflow on push or pull request on any branch
 on: [push, pull_request]
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: macos-latest
     strategy:
       matrix:
+        # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
         star_track: [true, false]
     name: Build with StarTrack ${{ matrix.star_track }}
     steps:
@@ -27,6 +28,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: 5.3
-          PATCH: 19459 
+          PATCH: 19459
           LECTURE: SWA
           YEAR: 2022
