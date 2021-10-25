@@ -226,6 +226,7 @@ Project current in: [:oldProject |
 		"-=-=-=-=-="
 		TheWorldMainDockingBar updateInstances.
 		(UserInterfaceTheme named: 'Squeak') apply.
+		Transcript showln: 'Saving as ', base, '.image'.
 		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
 			"ReleaseBuilder openWelcomeWorkspacesWith: nil."

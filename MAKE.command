@@ -77,9 +77,9 @@ ann() {
 check() {
     EX="$?"
     if [ "$?" -eq 0 ]; then
-        ann "[$(tput setaf 2) OK ]"
+        $E "[ OK ]"
     else
-        ann "[$(tput setaf 9)FAIL]"
+        $E "[FAIL]"
         tail $LOG
         exit $EX
     fi
@@ -91,13 +91,13 @@ if [ \! -d "${CACHE_DIR}" ]; then
     mkdir "${CACHE_DIR}"
 
     if [ \! -f "${CACHE_DIR}/${SRC_IMAGE}.zip" ]; then
-        $E "[....] $(tput setaf 4)Fetching ${SRC_IMAGE}"
+        $E "[....] Fetching ${SRC_IMAGE}"
         curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL"
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
-        $E "[....] $(tput setaf 4)Fetching sources"
+        $E "[....] Fetching sources"
         curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
@@ -106,7 +106,7 @@ fi
 if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
 
-    $E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE}"
+    $E "[....] Extracting ${SRC_IMAGE}"
     if [ "$LOCAL" == "true" ]; then
         unzip "${CACHE_DIR}/${SRC_IMAGE}.zip" -d "${TMP_DIR}/"
     else
@@ -114,11 +114,11 @@ if [ \! -d "${TMP_DIR}" ]; then
     fi
     check
 
-    $E "[....] $(tput setaf 4)Decompressing sources"
+    $E "[....] Decompressing sources"
     gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
     check
 
-    $E "[....] $(tput setaf 6)Building image "
+    $E "[....] Building image "
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
     if [ "$LOCAL" == "true" ]; then
@@ -138,7 +138,7 @@ chmod -v a+x set_icon.py
 
 function _copy {
     if [ "$LOCAL" == "true" ]; then
-        cp -r $@
+        cp -R $@
     else
         ditto -v $@
     fi
@@ -146,7 +146,7 @@ function _copy {
 
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
-    $E "[....] $(tput setaf 3)Building all-in-one "
+    $E "[....] Building all-in-one "
     _copy  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
     _copy  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
     _copy TEMPLATE.app "${AIO_DIR}/${APP}" && \
@@ -195,24 +195,25 @@ mkdir -p dist || true
 
 if [ \! -f "${DIST_DIR}/${BASE}.txz" ]; then
     if type xz 2>/dev/null >/dev/null; then
-        $E "[....] $(tput setaf 3)Compressing txz "
+        $E "[....] Compressing txz "
         COPYFILE_DISABLE=1 tar -cf "${DIST_DIR}/${BASE}.txz" --use-compress-program xz "${AIO_DIR}"
         check
     fi
 fi
 
 if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
-    $E "[....] $(tput setaf 3)Compressing ${APP} "
+    $E "[....] Compressing ${APP} "
     if [ "$LOCAL" == "true" ]; then
         zip -r "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
     else
+        ls "${AIO_DIR}"
         ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
     fi
     check
 fi
 
 if [ \! -f "${DIST_DIR}/${DMG}" ]; then
-    $E "[....] $(tput setaf 3)Creating Disk Image ${DMG} "
+    $E "[....] Creating Disk Image ${DMG} "
     hdiutil create -size 256m -volname "${BASE}" -srcfolder "${AIO_DIR}" \
         -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}" && \
     DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
@@ -243,6 +244,7 @@ else
     echo "Files are: ${DIST_DIR}/${BASE}.zip ${DIST_DIR}/${BASE}.txz ${DIST_DIR}/${DMG}"
 fi
 
-$E "Files are in the $(tput setaf 9)dist/ directory"
+$E "Files are in the dist/ directory"
+ls ${DIST_DIR}
 
-$E "$(tput setaf 2)Done."
+$E "Done."
