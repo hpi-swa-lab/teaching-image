@@ -1,5 +1,6 @@
 #!/bin/bash
 
+LOCAL="true"
 PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
@@ -21,6 +22,7 @@ function assert_env_variable {
 }
 assert_env_variable "$RELEASE" "RELEASE"
 assert_env_variable "$PATCH" "PATCH"
+assert_env_variable "$LECTURE" "LECTURE"
 
 echo "This is a Squeak $RELEASE build (patch: $PATCH)."
 if [ -n "$SUFFIX" ]
@@ -104,7 +106,11 @@ if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
 
     $E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE}"
-    ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
+    if [ "$LOCAL" == "true" ]; then
+        unzip "${CACHE_DIR}/${SRC_IMAGE}.zip" -d "${TMP_DIR}/"
+    else
+        ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
+    fi
     check
 
     $E "[....] $(tput setaf 4)Decompressing sources"
@@ -114,7 +120,11 @@ if [ \! -d "${TMP_DIR}" ]; then
     $E "[....] $(tput setaf 6)Building image "
     CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
     chmod -R a+x ./TEMPLATE.app
-    eval ./TEMPLATE.app/Contents/MacOS/Squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
+    if [ "$LOCAL" == "true" ]; then
+        eval TEMPLATE.app/Contents/Linux-x86_64/squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
+    else
+        eval TEMPLATE.app/Contents/MacOS/squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
+    fi
     check
 
     if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
@@ -125,15 +135,23 @@ fi
 
 chmod -v a+x set_icon.py
 
+function _copy {
+    if [ "$LOCAL" == "true" ]; then
+        cp -r $@
+    else
+        ditto -v $@
+    fi
+}
+
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
     $E "[....] $(tput setaf 3)Building all-in-one "
-    ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
-    ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
-    ditto -v TEMPLATE.app "${AIO_DIR}/${APP}" && \
+    _copy  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
+    _copy  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
+    _copy TEMPLATE.app "${AIO_DIR}/${APP}" && \
     chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
     python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
-    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
+    _copy "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win64/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
         $E "Patching ${template_file}"
@@ -143,7 +161,11 @@ if [ \! -d "${AIO_DIR}" ]; then
     done
     check
 
-    xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
+    if [ "$LOCAL" == "true" ]; then
+        # probably not necessary?
+    else
+        xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
+    fi
 
     if [[ -f ".encrypted.zip" ]]; then
         $E "Signing macOS bundles..."
@@ -179,7 +201,11 @@ fi
 
 if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
     $E "[....] $(tput setaf 3)Compressing ${APP} "
-    ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
+    if [ "$LOCAL" == "true" ]; then
+        zip -r "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
+    else
+        ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
+    fi
     check
 fi
 
@@ -204,7 +230,7 @@ fi
 # mv "${BASE}/${APP}" . &&  rm -r "${BASE}"
 
 if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
-    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
+    _copy "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
 fi
 
 curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."

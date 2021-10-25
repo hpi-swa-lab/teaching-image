@@ -1,3 +1,6 @@
 .encrypted.zip
 encrypted/sign.cer
 encrypted/sign.p12
+_cache
+_tmp
+dist

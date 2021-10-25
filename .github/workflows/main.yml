@@ -7,11 +7,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
-        star_track: [true, false]
-    name: Build with StarTrack ${{ matrix.star_track }}
+    name: Build for Seminar: Visual Abstractions
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -26,8 +22,7 @@ jobs:
         timeout-minutes: 20
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          STARTRACK: ${{ matrix.star_track }}
-          RELEASE: 5.3
-          PATCH: 19459
-          LECTURE: SWA
+          RELEASE: trunk
+          PATCH: 20582
+          LECTURE: VA
           YEAR: 2022

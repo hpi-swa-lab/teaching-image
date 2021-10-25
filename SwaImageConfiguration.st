@@ -115,18 +115,18 @@ Smalltalk garbageCollect.
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "Vivide needs to be loaded after UI-Theme reset (via Smalltalk cleanUp: true)"
-[(Smalltalk at: #Metacello) new
+"[(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/Vivide:master-squot/repository';
 	baseline: 'Vivide';
 	load.
-] on: AssertionFailure do: [:e | e resume].
+] on: AssertionFailure do: [:e | e resume]."
 
 "-=-=-=-=-="
 
-(Smalltalk at: #Metacello) new
-	repository: 'github://LinqLover/Squeak-TipOfTheDay/packages';
-	baseline: 'TipOfTheDay';
-	load.
+"(Smalltalk at: #Metacello) new
+repository: 'github://LinqLover/Squeak-TipOfTheDay/packages';
+baseline: 'TipOfTheDay';
+load."
 
 "-=-=-=-=-="
 
@@ -140,26 +140,34 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 	
-(Smalltalk at: #Metacello) new
-	baseline: 'GM';
-	repository: 'github://hpi-swa-teaching/GameMecha/source';
-	load: 'test'.
+"(Smalltalk at: #Metacello) new
+baseline: 'GM';
+repository: 'github://hpi-swa-teaching/GameMecha/source';
+load: 'test'."
 	
 "-=-=-=-=-="
 	
+"(Smalltalk at: #Metacello) new
+baseline: 'MorphicTutorial';
+repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
+load."
+	
+"-=-=-=-=-="
+
+"(options includes: '-startrack') ifTrue:
+[(Smalltalk at: #Metacello) new
+baseline: 'StarTrack';
+repository: 'github://hpi-swa-lab/learning-liveness/packages';
+load: 'client']."
+
+
+"-=-=-=-=-="
+
 (Smalltalk at: #Metacello) new
-	baseline: 'MorphicTutorial';
-	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
+	baseline: 'Sandblocks';
+	githubUser: 'tom95' project: 'sandblocks' commitish: 'master' path: 'packages';
 	load.
-	
-"-=-=-=-=-="
-
-(options includes: '-startrack') ifTrue:
-	[(Smalltalk at: #Metacello) new
-		baseline: 'StarTrack';
-		repository: 'github://hpi-swa-lab/learning-liveness/packages';
-		load: 'client'].
-
+CodeHolder addSandblocksDefault: false.
 
 "-=-=-=-=-="
 
@@ -220,10 +228,11 @@ Project current in: [:oldProject |
 		(UserInterfaceTheme named: 'Squeak') apply.
 		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
-			ReleaseBuilder openWelcomeWorkspacesWith: nil.
-			PreferenceWizardMorph open].
+			"ReleaseBuilder openWelcomeWorkspacesWith: nil."
+			SBEditor openExample.
+			"PreferenceWizardMorph open"].
 		Smalltalk snapshot: true andQuit: true.
 	].
-	(Smalltalk at: #AnimMorphicProject) new enter: false.
+	(Smalltalk at: #MorphicProject) new enter: false.
 ]] ensure: [
 	TranscriptStream redirectToStdOut: false.]
