@@ -26,3 +26,10 @@ jobs:
           PATCH: 20582
           LECTURE: VA
           YEAR: 2022
+      - uses: actions/upload-artifact@v2
+        with:
+          name: va2022
+          path: |
+            _tmp/VA2022.dmg
+            _tmp/VA2022.txz
+            _tmp/VA2022.zip

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LOCAL="false"
+UPLOAD="false"
 PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
@@ -234,9 +235,15 @@ if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
     _copy "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
 fi
 
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && $E ".txz uploaded."
+if [ "$LOCAL" == "true" ]; then
+    echo "Files are: ${DIST_DIR}/${BASE}.zip ${DIST_DIR}/${BASE}.txz ${DIST_DIR}/${DMG}"
+else
+    if [ "$UPLOAD" == "true" ]; then
+        curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
+        curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
+        curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && $E ".txz uploaded."
+    fi
+fi
 
 $E "Files are in the $(tput setaf 9)dist/ directory"
 
