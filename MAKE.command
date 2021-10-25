@@ -29,7 +29,7 @@ if [ -n "$SUFFIX" ]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
-SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
+SRC_IMAGE="Squeak6.0alpha-${PATCH}-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 
 if [ "$STARTRACK" == "true" ]
