@@ -30,6 +30,6 @@ jobs:
         with:
           name: va2022
           path: |
-            _tmp/VA2022.dmg
-            _tmp/VA2022.txz
-            _tmp/VA2022.zip
+            dist/VA2022.dmg
+            dist/VA2022.txz
+            dist/VA2022.zip
