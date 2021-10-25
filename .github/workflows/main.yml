@@ -7,7 +7,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: macos-latest
-    name: Build for Seminar: Visual Abstractions
+    name: Build for Seminar Visual Abstractions
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
