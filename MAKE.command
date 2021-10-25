@@ -163,6 +163,7 @@ if [ \! -d "${AIO_DIR}" ]; then
 
     if [ "$LOCAL" == "true" ]; then
         # probably not necessary?
+        echo "FIXME: skip xattr"
     else
         xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
     fi
