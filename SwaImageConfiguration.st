@@ -208,7 +208,7 @@ SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
 		} otherwise: [^ aKeyboardEvent "no hit"].
 		^ aKeyboardEvent ignore "hit!"].
 
-	^ aKeyboardEvent "no hit"'
+	^ aKeyboardEvent "no hit"'.
 
 "-=-=-=-=-="
 

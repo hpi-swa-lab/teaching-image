@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCAL="false"
+LOCAL="true"
 UPLOAD="false"
 PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
