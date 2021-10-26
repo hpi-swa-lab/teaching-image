@@ -185,7 +185,7 @@ CodeHolder addSandblocksDefault: false.
 
 "-=-=-=-=-="
 
-" 'better' shortcut for closing top window "
+" working shortcut for closing top window "
 SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
 	"Provide keyboard shortcuts."
 
@@ -200,15 +200,16 @@ SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
 			[$w] -> [self class deleteTopWindow].
 			[$/] -> [self class bringWindowUnderHandToFront].
 		} otherwise: [^ aKeyboardEvent "no hit"].
-		^ aKeyboardEvent ignore "hit!"].
+		^ aKeyboardEvent ignore "hit"].
 	
 	aKeyboardEvent controlKeyPressed ifTrue: [
 		aKeyboardEvent keyCharacter caseOf: {
 			[Character escape] -> [self world findWindow: aKeyboardEvent].
 		} otherwise: [^ aKeyboardEvent "no hit"].
-		^ aKeyboardEvent ignore "hit!"].
+		^ aKeyboardEvent ignore "hit"].
 
-	^ aKeyboardEvent "no hit"'.
+	^ aKeyboardEvent
+'.
 
 "-=-=-=-=-="
 
