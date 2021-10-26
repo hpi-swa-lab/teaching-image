@@ -60,7 +60,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "Install Squot-develop for latest fixes"
 [(Smalltalk at: #Metacello) new
   baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:master/src';
+  repository: 'github://hpi-swa/Squot:develop/src';
   load.
 ] on: Warning do: [:e | e resume].
 
@@ -78,7 +78,12 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 		self changed: #contents.
 		self changed: #labelString.
 		self objectCacheRefreshAsync].'.
-	
+
+"
+(Smalltalk at: #SquotPackageShadow) compile: 'squotPreferredSerializer
+^ (packageName endsWith: ''.package'') ifTrue: [self class squotPreferredSerializer] ifFalse: [#SquotTonelSerializer]'.
+"
+
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
@@ -94,7 +99,9 @@ Preferences enable: #mouseOverForKeyboardFocus.
 
 Preferences disable: #alternativeBrowseIt.
 SystemBrowser default: Browser.
-TextEditor autoEnclose: false.
+UIManager openToolsAttachedToMouseCursor: true.
+TextEditor autoEnclose: true.
+TextEditor encloseSelection: true.
 TextEditor destructiveBackWord: true.
 	
 Workspace shouldStyle: true.
@@ -164,10 +171,44 @@ load: 'client']."
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
+  configuration: 'FFI';
+  load.
+(Smalltalk at: #Metacello) new
+  configuration: 'OSProcess';
+  load.
+
+(Smalltalk at: #Metacello) new
 	baseline: 'Sandblocks';
 	githubUser: 'tom95' project: 'sandblocks' commitish: 'master' path: 'packages';
 	load.
 CodeHolder addSandblocksDefault: false.
+
+"-=-=-=-=-="
+
+" 'better' shortcut for closing top window "
+SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
+	"Provide keyboard shortcuts."
+
+	aKeyboardEvent isKeystroke
+		ifFalse: [^ aKeyboardEvent].
+
+	aKeyboardEvent hand halo ifNotNil: [ : halo | halo target isSystemWindow ifTrue: [ aKeyboardEvent hand removeHalo ] ].
+	
+	aKeyboardEvent commandKeyPressed ifTrue: [
+		aKeyboardEvent keyCharacter caseOf: { 
+			[$\] -> [self class sendTopWindowToBack].
+			[$w] -> [self class deleteTopWindow].
+			[$/] -> [self class bringWindowUnderHandToFront].
+		} otherwise: [^ aKeyboardEvent "no hit"].
+		^ aKeyboardEvent ignore "hit!"].
+	
+	aKeyboardEvent controlKeyPressed ifTrue: [
+		aKeyboardEvent keyCharacter caseOf: {
+			[Character escape] -> [self world findWindow: aKeyboardEvent].
+		} otherwise: [^ aKeyboardEvent "no hit"].
+		^ aKeyboardEvent ignore "hit!"].
+
+	^ aKeyboardEvent "no hit"'
 
 "-=-=-=-=-="
 
@@ -230,7 +271,13 @@ Project current in: [:oldProject |
 		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
 			"ReleaseBuilder openWelcomeWorkspacesWith: nil."
-			SBEditor openExample.
+			SimpleButtonMorph new
+				target: [CodeHolder toggleSandblocksDefault];
+				actionSelector: #value;
+				label: 'toggleSandblocksDefault';
+				position: 30 @ 30;
+				openInWorld.
+			(Smalltalk at: #SBEditor) openExample.
 			"PreferenceWizardMorph open"].
 		Smalltalk snapshot: true andQuit: true.
 	].
