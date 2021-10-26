@@ -79,10 +79,8 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 		self changed: #labelString.
 		self objectCacheRefreshAsync].'.
 
-"
 (Smalltalk at: #SquotPackageShadow) compile: 'squotPreferredSerializer
-^ (packageName endsWith: ''.package'') ifTrue: [self class squotPreferredSerializer] ifFalse: [#SquotTonelSerializer]'.
-"
+  ^ (packageName endsWith: ''.package'') ifTrue: [self class squotPreferredSerializer] ifFalse: [SquotTonelSerializer]'.
 
 "-=-=-=-=-="
 
@@ -171,16 +169,17 @@ load: 'client']."
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
-  configuration: 'FFI';
+  configuration: 'OSProcess';
   load.
 (Smalltalk at: #Metacello) new
-  configuration: 'OSProcess';
+  configuration: 'FFI';
+  version: '2.0-baseline';
   load.
 
 (Smalltalk at: #Metacello) new
 	baseline: 'Sandblocks';
 	githubUser: 'tom95' project: 'sandblocks' commitish: 'master' path: 'packages';
-	load.
+	load: #tutorial.
 CodeHolder addSandblocksDefault: false.
 
 "-=-=-=-=-="
