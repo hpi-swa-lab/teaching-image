@@ -60,7 +60,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "Install Squot-develop for latest fixes"
 [(Smalltalk at: #Metacello) new
   baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:master/src';
+  repository: 'github://hpi-swa/Squot:swa-ui/src';
   load.
 ] on: Warning do: [:e | e resume].
 
@@ -143,7 +143,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 (Smalltalk at: #Metacello) new
 	baseline: 'GM';
 	repository: 'github://hpi-swa-teaching/GameMecha/source';
-	load: 'test'.
+	load: 'swa'.
 	
 "-=-=-=-=-="
 	
