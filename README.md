@@ -20,7 +20,7 @@ A repository for scripts to build a teaching image
 - Commit to master with commit message "`Update image configuration for {SWA|SWT} {YEAR OF LECTURE}`".
 
 ### 3. Build Image
-- A new build is generated on each commit on any branch (using Travis).
+- A new build is generated on each commit on any branch (using Travis/Github Actions).
 - The build process takes around 20 minutes.
 - Once the build process has finished, the image can be obtained here: https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/?C=M;O=D.
   - The page only offers the image of the latest successful build. Older versions are overwritten.
