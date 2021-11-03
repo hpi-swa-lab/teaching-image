@@ -36,6 +36,30 @@ Preferences removeAllPreferencesSuchThat: [:ea | ea provider == (Smalltalk at: #
 "-=-=-=-=-="
 Installer squeakTrunk install: 'Help-Squeak-CorePackages'.
 
+"-=-=-=-=-="
+" Christoph's fixes needed for ECMA regex parsing "
+Installer squeakInbox
+	install: 'Kernel-ct.1419';
+	install: 'Multilingual-ct.259';
+	install: 'Regex-Core-ct.71.mcz';
+	install: 'Regex-Tests-Core-ct.28'.
+
+RxsCharSet compile:  a Text for 'predicatePartPredicateIgnoringCase: aBoolean
+
+	| predicates size |
+	"Answer a predicate that tests all of my elements that cannot be enumerated, or nil if such elements don''t exist."
+	predicates := elements reject: [:some | some isEnumerable].
+	(size := predicates size) = 0 ifTrue: ["We could return a real predicate block - like [ :char | negated ] - here, but it wouldn''t be used anyway. This way we signal that this character set has no predicates."
+	^ nil].
+	size = 1 ifTrue: [
+		negated ifTrue: [^ predicates first predicateNegationIgnoringCase: aBoolean].
+		^ predicates first predicateIgnoringCase: aBoolean].
+	predicates replace: [:each | each predicateIgnoringCase: aBoolean].
+	negated ifTrue: [^ [:char | predicates noneSatisfy: [:some | some value: char]]].
+	^ [:char | predicates anySatisfy: [:some | some value: char]]'.
+
+"-=-=-=-=-="
+
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 [(Smalltalk at: #Metacello) new
@@ -173,8 +197,7 @@ load: 'client']."
   load.
 (Smalltalk at: #Metacello) new
   configuration: 'FFI';
-  version: '2.0-baseline';
-  load.
+  load: #development.
 
 (Smalltalk at: #Metacello) new
 	baseline: 'Sandblocks';
@@ -209,6 +232,43 @@ SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
 
 	^ aKeyboardEvent
 '.
+
+"-=-=-=-=-="
+
+" address enclose quotation mark bug "
+
+TextEditor compile: 'enclose: aKeyboardEvent
+	"Insert or remove bracket characters around the current selection."
+
+	| character left right startIndex stopIndex oldSelection which t |
+	character := aKeyboardEvent shiftPressed
+					ifTrue: [''{}|''''<>'' at: (''[]\'''',.'' indexOf: aKeyboardEvent keyCharacter) ifAbsent: [aKeyboardEvent keyCharacter]]
+					ifFalse: [aKeyboardEvent keyCharacter].
+	self closeTypeIn.
+	startIndex := self startIndex.
+	stopIndex := self stopIndex.
+	oldSelection := self selection.
+	which := ''([<{|"''''9'' indexOf: character ifAbsent: [ ^ false ].
+	"Allow Control key in lieu of Alt+Shift for (, {, and double-quote."
+	left := ((Preferences cmdKeysInText and: [ aKeyboardEvent controlKeyPressed ])
+		ifTrue: [ ''({<{|""('' ]
+		ifFalse: [''([<{|"''''('']) at: which.
+	right := ((Preferences cmdKeysInText and: [ aKeyboardEvent controlKeyPressed ])
+		ifTrue: [ '')}>}|"")'' ] 
+		ifFalse: ['')]>}|"'''')'']) at: which.
+	t := self text.
+	((startIndex > 1 and: [stopIndex <= t size])
+			and: [ (t at: startIndex-1) = left and: [(t at: stopIndex) = right]])
+		ifTrue:
+			["already enclosed; strip off brackets"
+			self selectFrom: startIndex-1 to: stopIndex.
+			self replaceSelectionWith: oldSelection]
+		ifFalse:
+			["not enclosed; enclose by matching brackets"
+			self replaceSelectionWith:
+				(Text string: (String with: left), oldSelection string, (String with: right) attributes: emphasisHere).
+			self selectFrom: startIndex+1 to: stopIndex].
+	^true'.
 
 "-=-=-=-=-="
 
