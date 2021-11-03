@@ -40,23 +40,8 @@ Installer squeakTrunk install: 'Help-Squeak-CorePackages'.
 " Christoph's fixes needed for ECMA regex parsing "
 Installer squeakInbox
 	install: 'Kernel-ct.1419';
-	install: 'Multilingual-ct.259';
-	install: 'Regex-Core-ct.71.mcz';
-	install: 'Regex-Tests-Core-ct.28'.
-
-RxsCharSet compile:  a Text for 'predicatePartPredicateIgnoringCase: aBoolean
-
-	| predicates size |
-	"Answer a predicate that tests all of my elements that cannot be enumerated, or nil if such elements don''t exist."
-	predicates := elements reject: [:some | some isEnumerable].
-	(size := predicates size) = 0 ifTrue: ["We could return a real predicate block - like [ :char | negated ] - here, but it wouldn''t be used anyway. This way we signal that this character set has no predicates."
-	^ nil].
-	size = 1 ifTrue: [
-		negated ifTrue: [^ predicates first predicateNegationIgnoringCase: aBoolean].
-		^ predicates first predicateIgnoringCase: aBoolean].
-	predicates replace: [:each | each predicateIgnoringCase: aBoolean].
-	negated ifTrue: [^ [:char | predicates noneSatisfy: [:some | some value: char]]].
-	^ [:char | predicates anySatisfy: [:some | some value: char]]'.
+	install: 'Multilingual-ct.259'.
+(Installer file: (FileDirectory default / '..' / 'Regex-Core-ct.75.mcz') fullName) install.
 
 "-=-=-=-=-="
 
@@ -197,7 +182,8 @@ load: 'client']."
   load.
 (Smalltalk at: #Metacello) new
   configuration: 'FFI';
-  load: #development.
+  version: '2.0-baseline';
+  load.
 
 (Smalltalk at: #Metacello) new
 	baseline: 'Sandblocks';
