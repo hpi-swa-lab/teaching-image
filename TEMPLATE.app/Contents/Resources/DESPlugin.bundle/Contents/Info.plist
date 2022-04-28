@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Squeak3D</string>
+	<string>DESPlugin</string>
 	<key>CFBundleIconFile</key>
 	<string>SqueakPlugin.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.squeak.Squeak3D</string>
+	<string>org.squeak.DESPlugin</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
