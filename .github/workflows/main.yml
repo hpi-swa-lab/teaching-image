@@ -27,6 +27,7 @@ jobs:
         timeout-minutes: 20
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TERM: xterm
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: 5.3
           PATCH: 19459

@@ -8,9 +8,6 @@ SQUEAK_ARGUMENTS=""
 
 set -e
 
-# Required for color output in GH Actions
-TERM=xterm
-
 # Environment variables expected by this script:
 # RELEASE: The overall release version (e.g. 5.3 or 5.2, etc.)
 # PATCH: The build number of the specific image to be downloaded (e.g. 19432)
