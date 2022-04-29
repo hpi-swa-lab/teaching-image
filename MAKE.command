@@ -8,6 +8,9 @@ SQUEAK_ARGUMENTS=""
 
 set -e
 
+# Required for color output in GH Actions
+TERM=xterm
+
 # Environment variables expected by this script:
 # RELEASE: The overall release version (e.g. 5.3 or 5.2, etc.)
 # PATCH: The build number of the specific image to be downloaded (e.g. 19432)
@@ -56,7 +59,7 @@ DIST_DIR="./dist"
 CACHE_DIR="./_cache"
 TMP_DIR="./_tmp"
 AIO_DIR="${TMP_DIR}/aio"
-ICON="Smalltalk"
+ICON="Squeak"
 IMAGE="${BASE}.image"
 CHANGES="${BASE}.changes"
 APP="${BASE}.app"
