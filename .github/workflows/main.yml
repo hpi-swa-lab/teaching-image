@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
-        star_track: [true, false]
+        star_track: [false]
     name: Build with StarTrack ${{ matrix.star_track }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -22,12 +22,21 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -U pyobjc
-      - run: bash MAKE.command
+      - name: Build Image
+        run: bash MAKE.command
         timeout-minutes: 20
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: 5.3
           PATCH: 19459
-          LECTURE: SWA
+          LECTURE: SWT
           YEAR: 2022
+      - name: Upload Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          path: |
+            ./dist/*.zip
+            ./dist/*.txz
+            ./dist/*.dmg
