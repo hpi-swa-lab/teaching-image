@@ -182,7 +182,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 ].
 MenuIcons initializeIcons.
 
-Preferences increaseFontSize.
 HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
 Preferences disable: #showSharedFlaps.
 
@@ -205,6 +204,7 @@ Project current in: [:oldProject |
 		"-=-=-=-=-="
 		TheWorldMainDockingBar updateInstances.
 		(UserInterfaceTheme named: 'Squeak') apply.
+		Preferences increaseFontSize.
 		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
 			ReleaseBuilder openWelcomeWorkspacesWith: nil.
