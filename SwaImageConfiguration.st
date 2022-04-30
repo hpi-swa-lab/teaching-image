@@ -182,6 +182,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 ].
 MenuIcons initializeIcons.
 
+Preferences setDemoFonts.
 HostWindowProxy new primitiveWindowSize: 1 x: 1024 y: 768.
 Preferences disable: #showSharedFlaps.
 
