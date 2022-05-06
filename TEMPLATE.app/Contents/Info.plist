@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -345,6 +349,42 @@
 			<string>Viewer</string>
 		</dict>
 	</array>
+	<key>CFBundleExecutable</key>
+	<string>Squeak</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Squeak 5.0, Cog Spur VM 5.0-202204190959-64bit</string>
+	<key>CFBundleShortVersionString</key>
+	<string>5.20220419.0959</string>
+	<key>CFBundleIconFile</key>
+	<string>Squeak.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.squeak.Squeak</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Squeak 5.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>FAST</string>
+	<key>CFBundleVersion</key>
+	<string>5.20220419.0959</string>
+	<key>LSBackgroundOnly</key>
+	<false/>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.9.0</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>SqueakOSXApplication</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSHighResolutionMagnifyAllowed</key>
+	<true/>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires camera access to use the CameraPlugin.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires microphone access to use the SoundPlugin.</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -453,42 +493,6 @@
 			</dict>
 		</dict>
 	</array>
-	<key>CFBundleExecutable</key>
-	<string>Squeak</string>
-	<key>CFBundleGetInfoString</key>
-	<string>Squeak6.0alpha-21731-64bit-202204190959-macOS</string>
-	<key>CFBundleShortVersionString</key>
-	<string>6.0alpha</string>
-	<key>CFBundleIconFile</key>
-	<string>Squeak.icns</string>
-	<key>CFBundleIdentifier</key>
-	<string>org.squeak.squeak6.0alpha-64bit</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>Squeak</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>FAST</string>
-	<key>CFBundleVersion</key>
-	<string>64 bit</string>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>LSBackgroundOnly</key>
-	<false/>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Licensed under the MIT License with parts under the Apache License.</string>
-	<key>NSPrincipalClass</key>
-	<string>SqueakOSXApplication</string>
-	<key>NSSupportsAutomaticGraphicsSwitching</key>
-	<true/>
-	<key>NSHighResolutionCapable</key>
-	<true/>
-	<key>NSHighResolutionMagnifyAllowed</key>
-	<true/>
 	<key>SqueakBrowserMouseCmdButton1</key>
 	<integer>3</integer>
 	<key>SqueakBrowserMouseCmdButton2</key>
@@ -519,12 +523,12 @@
 	<string>UTF-8</string>
 	<key>SqueakExplicitWindowOpenNeeded</key>
 	<false/>
-	<key>SqueakFloatingWindowGetsFocus</key>
-	<true/>
 	<key>SqueakImageName</key>
 	<string>%BASE%.image</string>
+<!-- Uncomment and set this if you want to restrict the maximum heap size
 	<key>SqueakMaxHeapSize</key>
 	<integer>536870912</integer>
+-->
 	<key>SqueakMouseCmdButton1</key>
 	<integer>3</integer>
 	<key>SqueakMouseCmdButton2</key>
@@ -550,21 +554,13 @@
 	<key>SqueakMouseOptionButton3</key>
 	<integer>2</integer>
 	<key>SqueakPluginsBuiltInOrLocalOnly</key>
-	<true/>
+	<false/>
 	<key>SqueakQuitOnQuitAppleEvent</key>
 	<false/>
 	<key>SqueakTrustedDirectory</key>
-	<string>~/Library/Application Support/Squeak/</string>
-	<key>SqueakUIFlushPrimaryDeferNMilliseconds</key>
-	<integer>20</integer>
-	<key>SqueakUIFlushSecondaryCheckForPossibleNeedEveryNMilliseconds</key>
-	<integer>20</integer>
-	<key>SqueakUIFlushSecondaryCleanupDelayMilliseconds</key>
-	<integer>25</integer>
-	<key>SqueakUIFlushUseHighPercisionClock</key>
-	<false/>
+	<string>/foobar/tooBar/forSqueak/bogus/</string>
 	<key>SqueakUnTrustedDirectory</key>
-	<string>~/Documents/Squeak/</string>
+	<string>~/Library/Preferences/Squeak/Internet/My Squeak/</string>
 	<key>SqueakWindowAttribute</key>
 	<data>ggAAHw==</data>
 	<key>SqueakWindowHasTitle</key>
