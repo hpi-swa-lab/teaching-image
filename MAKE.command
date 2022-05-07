@@ -31,8 +31,8 @@ then
 fi
 SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
-SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit-All-in-One"
-SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}.zip"
+SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
+SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
 
 if [ "$STARTRACK" == "true" ]
 then
@@ -98,90 +98,86 @@ if [ \! -d "${CACHE_DIR}" ]; then
     fi
 
     if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
-        $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE}"
+        $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
         curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 fi
+
 if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
-
-    $E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE}"
-    ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
-    check
-
-    $E "[....] $(tput setaf 4)Decompressing sources"
-    gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
-    check
-
-    $E "[....] $(tput setaf 6)Building image "
-    CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
-    chmod -R a+x ./TEMPLATE.app
-    eval ./TEMPLATE.app/Contents/MacOS/Squeak "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
-    check
-
-    if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
-        $E "BUILD FAILED"
-        exit 1
-    fi
 fi
-
-chmod -v a+x set_icon.py
 
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
     $E "[....] $(tput setaf 3)Building all-in-one "
-
-
 
     $E "[....] $(tput setaf 4)Extracting ${SRC_BUNDLE}"
     ditto -xk "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${AIO_DIR}"
     check
 
     # Rename .app folder
-    mv "${AIO_DIR}/${SRC_BUNDLE}.app" "{$AIO_DIR}/{$APP}"
+    mv "${AIO_DIR}/${SRC_BUNDLE}-All-in-One.app" "${AIO_DIR}/${APP}"
+fi
 
-    # Ensure that image file is writeable
-    chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
-    # Copy icon over and set it
-    ditto -v "TEMPLATE.app/Contents/Resources/{ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
-    python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
-    # Copy image, changes and sources over
-    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
-    for template_file in "${AIO_DIR}/${APP}/Contents/Win64/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
-    do
-        $E "Patching ${template_file}"
-        grep -q "${SRC_BUNDLE}.app" $template_file && printf '%s\n' ",s/${SRC_BUNDLE}.app/${APP}/g" w q | ed -s $template_file
-        grep -q "${SRC_IMAGE}.image" $template_file && printf '%s\n' ",s/${SRC_IMAGE}.image/${IMAGE}/g" w q | ed -s $template_file
-    done
-    check
 
-    # Remove code signature of app
-    rm -r "${AIO_DIR}/${APP}/**/_CodeSignature"
+$E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE}"
+ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
+check
 
-    # remove all extended attributes from app bundle
-    xattr -cr "${AIO_DIR}/${APP}" 
+$E "[....] $(tput setaf 4)Decompressing sources"
+gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
+check
 
-    if [[ -f ".encrypted.zip" ]]; then
-        $E "Signing macOS bundles..."
-        unzip -q ".encrypted.zip"
-        KEY_CHAIN=macos-build.keychain
-        security create-keychain -p travis "${KEY_CHAIN}"
-        security default-keychain -s "${KEY_CHAIN}"
-        security unlock-keychain -p travis "${KEY_CHAIN}"
-        security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
-        security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
-        security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
-        security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
+$E "[....] $(tput setaf 6)Building image "
+CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
+chmod -R a+x ./TEMPLATE.app
+eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
+check
 
-        codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
-        # codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
-        # Remove sensitive files again
-        rm -rf ./.encrypted.zip ./encrypted*
-        security delete-keychain "${KEY_CHAIN}"
-    else
-        $E "Skipping codesign on macOS..."
-    fi
+if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
+    $E "BUILD FAILED"
+    exit 1
+fi
+
+chmod -v a+x set_icon.py
+
+
+# Ensure that image file is writeable
+chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
+# Copy icon over and set it
+ditto -v "TEMPLATE.app/Contents/Resources/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
+python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
+# Copy image, changes and sources over
+ditto -v "${TMP_DIR}/${IMAGE}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.image" && \
+ditto -v "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.changes" && \
+check
+
+# Remove code signature of app
+rm -r "${AIO_DIR}/${APP}/"**/_CodeSignature
+
+# remove all extended attributes from app bundle
+xattr -cr "${AIO_DIR}/${APP}" 
+
+if [[ -f ".encrypted.zip" ]]; then
+    $E "Signing macOS bundles..."
+    unzip -q ".encrypted.zip"
+    KEY_CHAIN=macos-build.keychain
+    security create-keychain -p travis "${KEY_CHAIN}"
+    security default-keychain -s "${KEY_CHAIN}"
+    security unlock-keychain -p travis "${KEY_CHAIN}"
+    security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
+    security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
+    security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
+    security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
+
+    codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
+    # codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+    # Remove sensitive files again
+    rm -rf ./.encrypted.zip ./encrypted*
+    security delete-keychain "${KEY_CHAIN}"
+else
+    $E "Skipping codesign on macOS..."
 fi
 
 mkdir -p dist || true
