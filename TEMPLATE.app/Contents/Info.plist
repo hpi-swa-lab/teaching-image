@@ -456,7 +456,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Squeak</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Squeak6.0alpha-21731-64bit-202204190959-macOS</string>
+	<string>Squeak6.0alpha-21736-64bit-202204190959-macOS</string>
 	<key>CFBundleShortVersionString</key>
 	<string>6.0alpha</string>
 	<key>CFBundleIconFile</key>
