@@ -96,6 +96,12 @@ if [ \! -d "${CACHE_DIR}" ]; then
         curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
+
+    if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
+        $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE}"
+        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+        check
+    fi
 fi
 if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
@@ -127,9 +133,6 @@ if [ \! -d "${AIO_DIR}" ]; then
     $E "[....] $(tput setaf 3)Building all-in-one "
 
 
-    $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE}"
-    curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "$SRC_BUNDLE_URL"
-    check
 
     $E "[....] $(tput setaf 4)Extracting ${SRC_BUNDLE}"
     ditto -xk "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${AIO_DIR}"
