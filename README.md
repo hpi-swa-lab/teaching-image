@@ -11,6 +11,8 @@ A repository for scripts to build a teaching image
     - Find available SQUEAK VERSION and PATCH VERSION here: http://files.squeak.org/.
     - There, PATCH version can be found in parent folder name. For example: `/5.3/Squeak5.3-19431-32bit` gets Patch 19431 of Squeak 5.3
     - Don't use `trunk` as version (this is the nightly build, not stable).
+  - `env: BUNDLE_RELEASE={SQUEAK VERSION}`, `env: BUNDLE_PATCH={PATCH VERSION}`
+    - These version numbers are used to get the base All-in-One bundle into which we will insert our own SWT image. This mainly defines which virtual machines are being used.
 - Commit to master with commit message "`Update configuration for {SWA|SWT} {YEAR OF LECTURE}`".
 
 ### 2. Check Image Configuration
