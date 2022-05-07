@@ -21,6 +21,8 @@ function assert_env_variable {
 }
 assert_env_variable "$RELEASE" "RELEASE"
 assert_env_variable "$PATCH" "PATCH"
+assert_env_variable "$BUNDLE_RELEASE" "BUNDLE_RELEASE"
+assert_env_variable "$BUNDLE_PATCH" "BUNDLE_PATCH"
 
 echo "This is a Squeak $RELEASE build (patch: $PATCH)."
 if [ -n "$SUFFIX" ]
@@ -29,6 +31,8 @@ then
 fi
 SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
+SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit-All-in-One"
+SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}.zip"
 
 if [ "$STARTRACK" == "true" ]
 then
@@ -38,12 +42,6 @@ then
 else
     INFIX=""
 fi
-
-# OR Trunk:
-# RELEASE="Trunk"
-# SRC_IMAGE="TrunkImage"
-# SRC_URL="http://build.squeak.org/job/SqueakTrunk/lastSuccessfulBuild/artifact/target/${SRC_IMAGE}.zip"
-
 
 CONFIGURE_SCRIPT="SwaImageConfiguration"
 BASE="${LECTURE}${INFIX}${YEAR}${SUFFIX}"
@@ -98,7 +96,6 @@ if [ \! -d "${CACHE_DIR}" ]; then
         curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
-
 fi
 if [ \! -d "${TMP_DIR}" ]; then
     mkdir "${TMP_DIR}"
@@ -128,22 +125,39 @@ chmod -v a+x set_icon.py
 if [ \! -d "${AIO_DIR}" ]; then
     mkdir "${AIO_DIR}"
     $E "[....] $(tput setaf 3)Building all-in-one "
-    ditto -v  "./squeak.bat.tmpl" "${AIO_DIR}/squeak.bat"    && \
-    ditto -v  "./squeak.sh.tmpl" "${AIO_DIR}/squeak.sh"    && \
-    ditto -v TEMPLATE.app "${AIO_DIR}/${APP}" && \
+
+
+    $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE}"
+    curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "$SRC_BUNDLE_URL"
+    check
+
+    $E "[....] $(tput setaf 4)Extracting ${SRC_BUNDLE}"
+    ditto -xk "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${AIO_DIR}"
+    check
+
+    # Rename .app folder
+    mv "${AIO_DIR}/${SRC_BUNDLE}.app" "{$AIO_DIR}/{$APP}"
+
+    # Ensure that image file is writeable
     chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
+    # Copy icon over and set it
+    ditto -v "TEMPLATE.app/Contents/Resources/{ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
     python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
+    # Copy image, changes and sources over
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${TMP_DIR}/SqueakV50.sources" "${AIO_DIR}/${APP}/Contents/Resources"    && \
     for template_file in "${AIO_DIR}/${APP}/Contents/Win64/Squeak.ini" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/squeak.sh" "${AIO_DIR}/${APP}/Contents/Info.plist";
     do
         $E "Patching ${template_file}"
-        grep -q '%BASE%' $template_file && printf '%s\n' ",s/%BASE%/${BASE}/g" w q | ed -s $template_file
-        grep -q '%NAME%' $template_file && printf '%s\n' ",s/%NAME%/${NAME}/g" w q | ed -s $template_file
-        grep -q '%RELEASE%' $template_file && printf '%s\n' ",s/%RELEASE%/${RELEASE}/g" w q | ed -s $template_file
+        grep -q "${SRC_BUNDLE}.app" $template_file && printf '%s\n' ",s/${SRC_BUNDLE}.app/${APP}/g" w q | ed -s $template_file
+        grep -q "${SRC_IMAGE}.image" $template_file && printf '%s\n' ",s/${SRC_IMAGE}.image/${IMAGE}/g" w q | ed -s $template_file
     done
     check
 
-    xattr -cr "${AIO_DIR}/${APP}" # remove all extended attributes from app bundle
+    # Remove code signature of app
+    rm -r "${AIO_DIR}/${APP}/**/_CodeSignature"
+
+    # remove all extended attributes from app bundle
+    xattr -cr "${AIO_DIR}/${APP}" 
 
     if [[ -f ".encrypted.zip" ]]; then
         $E "Signing macOS bundles..."
@@ -200,8 +214,6 @@ if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
-
-# mv "${BASE}/${APP}" . &&  rm -r "${BASE}"
 
 if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
     ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"

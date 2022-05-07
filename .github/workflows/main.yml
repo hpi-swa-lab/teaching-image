@@ -31,6 +31,8 @@ jobs:
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: 5.3
           PATCH: 19459
+          BUNDLE_RELEASE: 6.0alpha
+          BUNDLE_PATCH: 21736
           LECTURE: SWT
           YEAR: 2022
       - name: Upload Image
