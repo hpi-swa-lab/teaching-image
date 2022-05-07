@@ -131,7 +131,6 @@ check
 
 $E "[....] $(tput setaf 6)Building image "
 CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
-chmod -R a+x ./TEMPLATE.app
 eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
 check
 
@@ -146,7 +145,7 @@ chmod -v a+x set_icon.py
 # Ensure that image file is writeable
 chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
 # Copy icon over and set it
-ditto -v "TEMPLATE.app/Contents/Resources/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
+ditto -v "icons/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
 python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
 # Copy image, changes and sources over
 ditto -v "${TMP_DIR}/${IMAGE}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.image" && \
@@ -203,13 +202,13 @@ if [ \! -f "${DIST_DIR}/${DMG}" ]; then
     DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
     VOLUME="$(mount | grep "$DEVICE" | sed 's/^[^ ]* on //;s/ ([^)]*)$//')" && \
     rm -f "${VOLUME}/squeak.bat" "${VOLUME}/squeak.sh" && \
-    cp "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${VOLUME}/.VolumeIcon.icns" && \
+    cp "./icons/${ICON}.icns" "${VOLUME}/.VolumeIcon.icns" && \
     SetFile -c icnC "${VOLUME}/.VolumeIcon.icns" && \
     SetFile -a C "${VOLUME}" && \
     hdiutil detach "$DEVICE" && \
     hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
     chmod -v a+rwx "${DIST_DIR}/${DMG}" && \
-    python set_icon.py "./TEMPLATE.app/Contents/Resources/${ICON}.icns" "${DIST_DIR}/${DMG}"
+    python set_icon.py "./icons/${ICON}.icns" "${DIST_DIR}/${DMG}"
     rm "${TMP_DIR}/${DMG}" && \
     check
 fi
