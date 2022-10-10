@@ -31,8 +31,8 @@ jobs:
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: '6.0'
           PATCH: 22104
-          BUNDLE_RELEASE: 6.0alpha
-          BUNDLE_PATCH: 21736
+          BUNDLE_RELEASE: '6.0'
+          BUNDLE_PATCH: 22104
           LECTURE: SWA
           YEAR: 2022
       - name: Upload Image
