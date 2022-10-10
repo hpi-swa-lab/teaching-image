@@ -116,11 +116,11 @@ Smalltalk garbageCollect.
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "Vivide needs to be loaded after UI-Theme reset (via Smalltalk cleanUp: true)"
-[(Smalltalk at: #Metacello) new
+"[(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/Vivide:master-squot/repository';
 	baseline: 'Vivide';
 	load.
-] on: AssertionFailure do: [:e | e resume].
+] on: AssertionFailure do: [:e | e resume]."
 
 "-=-=-=-=-="
 
