@@ -127,7 +127,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
-(Smalltalk at: #ECPreferences) useECompletionInsteadOfOCompletion: true.
 
 "-=-=-=-=-="
 	
