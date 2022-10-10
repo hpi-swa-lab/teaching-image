@@ -131,14 +131,14 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
 	repository: 'github://MrModder/Autocompletion:master/packages';
 	baseline: 'Autocompletion';
 	load.
 
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
-(Smalltalk at: #ECPreferences) useECompletionInsteadOfOCompletion: true.
+(Smalltalk at: #ECPreferences) useECompletionInsteadOfOCompletion: true."
 
 "-=-=-=-=-="
 	
