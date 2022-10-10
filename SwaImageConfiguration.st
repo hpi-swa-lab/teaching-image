@@ -30,10 +30,6 @@ base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 Installer ensureRecentMetacello.
 
 "-=-=-=-=-="
-Preferences removeAllPreferencesSuchThat: [:ea | ea provider == (Smalltalk at: #MCGitBasedNetworkRepository)].
-"-=-=-=-=-="
-
-"-=-=-=-=-="
 Installer squeakTrunk install: 'Help-Squeak-CorePackages'.
 
 Utilities setAuthorInitials: 'hpi'. "changed at end"
@@ -115,13 +111,6 @@ Smalltalk garbageCollect.
 
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
-"Vivide needs to be loaded after UI-Theme reset (via Smalltalk cleanUp: true)"
-"[(Smalltalk at: #Metacello) new
-	repository: 'github://hpi-swa/Vivide:master-squot/repository';
-	baseline: 'Vivide';
-	load.
-] on: AssertionFailure do: [:e | e resume]."
-
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
@@ -131,14 +120,14 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-"(Smalltalk at: #Metacello) new
+(Smalltalk at: #Metacello) new
 	repository: 'github://MrModder/Autocompletion:master/packages';
 	baseline: 'Autocompletion';
 	load.
 
 (Smalltalk at: #ECPreferences) perform: #smartCharacters: with: false.
 (Smalltalk at: #ECPreferences) matchSubStrings: true.
-(Smalltalk at: #ECPreferences) useECompletionInsteadOfOCompletion: true."
+(Smalltalk at: #ECPreferences) useECompletionInsteadOfOCompletion: true.
 
 "-=-=-=-=-="
 	
