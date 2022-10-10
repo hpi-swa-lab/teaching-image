@@ -57,12 +57,28 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
-"Install Squot. Merge develop at semester start for latest fixes"
+"Install Squot SWA UI."
 [(Smalltalk at: #Metacello) new
   baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:master/src';
+  repository: 'github://hpi-swa/Squot:swa-ui/src';
   load.
 ] on: Warning do: [:e | e resume].
+	
+"-=-=-=-=-="
+
+"The tools menu in the docking bar should use the swa git ui"
+(Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
+	
+	(Smalltalk hasClassNamed: #SquitBrowser)
+		ifFalse: [ (UIManager default
+					confirm: ''The Git infrastructure and browser is not yet installed.\\Do you want to install the Git Browser?\\(Note that this step requires an internet connection and\may take several minutes.)'' withCRs translated
+					title: ''Confirm Installation Request'' )
+			ifTrue: [ Installer
+						ensureRecentMetacello;
+						installGitInfrastructure.
+					TheWorldMainDockingBar updateInstances ]
+			ifFalse: [ ^self ] ].
+	(Smalltalk classNamed: #SwaSquitBrowser) open.'.
 	
 "-=-=-=-=-="
 
