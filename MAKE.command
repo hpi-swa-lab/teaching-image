@@ -33,6 +33,7 @@ SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
 SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
 SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
+SRC_APP="${SRC_BUNDLE}-All-in-One.app"
 
 if [ "$STARTRACK" == "true" ]
 then
@@ -117,7 +118,7 @@ if [ \! -d "${AIO_DIR}" ]; then
     check
 
     # Rename .app folder
-    mv "${AIO_DIR}/${SRC_BUNDLE}-All-in-One.app" "${AIO_DIR}/${APP}"
+    mv "${AIO_DIR}/${SRC_APP}" "${AIO_DIR}/${APP}"
 fi
 
 
@@ -151,6 +152,13 @@ python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DI
 ditto -v "${TMP_DIR}/${IMAGE}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.image" && \
 ditto -v "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.changes" && \
 check
+
+for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat";
+do
+  $E "Patching ${aio_file}"
+  grep -q "${SRC_APP}" $aio_file && printf '%s\n' ",s/${SRC_APP}/${APP}/g" w q | ed -s $aio_file
+  grep -q "${SRC_BUNDLE}" $aio_file && printf '%s\n' ",s/${SRC_BUNDLE}/${BASE}/g" w q | ed -s $aio_file
+done
 
 # Remove code signature of app
 rm -r "${AIO_DIR}/${APP}/"**/_CodeSignature
