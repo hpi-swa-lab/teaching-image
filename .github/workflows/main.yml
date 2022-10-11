@@ -30,7 +30,7 @@ jobs:
           TERM: xterm
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: '6.0'
-          PATCH: 22101
+          PATCH: 22104
           BUNDLE_RELEASE: '6.0'
           BUNDLE_PATCH: 22104
           LECTURE: SWA
