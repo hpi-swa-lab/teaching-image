@@ -136,6 +136,20 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	load: 'swa'.
 	
 "-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://hpi-swa/signals:master/repository';
+	baseline: 'Signals';
+	load.
+	
+"-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://hpi-swa/animations:master/repository';
+	baseline: 'Animations';
+	load.
+
+"-=-=-=-=-="
 	
 (Smalltalk at: #Metacello) new
 	baseline: 'MorphicTutorial';
