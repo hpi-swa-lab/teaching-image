@@ -29,11 +29,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TERM: xterm-256
           STARTRACK: ${{ matrix.star_track }}
-          RELEASE: 5.3
-          PATCH: 19459
-          BUNDLE_RELEASE: 6.0alpha
-          BUNDLE_PATCH: 21736
-          LECTURE: SWT
+          RELEASE: '6.0'
+          PATCH: 22101
+          BUNDLE_RELEASE: '6.0'
+          BUNDLE_PATCH: 22104
+          LECTURE: SWA
           YEAR: 2022
       - name: Upload Image
         uses: actions/upload-artifact@v3
