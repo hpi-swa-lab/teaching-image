@@ -90,6 +90,13 @@ if [ \! -d "${CACHE_DIR}" ]; then
         $E "[....] $(tput setaf 4)Fetching ${SRC_IMAGE}"
         curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL"
         check
+        
+        # Ensure we download the bundle even if it is the same version as the release
+        if [ "${SRC_IMAGE}" == "${SRC_BUNDLE}" ]; then
+            $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
+            curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+            check
+        fi
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
