@@ -190,27 +190,8 @@ if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
     check
 fi
 
-if [ \! -f "${DIST_DIR}/${DMG}" ]; then
-    $E "[....] $(tput setaf 3)Creating Disk Image ${DMG} "
-    hdiutil create -size 256m -volname "${BASE}" -srcfolder "${AIO_DIR}" \
-        -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}" && \
-    DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
-    VOLUME="$(mount | grep "$DEVICE" | sed 's/^[^ ]* on //;s/ ([^)]*)$//')" && \
-    rm -f "${VOLUME}/squeak.bat" "${VOLUME}/squeak.sh" && \
-    cp "./icons/${ICON}.icns" "${VOLUME}/.VolumeIcon.icns" && \
-    SetFile -c icnC "${VOLUME}/.VolumeIcon.icns" && \
-    SetFile -a C "${VOLUME}" && \
-    hdiutil detach "$DEVICE" && \
-    hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
-    chmod -v a+rwx "${DIST_DIR}/${DMG}" && \
-    python set_icon.py "./icons/${ICON}.icns" "${DIST_DIR}/${DMG}"
-    rm "${TMP_DIR}/${DMG}" && \
-    check
-fi
-
 curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
 curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && $E ".txz uploaded."
 
 $E "Files are in the $(tput setaf 9)dist/ directory"
 
