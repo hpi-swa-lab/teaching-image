@@ -179,8 +179,8 @@ Smalltalk fixObsoleteReferences.
 
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
-#(('../HPIicon.png' 'smallFullscreenOnIcon') ('../HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
-	FileStream fileNamed: (info first) do: [:f | |writer |
+#(('/HPIicon.png' 'smallFullscreenOnIcon') ('/HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
+	FileStream fileNamed: (progdir , info first) do: [:f | |writer |
 		writer := PNGReadWriter on: f.
 		image := [writer nextImage] ensure: [writer close]].
 	"store string representation"
