@@ -141,7 +141,7 @@ chmod -v a+x set_icon.py
 python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${AIO_IMAGE}" && \
 check
 
-for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat";
+for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/${APP}/Contents/Info.plist";
 do
   $E "Patching ${aio_file}"
   grep -q "${SRC_APP}" $aio_file && printf '%s\n' ",s/${SRC_APP}/${APP}/g" w q | ed -s $aio_file
