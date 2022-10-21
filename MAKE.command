@@ -54,7 +54,7 @@ TMP_DIR="./_tmp"
 AIO_DIR="${TMP_DIR}/aio"
 ICON="Squeak"
 IMAGE="${BASE}.image"
-AIO_IMAGE="${TMP_DIR}/aio/${APP}/Contents/Resources/${IMAGE}.image"
+AIO_IMAGE="${TMP_DIR}/aio/${APP}/Contents/Resources/${SRC_BUNDLE}.image"
 APP="${BASE}.app"
 DMG="${BASE}.dmg"
 LOG="_${BASE}.log"
@@ -126,8 +126,6 @@ eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "-- '${PROGDIR}/${CONFIG}' ${SQUE
 check
 
 $E "[....] $(tput setaf 6)Cleaning up old files remaining after building and renaming the image"
-rm "${AIO_DIR}/${APP}"/Contents/Resources/Squeak*.image
-rm "${AIO_DIR}/${APP}"/Contents/Resources/Squeak*.changes
 rm -r "${AIO_DIR}/${APP}"/Contents/Resources/github-cache
 check
 
@@ -145,7 +143,6 @@ for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/${APP
 do
   $E "Patching ${aio_file}"
   grep -q "${SRC_APP}" $aio_file && printf '%s\n' ",s/${SRC_APP}/${APP}/g" w q | ed -s $aio_file
-  grep -q "${SRC_BUNDLE}" $aio_file && printf '%s\n' ",s/${SRC_BUNDLE}/${BASE}/g" w q | ed -s $aio_file
 done
 
 # Remove code signature of app

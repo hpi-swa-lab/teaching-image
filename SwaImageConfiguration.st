@@ -221,13 +221,12 @@ Project current in: [:oldProject |
 		TheWorldMainDockingBar updateInstances.
 		(UserInterfaceTheme named: 'Squeak') apply.
 		Preferences increaseFontSize.
-		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
-			"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
-			"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
-			TheWorldMainDockingBar instance closeAllWindows.
 			ReleaseBuilder openWelcomeWorkspacesWith: nil.
 			PreferenceWizardMorph open].
+		"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
+		"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
+		TheWorldMainDockingBar instance closeAllWindows.
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.
