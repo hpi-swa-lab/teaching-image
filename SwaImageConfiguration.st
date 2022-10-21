@@ -136,6 +136,20 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	load: 'swa'.
 	
 "-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://hpi-swa/signals:master/repository';
+	baseline: 'Signals';
+	load.
+	
+"-=-=-=-=-="
+
+(Smalltalk at: #Metacello) new
+	repository: 'github://hpi-swa/animations:master/repository';
+	baseline: 'Animations';
+	load.
+
+"-=-=-=-=-="
 	
 (Smalltalk at: #Metacello) new
 	baseline: 'MorphicTutorial';
@@ -165,8 +179,8 @@ Smalltalk fixObsoleteReferences.
 
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
-#(('../HPIicon.png' 'smallFullscreenOnIcon') ('../HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
-	FileStream fileNamed: (info first) do: [:f | |writer |
+#(('/HPIicon.png' 'smallFullscreenOnIcon') ('/HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
+	FileStream fileNamed: (progdir , info first) do: [:f | |writer |
 		writer := PNGReadWriter on: f.
 		image := [writer nextImage] ensure: [writer close]].
 	"store string representation"
@@ -192,8 +206,6 @@ Preferences disable: #showSharedFlaps.
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
 
-(World findA: PreferenceWizardMorph) ifNotNil: [:m | m perform: #showSqueak].
-
 "-=-=-=-=-="
 Project current in: [:oldProject | 
 	WorldState addDeferredUIMessage: [
@@ -209,10 +221,12 @@ Project current in: [:oldProject |
 		TheWorldMainDockingBar updateInstances.
 		(UserInterfaceTheme named: 'Squeak') apply.
 		Preferences increaseFontSize.
-		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
 			ReleaseBuilder openWelcomeWorkspacesWith: nil.
 			PreferenceWizardMorph open].
+		"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
+		"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
+		TheWorldMainDockingBar instance closeAllWindows.
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.

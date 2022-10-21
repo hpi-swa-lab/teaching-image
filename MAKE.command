@@ -1,6 +1,5 @@
 #!/bin/bash
 
-PROGRAM="$(echo $0 | sed 's%.*/%%')"
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
 # This string is later passed as arguments to the smalltalk configuration scripts
@@ -29,8 +28,6 @@ if [ -n "$SUFFIX" ]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
-SRC_IMAGE="Squeak${RELEASE}-${PATCH}-64bit"
-SRC_URL="http://files.squeak.org/${RELEASE}/${SRC_IMAGE}/${SRC_IMAGE}.zip"
 SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
 SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
 SRC_APP="${SRC_BUNDLE}-All-in-One.app"
@@ -57,7 +54,7 @@ TMP_DIR="./_tmp"
 AIO_DIR="${TMP_DIR}/aio"
 ICON="Squeak"
 IMAGE="${BASE}.image"
-CHANGES="${BASE}.changes"
+AIO_IMAGE="${TMP_DIR}/aio/${APP}/Contents/Resources/${SRC_BUNDLE}.image"
 APP="${BASE}.app"
 DMG="${BASE}.dmg"
 LOG="_${BASE}.log"
@@ -76,7 +73,7 @@ check() {
         ann "[$(tput setaf 2) OK ]"
     else
         ann "[$(tput setaf 9)FAIL]"
-        tail $LOG
+        tail "${LOG}"
         exit $EX
     fi
 }
@@ -86,9 +83,11 @@ $E "Start at $(date)"
 if [ \! -d "${CACHE_DIR}" ]; then
     mkdir "${CACHE_DIR}"
 
-    if [ \! -f "${CACHE_DIR}/${SRC_IMAGE}.zip" ]; then
-        $E "[....] $(tput setaf 4)Fetching ${SRC_IMAGE}"
-        curl -o "${CACHE_DIR}/${SRC_IMAGE}.zip" "$SRC_URL"
+        
+    # Ensure we download the bundle even if it is the same version as the release
+    if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
+        $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
+        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 
@@ -121,43 +120,29 @@ if [ \! -d "${AIO_DIR}" ]; then
     mv "${AIO_DIR}/${SRC_APP}" "${AIO_DIR}/${APP}"
 fi
 
-
-$E "[....] $(tput setaf 4)Extracting ${SRC_IMAGE}"
-ditto -xk "${CACHE_DIR}/${SRC_IMAGE}.zip" "${TMP_DIR}/"
-check
-
-$E "[....] $(tput setaf 4)Decompressing sources"
-gunzip -c "${CACHE_DIR}/SqueakV50.sources.gz" > "${TMP_DIR}/SqueakV50.sources"
-check
-
 $E "[....] $(tput setaf 6)Building image "
 CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
-eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "'${TMP_DIR}/${SRC_IMAGE}.image' '../${CONFIG}'${SQUEAK_ARGUMENTS}"
+eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "-- '${PROGDIR}/${CONFIG}' ${SQUEAK_ARGUMENTS}"
 check
 
-if [ \! -f "${TMP_DIR}/${IMAGE}" ]; then
-    $E "BUILD FAILED"
-    exit 1
-fi
+$E "[....] $(tput setaf 6)Cleaning up old files remaining after building and renaming the image"
+rm -r "${AIO_DIR}/${APP}"/Contents/Resources/github-cache
+check
 
-chmod -v a+x set_icon.py
-
+$E "[....] $(tput setaf 6)Preparing AIO files (icons, paths, etc.)"
 
 # Ensure that image file is writeable
-chmod -v a+rwx "${TMP_DIR}/${IMAGE}" && \
+chmod -v a+rwx "${AIO_IMAGE}" && \
 # Copy icon over and set it
 ditto -v "icons/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
-python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${TMP_DIR}/${IMAGE}" && \
-# Copy image, changes and sources over
-ditto -v "${TMP_DIR}/${IMAGE}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.image" && \
-ditto -v "${TMP_DIR}/${CHANGES}" "${AIO_DIR}/${APP}/Contents/Resources/${SRC_BUNDLE}.changes" && \
+chmod -v a+x set_icon.py
+python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${AIO_IMAGE}" && \
 check
 
-for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat";
+for aio_file in "${AIO_DIR}/squeak.sh" "${AIO_DIR}/squeak.bat" "${AIO_DIR}/${APP}/Contents/Info.plist";
 do
   $E "Patching ${aio_file}"
   grep -q "${SRC_APP}" $aio_file && printf '%s\n' ",s/${SRC_APP}/${APP}/g" w q | ed -s $aio_file
-  grep -q "${SRC_BUNDLE}" $aio_file && printf '%s\n' ",s/${SRC_BUNDLE}/${BASE}/g" w q | ed -s $aio_file
 done
 
 # Remove code signature of app
@@ -203,31 +188,8 @@ if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
     check
 fi
 
-if [ \! -f "${DIST_DIR}/${DMG}" ]; then
-    $E "[....] $(tput setaf 3)Creating Disk Image ${DMG} "
-    hdiutil create -size 256m -volname "${BASE}" -srcfolder "${AIO_DIR}" \
-        -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -nospotlight "${TMP_DIR}/${DMG}" && \
-    DEVICE="$(hdiutil attach -readwrite -noautoopen -nobrowse "${TMP_DIR}/${DMG}" | awk 'NR==1{print$1}')" && \
-    VOLUME="$(mount | grep "$DEVICE" | sed 's/^[^ ]* on //;s/ ([^)]*)$//')" && \
-    rm -f "${VOLUME}/squeak.bat" "${VOLUME}/squeak.sh" && \
-    cp "./icons/${ICON}.icns" "${VOLUME}/.VolumeIcon.icns" && \
-    SetFile -c icnC "${VOLUME}/.VolumeIcon.icns" && \
-    SetFile -a C "${VOLUME}" && \
-    hdiutil detach "$DEVICE" && \
-    hdiutil convert "${TMP_DIR}/${DMG}" -format UDBZ -imagekey bzip2-level=9 -o "${DIST_DIR}/${DMG}" && \
-    chmod -v a+rwx "${DIST_DIR}/${DMG}" && \
-    python set_icon.py "./icons/${ICON}.icns" "${DIST_DIR}/${DMG}"
-    rm "${TMP_DIR}/${DMG}" && \
-    check
-fi
-
-if [ \! -f "${DIST_DIR}/${IMAGE}" ]; then
-    ditto -v "${TMP_DIR}/${IMAGE}" "${TMP_DIR}/${CHANGES}" "${AIO_DIR}" "${DIST_DIR}"
-fi
-
 curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
 curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${DMG}" "${DEPLOY_TARGET}" && $E ".txz uploaded."
 
 $E "Files are in the $(tput setaf 9)dist/ directory"
 
