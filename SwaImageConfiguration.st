@@ -202,11 +202,11 @@ MenuIcons initializeIcons.
 
 HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
 Preferences disable: #showSharedFlaps.
+"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
+TheWorldMainDockingBar instance closeAllWindows.
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
-
-(World findA: PreferenceWizardMorph) ifNotNil: [:m | m perform: #showSqueak].
 
 "-=-=-=-=-="
 Project current in: [:oldProject | 
