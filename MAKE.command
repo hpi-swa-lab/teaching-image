@@ -125,9 +125,10 @@ CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
 eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "-- '${PROGDIR}/${CONFIG}' ${SQUEAK_ARGUMENTS}"
 check
 
-$E "[....] $(tput setaf 6)Cleaning up old image and changes file"
+$E "[....] $(tput setaf 6)Cleaning up old files remaining after building and renaming the image"
 rm "${AIO_DIR}/${APP}"/Contents/Resources/Squeak*.image
 rm "${AIO_DIR}/${APP}"/Contents/Resources/Squeak*.changes
+rm -r "${AIO_DIR}/${APP}"/Contents/Resources/github-cache
 check
 
 $E "[....] $(tput setaf 6)Preparing AIO files (icons, paths, etc.)"
