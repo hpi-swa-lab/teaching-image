@@ -202,8 +202,6 @@ MenuIcons initializeIcons.
 
 HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
 Preferences disable: #showSharedFlaps.
-"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
-TheWorldMainDockingBar instance closeAllWindows.
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
@@ -225,6 +223,9 @@ Project current in: [:oldProject |
 		Preferences increaseFontSize.
 		Smalltalk saveAs: base, '.image'.
 		WorldState addDeferredUIMessage: [
+			"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
+			"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
+			TheWorldMainDockingBar instance closeAllWindows.
 			ReleaseBuilder openWelcomeWorkspacesWith: nil.
 			PreferenceWizardMorph open].
 		Smalltalk snapshot: true andQuit: true.
