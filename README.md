@@ -13,6 +13,7 @@ A repository for scripts to build a teaching image
     - Don't use `trunk` as version (this is the nightly build, not stable).
   - `env: BUNDLE_RELEASE={SQUEAK VERSION}`, `env: BUNDLE_PATCH={PATCH VERSION}`
     - These version numbers are used to get the base All-in-One bundle into which we will insert our own SWT image. This mainly defines which virtual machines are being used.
+- Make sure to include/revert lecture specific scripts
 - Commit to master with commit message "`Update configuration for {SWA|SWT} {YEAR OF LECTURE}`".
 
 ### 2. Check Image Configuration
