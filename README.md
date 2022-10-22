@@ -25,7 +25,7 @@ A repository for scripts to build a teaching image
 ### 3. Build Image
 - A new build is generated on each commit on any branch (using GitHub workflows).
 - The build process takes around 20 minutes.
-- Once the build process has finished, the image can be obtained here: https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/?C=M;O=D.
+- Once the build process has finished, the image can be obtained here on GitHub, previously on https://www.hpi.uni-potsdam.de/hirschfeld/artefacts/lecture-image/?C=M;O=D.
   - The page only offers the image of the latest successful build. Older versions are overwritten.
   - An image is available as `.txz` and `.zip` and two versions: with and without `-` (like `SWT2020.*` and `SWT-2020.*`).
   - The builds with `-` in their name are the images with StarTrack enabled (StarTrack collects data for the user study).
