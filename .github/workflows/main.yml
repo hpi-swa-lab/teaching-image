@@ -35,7 +35,7 @@ jobs:
           BUNDLE_RELEASE: '6.0'
           BUNDLE_PATCH: 22104
           LECTURE: SWA
-          YEAR: 2022
+          YEAR: 2023
       - name: Upload Image
         uses: actions/upload-artifact@v3
         with:
