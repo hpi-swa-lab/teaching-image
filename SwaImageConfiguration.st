@@ -54,16 +54,16 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 
 "Install Squot SWA UI."
-[(Smalltalk at: #Metacello) new
+"[(Smalltalk at: #Metacello) new
   baseline: 'Squot';
   repository: 'github://hpi-swa/Squot:swa-ui/src';
   load.
-] on: Warning do: [:e | e resume].
-	
-"-=-=-=-=-="
+] on: Warning do: [:e | e resume]."
 
+
+	
 "The tools menu in the docking bar should use the swa git ui"
-(Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
+"(Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
 	
 	(Smalltalk hasClassNamed: #SquitBrowser)
 		ifFalse: [ (UIManager default
@@ -74,7 +74,15 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 						installGitInfrastructure.
 					TheWorldMainDockingBar updateInstances ]
 			ifFalse: [ ^self ] ].
-	(Smalltalk classNamed: #SwaSquitBrowser) open.'.
+	(Smalltalk classNamed: #SwaSquitBrowser) open.'."
+
+"-=-=-=-=-="
+	
+"Install new Git Client made by Marius and Tom for WiSe 23/24"
+Metacello new
+  baseline: 'Squot';
+  repository: 'github://hpi-swa/Squot:mapper/src';
+  load.
 	
 "-=-=-=-=-="
 
