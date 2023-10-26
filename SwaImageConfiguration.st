@@ -166,8 +166,8 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	
 "-=-=-=-=-="
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
-tmpCode := 'filterEvent: aKeyboardEvent for: anObject
-	"Provide keyboard shortcuts."
+"tmpCode := 'filterEvent: aKeyboardEvent for: anObject
+	""Provide keyboard shortcuts.""
 
 	aKeyboardEvent isKeystroke
 		ifFalse: [^ aKeyboardEvent].
@@ -186,18 +186,18 @@ tmpCode := 'filterEvent: aKeyboardEvent for: anObject
 	aKeyboardEvent controlKeyPressed ifTrue: [
 		aKeyboardEvent keyCharacter caseOf: {
 			[Character escape] -> [self world findWindow: aKeyboardEvent].
-		} otherwise: [^ aKeyboardEvent "no hit"].
-		^ aKeyboardEvent ignore "hit!"].
+		} otherwise: [^ aKeyboardEvent ""no hit""].
+		^ aKeyboardEvent ignore ""hit!""].
 
 	^ aKeyboardEvent "no hit"'.
 
-SystemWindow compile: tmpCode.
+SystemWindow compile: tmpCode."
 
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
 	
-"tmpCode := 'initializePage99ExtraPackages
-	""Let the user install extra packages.""
+tmpCode := 'initializePage99ExtraPackages
+	"Let the user install extra packages."
 
 	| currentPage packagesList installButton |
 	currentPage := self createPage.
@@ -251,7 +251,7 @@ SystemWindow compile: tmpCode.
 	
 	^ currentPage'.
 
-PreferenceWizardMorph compile: tmpCode."
+PreferenceWizardMorph compile: tmpCode.
 	
 "-=-=-=-=-="
 
