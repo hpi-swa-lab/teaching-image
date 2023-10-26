@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base options tmpCode|
+|progdir base options|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -166,8 +166,9 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	
 "-=-=-=-=-="
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
-"tmpCode := 'filterEvent: aKeyboardEvent for: anObject
-	""Provide keyboard shortcuts.""
+
+SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
+	"Provide keyboard shortcuts."
 
 	aKeyboardEvent isKeystroke
 		ifFalse: [^ aKeyboardEvent].
@@ -187,16 +188,14 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 		aKeyboardEvent keyCharacter caseOf: {
 			[Character escape] -> [self world findWindow: aKeyboardEvent].
 		} otherwise: [^ aKeyboardEvent ""no hit""].
-		^ aKeyboardEvent ignore ""hit!""].
+		^ aKeyboardEvent ignore "hit!"].
 
 	^ aKeyboardEvent "no hit"'.
-
-SystemWindow compile: tmpCode."
 
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
 	
-tmpCode := 'initializePage99ExtraPackages
+PreferenceWizardMorph compile: 'initializePage99ExtraPackages
 	"Let the user install extra packages."
 
 	| currentPage packagesList installButton |
@@ -251,7 +250,6 @@ tmpCode := 'initializePage99ExtraPackages
 	
 	^ currentPage'.
 
-PreferenceWizardMorph compile: tmpCode.
 	
 "-=-=-=-=-="
 
