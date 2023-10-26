@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base options|
+|progdir base options tmpCode|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -163,6 +163,96 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	baseline: 'MorphicTutorial';
 	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
 	load.
+	
+"-=-=-=-=-="
+"w shortcut to delete windows - experimental for SWA WiSe 23/24"
+tmpCode := 'filterEvent: aKeyboardEvent for: anObject
+	"Provide keyboard shortcuts."
+
+	aKeyboardEvent isKeystroke
+		ifFalse: [^ aKeyboardEvent].
+
+	aKeyboardEvent hand halo ifNotNil: [ : halo | halo target isSystemWindow ifTrue: [ aKeyboardEvent hand removeHalo ] ].
+	
+	aKeyboardEvent commandKeyPressed ifTrue: [
+		aKeyboardEvent keyCharacter caseOf: { 
+			[$\] -> [self class sendTopWindowToBack].
+			[Character escape] -> [self class deleteTopWindow].
+			[$w] -> [self class deleteTopWindow].
+			[$/] -> [self class bringWindowUnderHandToFront].
+		} otherwise: [^ aKeyboardEvent "no hit"].
+		^ aKeyboardEvent ignore "hit!"].
+	
+	aKeyboardEvent controlKeyPressed ifTrue: [
+		aKeyboardEvent keyCharacter caseOf: {
+			[Character escape] -> [self world findWindow: aKeyboardEvent].
+		} otherwise: [^ aKeyboardEvent "no hit"].
+		^ aKeyboardEvent ignore "hit!"].
+
+	^ aKeyboardEvent "no hit"'.
+
+SystemWindow compile: code.
+
+"-=-=-=-=-="
+"Remove Git Updates from PreferenceWizard as we use a special git version"
+	
+tmpCode := 'initializePage99ExtraPackages
+	"Let the user install extra packages."
+
+	| currentPage packagesList installButton |
+	currentPage := self createPage.
+	currentPage
+		cellPositioning: #topCenter;
+		addMorphBack: self createHorizontalSpacer;
+		addMorphBack: ((self createLabel: ''Do you want to install extra packages?'' translated color: Color white)
+			hResizing: #shrinkWrap;
+			averageLineLength: 65;
+			yourself);
+		addMorphBack: ((self createLabel: ''Note that the installation process requires a network connection with Internet access and might take several minutes.'' translated color: (Color gray: 0.9))
+			hResizing: #shrinkWrap;
+			averageLineLength: 65;
+			yourself).
+	
+	currentPage submorphs last text addAttribute: TextAlignment centered.
+	currentPage submorphs last layoutChanged.
+	
+	currentPage addMorphBack: (self createVerticalSpace height: self layoutInset).
+	
+	packagesList := self createScrollPane.
+	packagesList
+		width: (self defaultTextStyle compositionWidthFor: 65);
+		hResizing: #rigid;
+		vResizing: #spaceFill.
+
+	packagesList scroller firstSubmorph addAllMorphsBack: {
+		self createCheckbox: ''Latest system updates'' translated for: #InstallLatestUpdates help: ''Install the latest patches for '' translated, SystemVersion current version.
+		self createCheckbox: ''Refactoring support in code browsers'' translated for: #InstallRefactoringTools help: ''Refactoring is a process of re-writing or re-organizing text or code. The purpose of a refactor is to make the code or text more understandable and readable while exactly preserving its meaning and behavior'' translated.
+		self createCheckbox: ''Autocomplete in code editors'' translated for: #InstallAutoComplete help: ''Package that provides interactive, context-sensitive auto-completion for Squeak'' translated.
+		self createCheckbox: ''Foreign function interface (FFI)'' translated for: #InstallFFI help: ''FFI, the Squeak Foreign Function Interface, is used to call functions located in shared libraries that are not part of the Squeak VM nor its plugins'' translated.
+		self createCheckbox: ''Access OS functions'' translated for: #InstallOSProcess help: ''OSProcess provides access to operating system functions, including pipes and child process creation'' translated.
+		self createCheckbox: ''Integrate Squeak''''s mailing lists'' translated for: #InstallSqueakInboxTalk help: ''Through Squeak Inbox Talk, you can engage with our community from within Squeak using tools that integrate our mailing lists such as squeak-dev and vm-dev'' translated.
+		"self createCheckbox: ''Compatibility packages for legacy apps'' translated for: #InstallCompatibilityPackages help: ''Install protocols (i.e., classes and methods) that got deprecated for this version to make older applications work without changes.'' translated."
+	}.
+		
+	currentPage addMorphBack: packagesList.
+
+	currentPage addMorphBack: ((self createLabel: ''Find more on www.squeak.org/projects'' color: (Color gray: 0.9))
+		hResizing: #shrinkWrap; yourself).
+	
+	installButton := self createButton
+		action: #installExtraPackagesVia:;
+		label: ''Yes, install selected packages.'' translated;
+		yourself.
+	installButton
+		setProperty: #label toValue: installButton label;
+		arguments: {installButton}.
+	
+	currentPage addMorphBack: installButton.
+	currentPage addMorphBack: (self createButton action: #showSqueak; label: ''No, maybe later.'' translated).
+	
+	^ currentPage'.
+
+PreferenceWizardMorph compile: tmpCode.
 	
 "-=-=-=-=-="
 
