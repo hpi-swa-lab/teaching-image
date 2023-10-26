@@ -164,84 +164,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
 	load.
 
-
-"-=-=-=-=-="
-
-(options includes: '-startrack') ifTrue:
-	[(Smalltalk at: #Metacello) new
-		baseline: 'StarTrack';
-		repository: 'github://hpi-swa-lab/learning-liveness/packages';
-		load: 'client'].
-
-
-"-=-=-=-=-="
-
-MCFileBasedRepository flushAllCaches.
-MCCacheRepository instVarNamed: 'default' put: nil.
-ChangeSet current clear.
-ChangeSet current name: 'Unnamed1'.
-Smalltalk garbageCollect.
-MCCacheRepository cacheDirectory recursiveDelete.
-Smalltalk fixObsoleteReferences.
-
-"-=-=-=-=-="
-
-Utilities setAuthorInitials: 'hpi'. "changed at end"
-
-#(('/HPIicon.png' 'smallFullscreenOnIcon') ('/HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
-	FileStream fileNamed: (progdir , info first) do: [:f | |writer |
-		writer := PNGReadWriter on: f.
-		image := [writer nextImage] ensure: [writer close]].
-	"store string representation"
-	stream := String new writeStream.
-	stream
-		nextPutAll: info last, 'Contents' ; cr;
-		nextPutAll: (MenuIcons methodStart: (info last)).
-	image storeOn: stream.
-	stream nextPutAll: MenuIcons methodEnd.
-	MenuIcons class compile: stream contents classified: '*HPI-private icons-override' notifying: nil.
-	"create accessor method"
-	stream := String new writeStream.
-	stream
-		nextPutAll: info last ; cr;
-		nextPutAll: (MenuIcons methodAccessorFor: (info last)).
-	MenuIcons class compile: stream contents classified: '*HPI-accessing icons-override' notifying: nil.
-].
-MenuIcons initializeIcons.
-
-HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
-Preferences disable: #showSharedFlaps.
-
-Utilities setAuthorInitials: String empty.
-Smalltalk garbageCollect.
-
-"-=-=-=-=-="
-Project current in: [:oldProject | 
-	WorldState addDeferredUIMessage: [
-		"-=-=-=-=-="
-		Project deletingProject: oldProject.
-		ProjectHistory forget: oldProject.
-		Project forget: oldProject.
-		Project current setParent: Project current.
-		Project rebuildAllProjects.
-		Preferences disable: #showSharedFlaps.
-		UIManager default builderClass: MorphicToolBuilder.
-		"-=-=-=-=-="
-		TheWorldMainDockingBar updateInstances.
-		(UserInterfaceTheme named: 'Squeak') apply.
-		Preferences increaseFontSize.
-		WorldState addDeferredUIMessage: [
-			ReleaseBuilder openWelcomeWorkspacesWith: nil.
-			PreferenceWizardMorph open].
-		"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
-		"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
-		TheWorldMainDockingBar instance closeAllWindows.
-		Smalltalk snapshot: true andQuit: true.
-	].
-	(Smalltalk at: #AnimMorphicProject) new enter: false.
-]] ensure: [
-	TranscriptStream redirectToStdOut: false.].
-
 "-=-=-=-=-="
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
 
@@ -327,3 +249,80 @@ Project current in: [:oldProject |
 	currentPage addMorphBack: (self createButton action: #showSqueak; label: ''No, maybe later.'' translated).
 	
 	^ currentPage'.
+	
+"-=-=-=-=-="
+
+(options includes: '-startrack') ifTrue:
+	[(Smalltalk at: #Metacello) new
+		baseline: 'StarTrack';
+		repository: 'github://hpi-swa-lab/learning-liveness/packages';
+		load: 'client'].
+
+
+"-=-=-=-=-="
+
+MCFileBasedRepository flushAllCaches.
+MCCacheRepository instVarNamed: 'default' put: nil.
+ChangeSet current clear.
+ChangeSet current name: 'Unnamed1'.
+Smalltalk garbageCollect.
+MCCacheRepository cacheDirectory recursiveDelete.
+Smalltalk fixObsoleteReferences.
+
+"-=-=-=-=-="
+
+Utilities setAuthorInitials: 'hpi'. "changed at end"
+
+#(('/HPIicon.png' 'smallFullscreenOnIcon') ('/HPIicon_sw.png' 'smallFullscreenOffIcon')) do: [:info | | image stream |
+	FileStream fileNamed: (progdir , info first) do: [:f | |writer |
+		writer := PNGReadWriter on: f.
+		image := [writer nextImage] ensure: [writer close]].
+	"store string representation"
+	stream := String new writeStream.
+	stream
+		nextPutAll: info last, 'Contents' ; cr;
+		nextPutAll: (MenuIcons methodStart: (info last)).
+	image storeOn: stream.
+	stream nextPutAll: MenuIcons methodEnd.
+	MenuIcons class compile: stream contents classified: '*HPI-private icons-override' notifying: nil.
+	"create accessor method"
+	stream := String new writeStream.
+	stream
+		nextPutAll: info last ; cr;
+		nextPutAll: (MenuIcons methodAccessorFor: (info last)).
+	MenuIcons class compile: stream contents classified: '*HPI-accessing icons-override' notifying: nil.
+].
+MenuIcons initializeIcons.
+
+HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
+Preferences disable: #showSharedFlaps.
+
+Utilities setAuthorInitials: String empty.
+Smalltalk garbageCollect.
+
+"-=-=-=-=-="
+Project current in: [:oldProject | 
+	WorldState addDeferredUIMessage: [
+		"-=-=-=-=-="
+		Project deletingProject: oldProject.
+		ProjectHistory forget: oldProject.
+		Project forget: oldProject.
+		Project current setParent: Project current.
+		Project rebuildAllProjects.
+		Preferences disable: #showSharedFlaps.
+		UIManager default builderClass: MorphicToolBuilder.
+		"-=-=-=-=-="
+		TheWorldMainDockingBar updateInstances.
+		(UserInterfaceTheme named: 'Squeak') apply.
+		Preferences increaseFontSize.
+		WorldState addDeferredUIMessage: [
+			ReleaseBuilder openWelcomeWorkspacesWith: nil.
+			PreferenceWizardMorph open].
+		"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
+		"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
+		TheWorldMainDockingBar instance closeAllWindows.
+		Smalltalk snapshot: true andQuit: true.
+	].
+	(Smalltalk at: #AnimMorphicProject) new enter: false.
+]] ensure: [
+	TranscriptStream redirectToStdOut: false.]
