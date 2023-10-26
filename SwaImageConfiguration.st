@@ -245,7 +245,7 @@ Project current in: [:oldProject |
 "-=-=-=-=-="
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
 
-SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
+(Smalltalk at: #SystemWindow) compile: 'filterEvent: aKeyboardEvent for: anObject
 	"Provide keyboard shortcuts."
 
 	aKeyboardEvent isKeystroke
@@ -273,7 +273,7 @@ SystemWindow compile: 'filterEvent: aKeyboardEvent for: anObject
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
 	
-PreferenceWizardMorph compile: 'initializePage99ExtraPackages
+(Smalltalk at: #PreferenceWizardMorph) compile: 'initializePage99ExtraPackages
 	"Let the user install extra packages."
 
 	| currentPage packagesList installButton |
