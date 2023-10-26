@@ -191,7 +191,7 @@ tmpCode := 'filterEvent: aKeyboardEvent for: anObject
 
 	^ aKeyboardEvent "no hit"'.
 
-SystemWindow compile: code.
+SystemWindow compile: tmpCode.
 
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
