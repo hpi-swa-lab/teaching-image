@@ -196,7 +196,7 @@ SystemWindow compile: tmpCode.
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
 	
-tmpCode := 'initializePage99ExtraPackages
+"tmpCode := 'initializePage99ExtraPackages
 	"Let the user install extra packages."
 
 	| currentPage packagesList installButton |
@@ -252,7 +252,7 @@ tmpCode := 'initializePage99ExtraPackages
 	
 	^ currentPage'.
 
-PreferenceWizardMorph compile: tmpCode.
+PreferenceWizardMorph compile: tmpCode."
 	
 "-=-=-=-=-="
 
