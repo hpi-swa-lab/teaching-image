@@ -197,7 +197,7 @@ SystemWindow compile: tmpCode.
 "Remove Git Updates from PreferenceWizard as we use a special git version"
 	
 "tmpCode := 'initializePage99ExtraPackages
-	"Let the user install extra packages."
+	""Let the user install extra packages.""
 
 	| currentPage packagesList installButton |
 	currentPage := self createPage.
@@ -231,7 +231,6 @@ SystemWindow compile: tmpCode.
 		self createCheckbox: ''Foreign function interface (FFI)'' translated for: #InstallFFI help: ''FFI, the Squeak Foreign Function Interface, is used to call functions located in shared libraries that are not part of the Squeak VM nor its plugins'' translated.
 		self createCheckbox: ''Access OS functions'' translated for: #InstallOSProcess help: ''OSProcess provides access to operating system functions, including pipes and child process creation'' translated.
 		self createCheckbox: ''Integrate Squeak''''s mailing lists'' translated for: #InstallSqueakInboxTalk help: ''Through Squeak Inbox Talk, you can engage with our community from within Squeak using tools that integrate our mailing lists such as squeak-dev and vm-dev'' translated.
-		"self createCheckbox: ''Compatibility packages for legacy apps'' translated for: #InstallCompatibilityPackages help: ''Install protocols (i.e., classes and methods) that got deprecated for this version to make older applications work without changes.'' translated."
 	}.
 		
 	currentPage addMorphBack: packagesList.
