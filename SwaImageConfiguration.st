@@ -223,8 +223,6 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 	packagesList scroller firstSubmorph addAllMorphsBack: {
 		self createCheckbox: ''Latest system updates'' translated for: #InstallLatestUpdates help: ''Install the latest patches for '' translated, SystemVersion current version.
-		self createCheckbox: ''Refactoring support in code browsers'' translated for: #InstallRefactoringTools help: ''Refactoring is a process of re-writing or re-organizing text or code. The purpose of a refactor is to make the code or text more understandable and readable while exactly preserving its meaning and behavior'' translated.
-		self createCheckbox: ''Autocomplete in code editors'' translated for: #InstallAutoComplete help: ''Package that provides interactive, context-sensitive auto-completion for Squeak'' translated.
 		self createCheckbox: ''Foreign function interface (FFI)'' translated for: #InstallFFI help: ''FFI, the Squeak Foreign Function Interface, is used to call functions located in shared libraries that are not part of the Squeak VM nor its plugins'' translated.
 		self createCheckbox: ''Access OS functions'' translated for: #InstallOSProcess help: ''OSProcess provides access to operating system functions, including pipes and child process creation'' translated.
 		self createCheckbox: ''Integrate Squeak''''s mailing lists'' translated for: #InstallSqueakInboxTalk help: ''Through Squeak Inbox Talk, you can engage with our community from within Squeak using tools that integrate our mailing lists such as squeak-dev and vm-dev'' translated.
