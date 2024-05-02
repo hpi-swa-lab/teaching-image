@@ -33,7 +33,7 @@ jobs:
           RELEASE: '6.0'
           PATCH: 22148
           BUNDLE_RELEASE: '6.0'
-          BUNDLE_PATCH: 22104
+          BUNDLE_PATCH: 22148
           LECTURE: SWT
           YEAR: 2024
       - name: Upload Image
