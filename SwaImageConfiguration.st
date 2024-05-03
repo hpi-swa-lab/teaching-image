@@ -79,10 +79,10 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 	
 "Install new Git Client made by Marius and Tom for WiSe 23/24"
-Metacello new
+"Metacello new
   baseline: 'Squot';
   repository: 'github://hpi-swa/Squot:mapper/src';
-  load.
+  load."
 	
 "-=-=-=-=-="
 
