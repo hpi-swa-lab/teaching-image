@@ -297,8 +297,6 @@ FileStream
 (Smalltalk at: #ArcDarkTheme) create.
 (Smalltalk at: #ArcLightTheme) create.
 
-[Flaps disableGlobalFlaps] valueSupplyingAnswer: true.
-
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
 
@@ -311,6 +309,7 @@ Project current in: [:oldProject |
 		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
 		ReleaseBuilder deleteAllWindows.
 		ReleaseBuilder deleteAllOtherMorphs.
+		[Flaps disableGlobalFlaps] valueSupplyingAnswer: true.
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
 		WorldState addDeferredUIMessage: [
