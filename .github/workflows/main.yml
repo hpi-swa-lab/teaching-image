@@ -34,7 +34,7 @@ jobs:
           PATCH: 22148
           BUNDLE_RELEASE: '6.0'
           BUNDLE_PATCH: 22148
-          LECTURE: SWT
+          LECTURE: SWA
           YEAR: 2024
       - name: Upload Image
         uses: actions/upload-artifact@v4
