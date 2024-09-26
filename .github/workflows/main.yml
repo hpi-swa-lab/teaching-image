@@ -14,8 +14,8 @@ jobs:
     name: Build with StarTrack ${{ matrix.star_track }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           cache: 'pip' # caching pip dependencies
@@ -39,7 +39,7 @@ jobs:
       - name: Upload Image
         uses: actions/upload-artifact@v4
         with:
-          name: packages
+          name: packages ${{ matrix.star_track }}
           path: |
             ./dist/*.zip
             ./dist/*.txz
