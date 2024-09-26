@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base options|
+|progdir base options balloon|
 
 "Initial Setup"
 FileStream startUp: true.
@@ -139,9 +139,9 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 	
 (Smalltalk at: #Metacello) new
-	baseline: 'GM';
-	repository: 'github://hpi-swa-teaching/GameMecha/source';
-	load: 'swa'.
+	baseline: 'GameMecha';
+	repository: 'github://hpi-swa-teaching/GameMecha:main/src';
+	load: 'test'. "more examples and tests"
 	
 "-=-=-=-=-="
 
@@ -290,7 +290,13 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 ].
 MenuIcons initializeIcons.
 
-HostWindowProxy new primitiveWindowSize: 1 x: 1240 y: 800.
+"Load fancy clean Arc UI theme."
+FileStream
+	fileNamed: progdir, '/arc-theme.cs'
+	do: [:stream | stream fileIn].
+(Smalltalk at: #ArcDarkTheme) create.
+(Smalltalk at: #ArcLightTheme) create.
+
 Preferences disable: #showSharedFlaps.
 
 Utilities setAuthorInitials: String empty.
@@ -299,24 +305,21 @@ Smalltalk garbageCollect.
 "-=-=-=-=-="
 Project current in: [:oldProject | 
 	WorldState addDeferredUIMessage: [
-		"-=-=-=-=-="
-		Project deletingProject: oldProject.
-		ProjectHistory forget: oldProject.
-		Project forget: oldProject.
-		Project current setParent: Project current.
-		Project rebuildAllProjects.
-		Preferences disable: #showSharedFlaps.
-		UIManager default builderClass: MorphicToolBuilder.
-		"-=-=-=-=-="
-		TheWorldMainDockingBar updateInstances.
-		(UserInterfaceTheme named: 'Squeak') apply.
-		Preferences increaseFontSize.
+		ReleaseBuilder configureProjects.
+
+		Model useColorfulWindows: false.
+		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
+		ReleaseBuilder deleteAllWindows.
+		ReleaseBuilder deleteAllOtherMorphs.
+
+		balloon := Form fromFileNamed: progdir, '/balloon.png'.
 		WorldState addDeferredUIMessage: [
 			ReleaseBuilder openWelcomeWorkspacesWith: nil.
 			PreferenceWizardMorph open].
-		"The following is a desperate measure to get the 22/23 image built without the debugger window resulting from some command line argument passing issue"
-		"Doing this on the first opening of the image is super desperate. This should be fixed in subsequent terms."
-		TheWorldMainDockingBar instance closeAllWindows.
+		
+		Project current world doOneCycle.
+		Display platformScaleFactor: 1.0.
+		ReleaseBuilder setDisplayExtent: 1024@768.
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.
