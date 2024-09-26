@@ -297,7 +297,7 @@ FileStream
 (Smalltalk at: #ArcDarkTheme) create.
 (Smalltalk at: #ArcLightTheme) create.
 
-Preferences disable: #showSharedFlaps.
+[Flaps disableGlobalFlaps] valueSupplyingAnswer: true
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
