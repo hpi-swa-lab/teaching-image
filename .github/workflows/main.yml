@@ -6,7 +6,7 @@ on: [push, pull_request]
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: macos-11 #macos-latest
+    runs-on: macos-12 #macos-latest
     strategy:
       matrix:
         # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
@@ -37,7 +37,7 @@ jobs:
           LECTURE: SWT
           YEAR: 2024
       - name: Upload Image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: |
