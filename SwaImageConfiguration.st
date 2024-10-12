@@ -30,7 +30,6 @@ base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 Installer ensureRecentMetacello.
 
 "-=-=-=-=-="
-Installer squeakTrunk install: 'Help-Squeak-CorePackages'.
 
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
@@ -78,10 +77,10 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 	
-"Install new Git Client made by Marius and Tom for WiSe 23/24"
+"Install new Git Client made by Marius and Tom for WiSe 24/25"
 Metacello new
-  baseline: 'Squot';
-  repository: 'github://hpi-swa/Squot:mapper/src';
+  baseline: 'GitS';
+  repository: 'github://hpi-swa/git-s:latest-release/src';
   load.
 	
 "-=-=-=-=-="
@@ -296,6 +295,11 @@ FileStream
 	do: [:stream | stream fileIn].
 (Smalltalk at: #ArcDarkTheme) create.
 (Smalltalk at: #ArcLightTheme) create.
+
+"Patch drag-drop issue in tree morphs."
+FileStream
+	fileNamed: progdir, '/fix-tree-dragdrop.cs'
+	do: [:stream | stream fileIn].
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
