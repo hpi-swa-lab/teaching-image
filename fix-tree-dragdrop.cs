@@ -1,0 +1,1 @@
+'From Squeak6.0 of 29 August 2024 [latest update: #22153] on 11 October 2024 at 7:44:15 pm'!!SimpleHierarchicalListMorph methodsFor: 'event handling' stamp: 'mad 10/11/2024 19:32'!handlesMouseMove: anEvent	^ anEvent anyButtonPressed! !
