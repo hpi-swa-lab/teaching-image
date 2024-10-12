@@ -62,18 +62,9 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 	
 "The tools menu in the docking bar should use the swa git ui"
-"(Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
+(Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
 	
-	(Smalltalk hasClassNamed: #SquitBrowser)
-		ifFalse: [ (UIManager default
-					confirm: ''The Git infrastructure and browser is not yet installed.\\Do you want to install the Git Browser?\\(Note that this step requires an internet connection and\may take several minutes.)'' withCRs translated
-					title: ''Confirm Installation Request'' )
-			ifTrue: [ Installer
-						ensureRecentMetacello;
-						installGitInfrastructure.
-					TheWorldMainDockingBar updateInstances ]
-			ifFalse: [ ^self ] ].
-	(Smalltalk classNamed: #SwaSquitBrowser) open.'."
+	self inform: ''Unavailable. Please use\	Apps > Git Browser\	Apps > Git Asset Browser'' withCRs.'
 
 "-=-=-=-=-="
 	
@@ -173,6 +164,13 @@ Metacello new
 Behavior compile: 'prettyPrinterClass ^ PPFormatter'.
 
 "-=-=-=-=-="
+
+"Do update again to update JSON, overwritten prior other projects."
+[MCMcmUpdater default doUpdate: false. "non-interactive"]
+	on: MCEmptyVersion do: [:warning | warning resume].
+
+"-=-=-=-=-="
+
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
 
 (Smalltalk at: #SystemWindow) compile: 'filterEvent: aKeyboardEvent for: anObject
