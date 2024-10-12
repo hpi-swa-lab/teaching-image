@@ -82,7 +82,7 @@ Metacello new
   baseline: 'GitS';
   repository: 'github://hpi-swa/git-s:latest-release/src';
   load.
-	
+
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
@@ -162,6 +162,15 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	baseline: 'MorphicTutorial';
 	repository: 'github://hpi-swa-teaching/SWT18-Project-06:master/packages';
 	load.
+
+"-=-=-=-=-="
+
+Metacello new
+	baseline: 'PoppyPrint';
+	repository: 'github://tom95/poppy-print/packages';
+	load.
+
+Behavior compile: 'prettyPrinterClass ^ PPFormatter'.
 
 "-=-=-=-=-="
 "w shortcut to delete windows - experimental for SWA WiSe 23/24"
