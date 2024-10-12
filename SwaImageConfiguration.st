@@ -64,7 +64,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "The tools menu in the docking bar should use the swa git ui"
 (Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
 	
-	self inform: ''Unavailable. Please use\	Apps > Git Browser\	Apps > Git Asset Browser'' withCRs.'
+	self inform: ''Unavailable. Please use\	Apps > Git Browser\	Apps > Git Asset Browser'' withCRs.'.
 
 "-=-=-=-=-="
 	
