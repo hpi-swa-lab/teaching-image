@@ -69,10 +69,11 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 	
 "Install new Git Client made by Marius and Tom for WiSe 24/25"
-Metacello new
+[Metacello new
   baseline: 'GitS';
   repository: 'github://hpi-swa/git-s:latest-release/src';
-  load.
+  load]
+    valueSuppressingAllMessages. "git-s changelog"
 
 "-=-=-=-=-="
 
