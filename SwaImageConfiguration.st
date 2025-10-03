@@ -125,7 +125,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 	get; "for updates"
 	load: #withRecommended]
 		valueSupplyingAnswer: #('Tonel support is missing*' true).
-SnapshotReminder assureDefault startProcess.
+(Smalltalk at: #SnapshotReminder) assureDefault startProcess.
 	
 "-=-=-=-=-="
 
