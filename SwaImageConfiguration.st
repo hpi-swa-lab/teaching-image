@@ -119,6 +119,16 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
 
+[Metacello new
+	baseline: 'SnapshotReminder';
+	repository: 'github://hpi-swa-teaching/squeak-snapshot-reminder:main';
+	get; "for updates"
+	load: #withRecommended]
+		valueSupplyingAnswer: #('Tonel support is missing*' true).
+SnapshotReminder assureDefault startProcess.
+	
+"-=-=-=-=-="
+
 (Smalltalk at: #Metacello) new
 	repository: 'github://MrModder/Autocompletion:master/packages';
 	baseline: 'Autocompletion';
