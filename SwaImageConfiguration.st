@@ -64,7 +64,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "The tools menu in the docking bar should use the swa git ui"
 (Smalltalk at: #TheWorldMainDockingBar) compile: 'installAndOpenGitBrowser 
 	
-	self inform: ''Unavailable. Please use\	Apps > Git Browser\	Apps > Git Asset Browser'' withCRs.'.
+	self inform: ''Unavailable. Please use\	Apps > Git Browser\	Apps > Git Asset Browser'' withCRs.' classified: '*hpi-override'.
 
 "-=-=-=-=-="
 	
@@ -162,7 +162,7 @@ Metacello new
 	repository: 'github://tom95/poppy-print/packages';
 	load.
 
-Behavior compile: 'prettyPrinterClass ^ PPFormatter'.
+Behavior compile: 'prettyPrinterClass ^ PPFormatter' classified: '*hpi-override'.
 
 "-=-=-=-=-="
 
@@ -195,7 +195,7 @@ Behavior compile: 'prettyPrinterClass ^ PPFormatter'.
 			[Character escape] -> [self world findWindow: aKeyboardEvent].
 		} otherwise: [^ aKeyboardEvent "no hit"].
 		^ aKeyboardEvent ignore "hit!!"].
-	^ aKeyboardEvent "no hit"'.
+	^ aKeyboardEvent "no hit"' classified: '*hpi-override'.
 
 "-=-=-=-=-="
 "Remove Git Updates from PreferenceWizard as we use a special git version"
@@ -251,7 +251,7 @@ Behavior compile: 'prettyPrinterClass ^ PPFormatter'.
 	currentPage addMorphBack: installButton.
 	currentPage addMorphBack: (self createButton action: #showSqueak; label: ''No, maybe later.'' translated).
 	
-	^ currentPage'.
+	^ currentPage' classified: '*hpi-override'.
 	
 "-=-=-=-=-="
 
