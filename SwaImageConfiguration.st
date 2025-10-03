@@ -16,7 +16,19 @@ Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
 
-[[MCMcmUpdater default doUpdate: false. "non-interactive"]
+["Debugging convenience & fail-safety (copied from https://github.com/LinqLover/create-image/blob/36aaa650f39f8fd86d0176ec8f0d72b404f6c0a5/src/prepareImage.st#L3-L17)"
+thisContext insertSender: (Context contextOn: UnhandledError, ProvideAnswerNotification do: [:ex |
+	Transcript showln: (String streamContents: [:stream | ex signalerContext errorReportOn: stream]).
+	Smalltalk snapshot: true andQuitWithExitCode: 1]).
+thisContext
+	insertSender: (Context contextOn: ProgressInitiationException do: [:ex |
+		ex sendNotificationsTo: [:min :max :curr |
+			Transcript showln: ('[Progress] [{1}/{2}:{3}] {4}' format: {curr. min. max. ex messageText})]]);
+	insertSender: (Context contextOn: ProgressNotification do: [:ex |
+		Transcript showln: ('[Progress] {1}' format: {({ex messageText. ex extraParam}) joinSeparatedBy: $|}).
+		ex resume]).
+
+[MCMcmUpdater default doUpdate: false. "non-interactive"]
 	on: MCEmptyVersion do: [:warning | warning resume].
 
 "-=-=-=-=-="
