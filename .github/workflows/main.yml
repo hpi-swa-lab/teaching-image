@@ -12,7 +12,7 @@ jobs:
         # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
         star_track:
           - false
-          #- true  # ct: disabled for faster debugging
+          - true
     name: Build with StarTrack ${{ matrix.star_track }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
