@@ -134,10 +134,11 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 	[| book |
 	book := (Smalltalk classNamed: #SBEBook) readFrom:
 		(WebClient httpGet: 'https://github.com/LinqLover/SqueakByExample-english/raw/extract-book-builds/sbe60.sbebook') content.
-	book fixUpImages.
+	book perform: #fixUpImages.
 	Smalltalk garbageCollect.
 	(Smalltalk classNamed: #SBEHelp) book: book].
-HelpBrowser open model showTopicNamed: #SBEHelp.
+"inject book cover"
+SBEHelp class compile: ((SBEHelp class sourceCodeAt: #introduction) asString copyWithRegex: '(?<=nextChunkText)(?=\))' matchesReplacedWith: ((', String cr , ''<br><img src="data:image/png;base64,' , (ByteArray streamContents: [:stream | PNGReadWriter putForm: ((HTTPSocket httpGetDocument:  'https://github.com/LinqLover/SqueakByExample-english/raw/refs/heads/extract-book-builds/sbe60-cover.jpg') image scaledToWidth: 200) onStream: stream]) base64Encoded , '">'' asTextFromHtml'))) classified: '*hpi-override'.
 
 "-=-=-=-=-="
 
