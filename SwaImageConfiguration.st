@@ -83,7 +83,7 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "Install new Git Client made by Marius and Tom for WiSe 24/25"
 [Metacello new
   baseline: 'GitS';
-  repository: 'github://hpi-swa/git-s:latest-release/src';
+  repository: 'github://LinqLover/git-s:github-api-token/src';			flag: #workaround; "TODO REVERT me once https://github.com/hpi-swa/git-s/pull/86 has been merged"
   load]
     valueSuppressingAllMessages. "git-s changelog"
 
