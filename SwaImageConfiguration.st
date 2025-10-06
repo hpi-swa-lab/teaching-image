@@ -123,6 +123,23 @@ Smalltalk garbageCollect.
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
+"Squeak by Example Reader - see: https://github.com/hpi-swa-lab/SqueakByExample-english/pull/222 (stil not merged!)"
+Metacello new
+	baseline: 'SBE';
+	repository: 'github://hpi-swa-lab/SqueakByExample-english:extract-book/SmalltalkSources';
+	get;
+	load: #'SBE-Book'.
+
+Project uiManager informUser: 'Loading book (this might take a while)...' during:
+	[| book |
+	book := (Smalltalk classNamed: #SBEBook) readFrom:
+		(WebClient httpGet: 'https://github.com/LinqLover/SqueakByExample-english/raw/extract-book-builds/sbe60.sbebook') content.
+	book fixUpImages.
+	Smalltalk garbageCollect.
+	(Smalltalk classNamed: #SBEHelp) book: book].
+HelpBrowser open model showTopicNamed: #SBEHelp.
+
+"-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
 	repository: 'github://LinqLover/Squeak-TipOfTheDay/packages';
