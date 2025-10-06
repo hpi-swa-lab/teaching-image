@@ -123,7 +123,7 @@ Smalltalk garbageCollect.
 Utilities setAuthorInitials: 'hpi'. "changed at end"
 
 "-=-=-=-=-="
-"Squeak by Example Reader - see: https://github.com/hpi-swa-lab/SqueakByExample-english/pull/222 (stil not merged!)"
+"Squeak by Example Reader - see: https://github.com/hpi-swa-lab/SqueakByExample-english/pull/222 (still not merged!!)"
 Metacello new
 	baseline: 'SBE';
 	repository: 'github://hpi-swa-lab/SqueakByExample-english:extract-book/SmalltalkSources';
