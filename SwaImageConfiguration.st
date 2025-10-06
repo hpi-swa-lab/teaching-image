@@ -81,6 +81,13 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 	
 "Install new Git Client made by Marius and Tom for WiSe 24/25"
+"required for GSSelfUpdater to retrieve GITHUB_TOKEN environment variable"
+FileDirectory class compile: 'getenv: aByteString
+	<primitive: ''primitiveGetenv'' module: '''' error: ec>
+	ec == #''bad argument'' ifTrue:
+		[aByteString isString ifFalse:
+			[^self getenv: aByteString asString]].
+	self primitiveFailed' classified: '*hpi-override'.
 [[Metacello new
   baseline: 'GitS';
   repository: 'github://LinqLover/git-s:github-api-token/src';			flag: #workaround; "TODO REVERT me to latest-release and remove error handler below once https://github.com/hpi-swa/git-s/pull/86 has been merged"
