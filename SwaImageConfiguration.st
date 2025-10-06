@@ -81,10 +81,11 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 "-=-=-=-=-="
 	
 "Install new Git Client made by Marius and Tom for WiSe 24/25"
-[Metacello new
+[[Metacello new
   baseline: 'GitS';
-  repository: 'github://LinqLover/git-s:github-api-token/src';			flag: #workaround; "TODO REVERT me once https://github.com/hpi-swa/git-s/pull/86 has been merged"
+  repository: 'github://LinqLover/git-s:github-api-token/src';			flag: #workaround; "TODO REVERT me to latest-release and remove error handler below once https://github.com/hpi-swa/git-s/pull/86 has been merged"
   load]
+	on: Error do: [:ex | ex signalerContext sender selector = #installedVersion ifFalse: [ex pass]. ex signalerContext sender returnEvaluating: ['main']]]
     valueSuppressingAllMessages. "git-s changelog"
 
 "-=-=-=-=-="
