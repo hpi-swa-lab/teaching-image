@@ -146,7 +146,7 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 	Smalltalk garbageCollect.
 	(Smalltalk classNamed: #SBEHelp) book: book].
 "inject book cover"
-(Smalltalk classNamed: #SBEHelp) class compile: (((Smalltalk classNamed: #SBEHelp) class sourceCodeAt: #introduction) asString copyWithRegex: '(?<=nextChunkText)(?=\))' matchesReplacedWith: ((', String cr , ''<br><img src="data:image/png;base64,' , (ByteArray streamContents: [:stream | PNGReadWriter putForm: ((Form fromBinaryStream: (HTTPSocket httpGetDocument:  'https://github.com/LinqLover/SqueakByExample-english/raw/refs/heads/extract-book-builds/sbe60-cover.jpg') contentStream) scaledToWidth: 200) onStream: stream]) base64Encoded , '">'' asTextFromHtml'))) classified: '*hpi-override'.
+(Smalltalk classNamed: #SBEHelp) class compile: (((Smalltalk classNamed: #SBEHelp) class sourceCodeAt: #introduction) copyReplaceAll: 'nextChunkText)' with: ('nextChunkText , String cr , ''<br><img src="data:image/png;base64,' , (ByteArray streamContents: [:stream | PNGReadWriter putForm: ((Form fromBinaryStream: (HTTPSocket httpGetDocument:  'https://github.com/LinqLover/SqueakByExample-english/raw/refs/heads/extract-book-builds/sbe60-cover.jpg') contentStream) scaledToWidth: 200) onStream: stream]) base64Encoded , '">'' asTextFromHtml)')) classified: '*hpi-override'.
 
 "-=-=-=-=-="
 
