@@ -369,6 +369,8 @@ Project current in: [:oldProject |
 		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
 		ReleaseBuilder deleteAllWindows.
 		ReleaseBuilder deleteAllOtherMorphs.
+		Project current removeMainDockingBar.
+		TheWorldMainDockingBar updateInstances.
 		[Flaps disableGlobalFlaps] valueSupplyingAnswer: true.
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
@@ -379,6 +381,7 @@ Project current in: [:oldProject |
 		Project current world doOneCycle.
 		Display platformScaleFactor: 1.0.
 		ReleaseBuilder setDisplayExtent: 1024@768.
+		self flag: #knownBug. "ct: Small layout shift of PreferenceWizardMorph when opening new image, but the same bug exists in ReleaseBuilder class>>#prepareEnvironment, so it's an upstream bug and the consequences of doing another UI cycle here are unknown an possibly dangerous."
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.
