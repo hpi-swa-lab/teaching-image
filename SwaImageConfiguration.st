@@ -212,6 +212,13 @@ Metacello new
 
 Behavior compile: 'prettyPrinterClass ^ PPFormatter' classified: '*hpi-override'.
 
+FileStream
+	fileNamed: progdir, '/pretty-fix2.cs'
+	do: [:stream | stream fileIn].
+FileStream
+	fileNamed: progdir, '/FormatOnSavePreference.cs'
+	do: [:stream | stream fileIn].
+
 "-=-=-=-=-="
 
 "Do update again to update JSON, overwritten prior other projects."
