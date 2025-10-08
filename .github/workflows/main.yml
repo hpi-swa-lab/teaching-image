@@ -33,9 +33,10 @@ jobs:
           TERM: xterm-256
           STARTRACK: ${{ matrix.star_track }}
           RELEASE: '6.0'
-          PATCH: 22148
+          PATCH: 22155
           BUNDLE_RELEASE: '6.0'
-          BUNDLE_PATCH: 22148
+          BUNDLE_PATCH: 22155
+          OSVM_BUILD: 202509300044 # Download bundle from https://github.com/squeak-smalltalk/squeak-app/releases/tag/custom-osvm-bundle
           LECTURE: SWA
           YEAR: 2025
       - name: Upload Image

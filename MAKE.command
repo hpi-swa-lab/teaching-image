@@ -28,9 +28,19 @@ if [ -n "$SUFFIX" ]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
+
+should_use_custom-osvm-bundle() {
+  [[ ! -z ${OSVM_BUILD} ]]
+}
+
 SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
-SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
 SRC_APP="${SRC_BUNDLE}-All-in-One.app"
+if should_use_custom-osvm-bundle; then   
+    SRC_BUNDLE_URL="https://github.com/squeak-smalltalk/squeak-app/releases/download/custom-osvm-bundle/${SRC_BUNDLE}-${OSVM_BUILD}-All-in-One.zip"
+else
+    SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
+fi
+
 
 if [ "$STARTRACK" == "true" ]
 then
