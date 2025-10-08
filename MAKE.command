@@ -28,9 +28,21 @@ if [ -n "$SUFFIX" ]
 then
     echo "Build is marked as '$SUFFIX'"
 fi
-SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
-SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/${SRC_BUNDLE}-All-in-One.zip"
+
+should_use_custom-osvm-bundle() {
+  [[ ! -z ${OSVM_BUILD} ]]
+}
+
+if should_use_custom-osvm-bundle; then
+    SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit-${OSVM_BUILD}"
+    SRC_BUNDLE_URL="https://github.com/squeak-smalltalk/squeak-app/releases/download/custom-osvm-bundle"
+else
+    SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
+    SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}"
+fi
 SRC_APP="${SRC_BUNDLE}-All-in-One.app"
+SRC_BUNDLE_URL="${SRC_BUNDLE_URL}/${SRC_BUNDLE}-All-in-One.zip"
+
 
 if [ "$STARTRACK" == "true" ]
 then
@@ -87,19 +99,19 @@ if [ \! -d "${CACHE_DIR}" ]; then
     # Ensure we download the bundle even if it is the same version as the release
     if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
         $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
-        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+        curl -L -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
         $E "[....] $(tput setaf 4)Fetching sources"
-        curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
+        curl -L -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
         $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
-        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+        curl -L -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 fi
