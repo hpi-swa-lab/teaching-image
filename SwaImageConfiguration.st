@@ -88,11 +88,10 @@ FileDirectory class compile: 'getenv: aByteString
 		[aByteString isString ifFalse:
 			[^self getenv: aByteString asString]].
 	self primitiveFailed' classified: '*hpi-override'.
-[[Metacello new
+[Metacello new
   baseline: 'GitS';
-  repository: 'github://LinqLover/git-s:github-api-token/src';			flag: #workaround; "TODO REVERT me to latest-release and remove error handler below once https://github.com/hpi-swa/git-s/pull/86 has been merged"
+  repository: 'github://hpi-swa/git-s:latest-release/src';
   load]
-	on: Error do: [:ex | ex signalerContext sender selector = #installedVersion ifFalse: [ex pass]. ex signalerContext sender returnEvaluating: ['main']]]
     valueSuppressingAllMessages. "git-s changelog"
 
 "-=-=-=-=-="
