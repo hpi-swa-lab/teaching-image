@@ -35,13 +35,13 @@ should_use_custom-osvm-bundle() {
 
 if should_use_custom-osvm-bundle; then
     SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit-${OSVM_BUILD}"
-    SRC_BUNDLE_URL="https://github.com/squeak-smalltalk/squeak-app/releases/download/custom-osvm-bundle/"
+    SRC_BUNDLE_URL="https://github.com/squeak-smalltalk/squeak-app/releases/download/custom-osvm-bundle"
 else
     SRC_BUNDLE="Squeak${BUNDLE_RELEASE}-${BUNDLE_PATCH}-64bit"
-    SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}/"
+    SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}"
 fi
 SRC_APP="${SRC_BUNDLE}-All-in-One.app"
-SRC_BUNDLE_URL="${SRC_BUNDLE_URL}-All-in-One.zip"
+SRC_BUNDLE_URL+="${SRC_BUNDLE_URL}/${SRC_BUNDLE}-All-in-One.zip"
 
 
 if [ "$STARTRACK" == "true" ]
