@@ -381,13 +381,12 @@ Project current in: [:oldProject |
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
 		WorldState addDeferredUIMessage: [
-			ReleaseBuilder openWelcomeWorkspacesWith: nil.
+			ReleaseBuilder openWelcomeWorkspacesWith: balloon.
 			PreferenceWizardMorph open].
 		
-		Project current world doOneCycle.
 		Display platformScaleFactor: 1.0.
 		ReleaseBuilder setDisplayExtent: 1024@768.
-		self flag: #knownBug. "ct: Small layout shift of PreferenceWizardMorph when opening new image, but the same bug exists in ReleaseBuilder class>>#prepareEnvironment, so it's an upstream bug and the consequences of doing another UI cycle here are unknown an possibly dangerous."
+		Project current world doOneCycle.
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.
