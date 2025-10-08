@@ -41,7 +41,7 @@ else
     SRC_BUNDLE_URL="http://files.squeak.org/${BUNDLE_RELEASE}/${SRC_BUNDLE}"
 fi
 SRC_APP="${SRC_BUNDLE}-All-in-One.app"
-SRC_BUNDLE_URL+="${SRC_BUNDLE_URL}/${SRC_BUNDLE}-All-in-One.zip"
+SRC_BUNDLE_URL="${SRC_BUNDLE_URL}/${SRC_BUNDLE}-All-in-One.zip"
 
 
 if [ "$STARTRACK" == "true" ]
