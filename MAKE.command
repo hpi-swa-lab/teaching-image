@@ -97,19 +97,19 @@ if [ \! -d "${CACHE_DIR}" ]; then
     # Ensure we download the bundle even if it is the same version as the release
     if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
         $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
-        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+        curl -L -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/SqueakV50.sources.gz" ]; then
         $E "[....] $(tput setaf 4)Fetching sources"
-        curl -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
+        curl -L -o "${CACHE_DIR}/SqueakV50.sources.gz" http://ftp.squeak.org/sources_files/SqueakV50.sources.gz
         check
     fi
 
     if [ \! -f "${CACHE_DIR}/${SRC_BUNDLE}.zip" ]; then
         $E "[....] $(tput setaf 4)Fetching ${SRC_BUNDLE} from ${SRC_BUNDLE_URL}"
-        curl -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
+        curl -L -o "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${SRC_BUNDLE_URL}"
         check
     fi
 fi
