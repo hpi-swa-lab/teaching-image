@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       osvm-build:
-        description: "Build with custom-built OSVM. Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
+        description: "Build with custom-built OSVM (e.g. 202509300044). Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
         required: false # if empty, use default VM from files.squeak.org/base
-        default: YYYYMMDDHHMM # e.g., 202509300044
+        default: ''
       squeak-release:
         description: "Squeak release version (e.g. 6.0). Check files.squeak.org"
         required: true
