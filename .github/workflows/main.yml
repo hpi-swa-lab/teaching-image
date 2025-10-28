@@ -2,14 +2,23 @@ name: tests
 
 # Triggers the workflow on push or pull request on any branch
 on:
-  push:
-  pull_request:
+  # push:
+  # pull_request:
   workflow_dispatch:
     inputs:
       osvm-build:
         description: "Build with custom-built OSVM. Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
         required: false # if empty, use default VM from files.squeak.org/base
         default: YYYYMMDDHHMM # e.g., 202509300044
+      squeak-release:
+        description: "Squeak release version (e.g. 6.0). Check files.squeak.org"
+        required: true
+        default: '6.0'
+      squeak-build:
+        description: "Squeak build number (e.g. 22155). Check files.squeak.org"
+        required: true
+        default: 22155
+
 
 jobs:
   # This workflow contains a single job called "build"
@@ -40,10 +49,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TERM: xterm-256
           STARTRACK: ${{ matrix.star_track }}
-          RELEASE: '6.0'
-          PATCH: 22155
-          BUNDLE_RELEASE: '6.0'
-          BUNDLE_PATCH: 22155
+          RELEASE: ${{ github.event.inputs.squeak-release }}
+          PATCH: ${{ github.event.inputs.squeak-build }}
+          BUNDLE_RELEASE: ${{ github.event.inputs.squeak-release }}
+          BUNDLE_PATCH: ${{ github.event.inputs.squeak-build }}
           OSVM_BUILD: ${{ github.event.inputs.osvm-build }} # only workflow-dispatch; if not empty, download bundle from https://github.com/squeak-smalltalk/squeak-app/releases/tag/custom-osvm-bundle
           LECTURE: SWA
           YEAR: 2025
