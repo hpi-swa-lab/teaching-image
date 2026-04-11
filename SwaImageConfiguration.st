@@ -122,6 +122,7 @@ Smalltalk garbageCollect.
 "Prepare current Squeak6.1beta for SWE 2026"
 
 SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
+	Utilities setAuthorInitials: 'hpi'. "changed at end"
 	[ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'] valueSuppressingAllMessages.
 	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
 
@@ -193,17 +194,17 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 	
 "-=-=-=-=-="
 
-"(Smalltalk at: #Metacello) new
+(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/signals:master/repository';
 	baseline: 'Signals';
-	load."
+	load.
 	
 "-=-=-=-=-="
 
-"(Smalltalk at: #Metacello) new
+(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/animations:master/repository';
 	baseline: 'Animations';
-	load."
+	load.
 
 "-=-=-=-=-="
 	
