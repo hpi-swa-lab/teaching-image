@@ -7,30 +7,24 @@ on:
   workflow_dispatch:
     inputs:
       osvm-build:
-        description: "Build with custom-built OSVM (e.g. 202509300044). Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
+        description: "Build with custom-built OSVM (e.g. 202603271636). Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
         required: false # if empty, use default VM from files.squeak.org/base
         default: ''
       squeak-release:
         description: "Squeak release version (e.g. 6.0). Check files.squeak.org"
         required: true
-        default: '6.0'
+        default: '6.1beta'
       squeak-build:
         description: "Squeak build number (e.g. 22155). Check files.squeak.org"
         required: true
-        default: 22155
+        default: 23713
 
 
 jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: macos-14 #macos-latest
-    strategy:
-      matrix:
-        # Create one build with StarTrack and one without (StarTrack is used to collect data for a chair's user study)
-        star_track:
-          - false
-          - true
-    name: Build with StarTrack ${{ matrix.star_track }}
+    name: Build Squeak Teaching Bundle
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
@@ -48,14 +42,14 @@ jobs:
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TERM: xterm-256
-          STARTRACK: ${{ matrix.star_track }}
+          STARTRACK: false
           RELEASE: ${{ github.event.inputs.squeak-release }}
           PATCH: ${{ github.event.inputs.squeak-build }}
           BUNDLE_RELEASE: ${{ github.event.inputs.squeak-release }}
           BUNDLE_PATCH: ${{ github.event.inputs.squeak-build }}
           OSVM_BUILD: ${{ github.event.inputs.osvm-build }} # only workflow-dispatch; if not empty, download bundle from https://github.com/squeak-smalltalk/squeak-app/releases/tag/custom-osvm-bundle
-          LECTURE: SWA
-          YEAR: 2025
+          LECTURE: SWE
+          YEAR: 2026
       - name: Upload Image
         uses: actions/upload-artifact@v4
         with:

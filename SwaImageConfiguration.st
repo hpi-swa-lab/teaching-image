@@ -28,22 +28,13 @@ thisContext
 		Transcript showln: ('[Progress] {1}' format: {({ex messageText. ex extraParam}) joinSeparatedBy: $|}).
 		ex resume]).
 
-[MCMcmUpdater default doUpdate: false. "non-interactive"]
-	on: MCEmptyVersion do: [:warning | warning resume].
-
-"-=-=-=-=-="
-
-"For all trunk repositories add the inbox repository."
-(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
-	g addRepository: ReleaseBuilder inboxRepository].
-
 "-=-=-=-=-="
 
 Installer ensureRecentMetacello.
 
 "-=-=-=-=-="
 
-Utilities setAuthorInitials: 'hpi'. "changed at end"
+Utilities setAuthorInitials: 'hpi'. "restored at end of this script"
 
 [(Smalltalk at: #Metacello) new
 	baseline: 'SwaLint';
@@ -106,12 +97,13 @@ FileDirectory class compile: 'getenv: aByteString
 
 Preferences disable: #projectZoom.
 Preferences enable: #mouseOverForKeyboardFocus.
-
+Preferences enable: #traceMessages.
 Preferences disable: #alternativeBrowseIt.
-SystemBrowser default: Browser.
-TextEditor autoEnclose: false.
+
+SystemBrowser default: TreeBrowser.
+TextEditor autoEnclose: true.
 TextEditor destructiveBackWord: true.
-	
+
 Workspace shouldStyle: true.
 	
 SoundPlayer stopReverb.
@@ -124,6 +116,24 @@ MCHttpRepository clearCredentials.
 Environment allInstancesDo: [:env | env purgeUndeclared].
 Undeclared removeUnreferencedKeys.
 Smalltalk garbageCollect.
+
+"-=-=-=-=-="
+
+"Prepare current Squeak6.1beta for SWE 2026"
+
+SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
+	ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'.
+	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
+
+[MCMcmUpdater default doUpdate: false. "non-interactive"]
+	on: MCEmptyVersion do: [:warning | warning resume].
+
+"-=-=-=-=-="
+
+"For all trunk repositories add the inbox repository."
+"(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
+	g addRepository: ReleaseBuilder inboxRepository].
+"
 
 "-=-=-=-=-="
 
@@ -176,24 +186,24 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 
 "-=-=-=-=-="
 	
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
 	baseline: 'GameMecha';
 	repository: 'github://hpi-swa-teaching/GameMecha:main/src';
-	load: 'test'. "more examples and tests"
+	load: 'test'." "more examples and tests"
 	
 "-=-=-=-=-="
 
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/signals:master/repository';
 	baseline: 'Signals';
-	load.
+	load."
 	
 "-=-=-=-=-="
 
-(Smalltalk at: #Metacello) new
+"(Smalltalk at: #Metacello) new
 	repository: 'github://hpi-swa/animations:master/repository';
 	baseline: 'Animations';
-	load.
+	load."
 
 "-=-=-=-=-="
 	
@@ -309,11 +319,11 @@ FileStream
 	
 "-=-=-=-=-="
 
-(options includes: '-startrack') ifTrue:
+"(options includes: '-startrack') ifTrue:
 	[(Smalltalk at: #Metacello) new
 		baseline: 'StarTrack';
 		repository: 'github://hpi-swa-lab/learning-liveness/packages';
-		load: 'client'].
+		load: 'client']."
 
 
 "-=-=-=-=-="
@@ -351,17 +361,12 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 ].
 MenuIcons initializeIcons.
 
-"Load fancy clean Arc UI theme."
-FileStream
+"Load fancy clean Arc UI theme. -- Skip because not checked in Squeak6.1beta"
+"FileStream
 	fileNamed: progdir, '/arc-theme.cs'
 	do: [:stream | stream fileIn].
 (Smalltalk at: #ArcDarkTheme) create.
-(Smalltalk at: #ArcLightTheme) create.
-
-"Patch drag-drop issue in tree morphs."
-FileStream
-	fileNamed: progdir, '/fix-tree-dragdrop.cs'
-	do: [:stream | stream fileIn].
+(Smalltalk at: #ArcLightTheme) create."
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
@@ -371,8 +376,8 @@ Project current in: [:oldProject |
 	WorldState addDeferredUIMessage: [
 		ReleaseBuilder configureProjects.
 
-		Model useColorfulWindows: false.
-		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
+		Model useColorfulWindows: true.
+"		(UserInterfaceTheme named: 'Arc (light)') applyScaled."
 		ReleaseBuilder deleteAllWindows.
 		ReleaseBuilder deleteAllOtherMorphs.
 		Project current removeMainDockingBar.
