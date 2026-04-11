@@ -30,6 +30,18 @@ thisContext
 
 "-=-=-=-=-="
 
+"Prepare current Squeak6.1beta for SWE 2026"
+
+SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
+	Utilities setAuthorInitials: 'hpi'. "changed at end"
+	[ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'] valueSuppressingAllMessages.
+	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
+
+[MCMcmUpdater default doUpdate: false. "non-interactive"]
+	on: MCEmptyVersion do: [:warning | warning resume].
+
+"-=-=-=-=-="
+
 Installer ensureRecentMetacello.
 
 "-=-=-=-=-="
@@ -116,18 +128,6 @@ MCHttpRepository clearCredentials.
 Environment allInstancesDo: [:env | env purgeUndeclared].
 Undeclared removeUnreferencedKeys.
 Smalltalk garbageCollect.
-
-"-=-=-=-=-="
-
-"Prepare current Squeak6.1beta for SWE 2026"
-
-SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
-	Utilities setAuthorInitials: 'hpi'. "changed at end"
-	[ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'] valueSuppressingAllMessages.
-	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
-
-[MCMcmUpdater default doUpdate: false. "non-interactive"]
-	on: MCEmptyVersion do: [:warning | warning resume].
 
 "-=-=-=-=-="
 
