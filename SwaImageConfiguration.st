@@ -122,7 +122,7 @@ Smalltalk garbageCollect.
 "Prepare current Squeak6.1beta for SWE 2026"
 
 SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
-	ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'.
+	[ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'] valueSuppressingAllMessages.
 	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
 
 [MCMcmUpdater default doUpdate: false. "non-interactive"]
