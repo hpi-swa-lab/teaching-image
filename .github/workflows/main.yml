@@ -6,10 +6,14 @@ on:
   # pull_request:
   workflow_dispatch:
     inputs:
-      osvm-build:
-        description: "Build with custom-built OSVM (e.g. 202603271636). Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
-        required: false # if empty, use default VM from files.squeak.org/base
-        default: ''
+      lecture:
+        description: "Lecture (SWA/SWT). See squeak-app release tag custom-osvm-bundle"
+        required: true
+        default: 'SWA'
+      year:
+        description: "Year (e.g. 2026)."
+        required: true
+        default: '2027'
       squeak-release:
         description: "Squeak release version (e.g. 6.1). Check files.squeak.org"
         required: true
@@ -18,6 +22,10 @@ on:
         description: "Squeak build number (e.g. 23976). Check files.squeak.org"
         required: true
         default: 23976
+      osvm-build:
+        description: "Build with custom-built OSVM (e.g. 202603271636). Leave empty for using current OSVM release. See squeak-app release tag custom-osvm-bundle"
+        required: false # if empty, use default VM from files.squeak.org/base
+        default: ''
 
 
 jobs:
@@ -36,6 +44,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt 
+      - name: Set build parameters
+        run: ./.github/workflows/set-build-parameters.py
       - name: Build Image
         run: bash MAKE.command
         timeout-minutes: 30
@@ -43,13 +53,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TERM: xterm-256
           STARTRACK: false
-          RELEASE: ${{ github.event.inputs.squeak-release }}
-          PATCH: ${{ github.event.inputs.squeak-build }}
-          BUNDLE_RELEASE: ${{ github.event.inputs.squeak-release }}
-          BUNDLE_PATCH: ${{ github.event.inputs.squeak-build }}
-          OSVM_BUILD: ${{ github.event.inputs.osvm-build }} # only workflow-dispatch; if not empty, download bundle from https://github.com/squeak-smalltalk/squeak-app/releases/tag/custom-osvm-bundle
-          LECTURE: SWE
-          YEAR: 2026
       - name: Upload Image
         uses: actions/upload-artifact@v4
         with:
