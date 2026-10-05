@@ -2,7 +2,7 @@ name: tests
 
 # Triggers the workflow on push or pull request on any branch
 on:
-  # push:
+  push:
   # pull_request:
   workflow_dispatch:
     inputs:
