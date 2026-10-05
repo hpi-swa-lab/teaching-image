@@ -11,13 +11,13 @@ on:
         required: false # if empty, use default VM from files.squeak.org/base
         default: ''
       squeak-release:
-        description: "Squeak release version (e.g. 6.0). Check files.squeak.org"
+        description: "Squeak release version (e.g. 6.1). Check files.squeak.org"
         required: true
-        default: '6.1beta'
+        default: '6.1'
       squeak-build:
-        description: "Squeak build number (e.g. 22155). Check files.squeak.org"
+        description: "Squeak build number (e.g. 23976). Check files.squeak.org"
         required: true
-        default: 23713
+        default: 23976
 
 
 jobs:
