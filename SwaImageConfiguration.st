@@ -387,6 +387,7 @@ Project current in: [:oldProject |
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
 		WorldState addDeferredUIMessage: [
+			(Smalltalk at: #GSGitWorkingCopy) initializeLastImageHash. "prevent 'the image is not where it used to be' popup"
 			ReleaseBuilder openWelcomeWorkspacesWith: balloon.
 			PreferenceWizardMorph open].
 		
