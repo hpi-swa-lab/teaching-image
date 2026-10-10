@@ -9,7 +9,7 @@ defaults = workflow["on"]["workflow_dispatch"]["inputs"]
 supplied = yaml.safe_load(sys.argv[1])
 
 def value(name):
-    return supplied[name] or defaults[name]["default"]
+    return supplied[name] if name in supplied else defaults[name]["default"]
 
 lecture = value("lecture")
 year = value("year")
