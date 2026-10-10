@@ -380,7 +380,7 @@ Project current in: [:oldProject |
 		ReleaseBuilder configureProjects.
 
 		Model useColorfulWindows: true.
-		Preferences roundedWindowCorners: true.
+		SystemWindow roundedWindowCorners: true.
 		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
 		ReleaseBuilder deleteAllWindows.
 		ReleaseBuilder deleteAllOtherMorphs.
