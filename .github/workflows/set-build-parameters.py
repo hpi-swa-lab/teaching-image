@@ -6,7 +6,7 @@ with open(".github/workflows/main.yml") as f:
 
 defaults = workflow["on"]["workflow_dispatch"]["inputs"]
 
-supplied = json.loads(os.environ.get(sys.argv[1], "{}"))
+supplied = yaml.safe_load(sys.argv[1])
 
 def value(name):
     return supplied[name] or defaults[name]["default"]
