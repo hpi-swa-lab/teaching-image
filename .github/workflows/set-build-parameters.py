@@ -1,15 +1,12 @@
 #!/usr/bin/env python
-import os
-import yaml
+import os, sys, yaml
 
 with open(".github/workflows/main.yml") as f:
     workflow = yaml.load(f, Loader=yaml.BaseLoader)
 
 defaults = workflow["on"]["workflow_dispatch"]["inputs"]
 
-supplied = {
-    name: """${{ inputs.%s }}""" % name for name in defaults.keys()
-}
+supplied = json.loads(os.environ.get(sys.argv[1], "{}"))
 
 def value(name):
     return supplied[name] or defaults[name]["default"]

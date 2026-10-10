@@ -45,7 +45,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt 
       - name: Set build parameters
-        run: ./.github/workflows/set-build-parameters.py
+        env:
+          inputs: ${{ toJSON(inputs) }}
+        run: ./.github/workflows/set-build-parameters.py "$inputs"
       - name: Build Image
         run: bash MAKE.command
         timeout-minutes: 30
