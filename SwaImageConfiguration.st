@@ -393,7 +393,9 @@ Project current in: [:oldProject |
 			DisplayScreen checkForNewScreenScaleFactor; checkForNewScreenSize.
 			ReleaseBuilder openWelcomeWorkspacesWith: balloon.
 			ObjectlandMorph openObjectlandStarter. ChangesOrganizer noteChangeSetsInRelease.
-			PreferenceWizardMorph open].
+			PreferenceWizardMorph open.
+
+			(Smalltalk at: #GSGitWorkingCopy) initializeLastImageHash "prevent 'the image is not where it used to be' popup"].
 		
 		Display platformScaleFactor: nil; platformScaleFactor: 1.0.
 		ReleaseBuilder setDisplayExtent: 1024@768.
