@@ -180,7 +180,7 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
-	repository: 'github://MrModder/Autocompletion:master/packages';
+	repository: 'github://LeonMatthes/Autocompletion:master/packages';
 	baseline: 'Autocompletion';
 	load.
 
