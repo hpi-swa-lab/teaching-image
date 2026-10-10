@@ -30,12 +30,13 @@ thisContext
 
 "-=-=-=-=-="
 
-"Prepare current Squeak6.1beta for SWE 2026"
+"When we are using a custom upstream, update version information here"
 
-SystemVersion current majorMinorVersion = 'Squeak6.1' ifTrue: [
-	Utilities setAuthorInitials: 'hpi'. "changed at end"
-	[ReleaseBuilder setNewSystemVersion: 'Squeak6.1swe-2026-edition'] valueSuppressingAllMessages.
-	ReleaseBuilder switchToNewRepository: (MCRepository location: 'https://www.squeaksource.com/swe2026edition')].
+customEdition := nil. "'Squeak6.1swe-2026-edition' -> 'https://www.squeaksource.com/swe2026edition'."
+customEdition ifNotNil:
+	[Utilities setAuthorInitials: 'hpi'. "changed at end"
+	[ReleaseBuilder setNewSystemVersion: customEdition key] valueSuppressingAllMessages.
+	ReleaseBuilder switchToNewRepository: (MCRepository location: customEdition value)].
 
 [MCMcmUpdater default doUpdate: false. "non-interactive"]
 	on: MCEmptyVersion do: [:warning | warning resume].
@@ -131,10 +132,10 @@ Smalltalk garbageCollect.
 
 "-=-=-=-=-="
 
-"For all trunk repositories add the inbox repository."
-"(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
-	g addRepository: ReleaseBuilder inboxRepository].
-"
+customEdition ifNil:
+	["For all trunk repositories add the inbox repository."
+	(MCWorkingCopy allManagers collect: #repositoryGroup) do: [:g | 
+		g addRepository: ReleaseBuilder inboxRepository]].
 
 "-=-=-=-=-="
 
