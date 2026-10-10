@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PROGDIR="$(cd "$(dirname "$0")"; echo $PWD)"
 
@@ -125,7 +125,7 @@ if [ \! -d "${AIO_DIR}" ]; then
     $E "[....] $(tput setaf 3)Building all-in-one "
 
     $E "[....] $(tput setaf 4)Extracting ${SRC_BUNDLE}"
-    ditto -xk "${CACHE_DIR}/${SRC_BUNDLE}.zip" "${AIO_DIR}"
+    unzip -q "${CACHE_DIR}/${SRC_BUNDLE}.zip" -d "${AIO_DIR}"
     check
 
     # Rename .app folder
@@ -134,11 +134,25 @@ fi
 
 $E "[....] $(tput setaf 6)Building image "
 CONFIG="$(ls -1t ${CONFIGURE_SCRIPT}* | tail -n 1)"
-eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" "-- '${PROGDIR}/${CONFIG}' ${SQUEAK_ARGUMENTS}"
+case "$(uname -s)" in
+    Darwin)
+        eval "${AIO_DIR}/${APP}/Contents/MacOS/Squeak" \
+            "-- '${PROGDIR}/${CONFIG}' ${SQUEAK_ARGUMENTS}"
+        ;;
+    Linux)
+        eval "${AIO_DIR}/${APP}/Contents/Linux-x86_64/squeak" \
+            "${AIO_DIR}/${APP}/Contents/Resources/*.image" \
+            "'${PROGDIR}/${CONFIG}' ${SQUEAK_ARGUMENTS}"
+        ;;
+    *)
+        echo "Unsupported operating system: $(uname -s)"
+        exit 1
+        ;;
+esac
 check
 
 $E "[....] $(tput setaf 6)Cleaning up old files remaining after building and renaming the image"
-rm -r "${AIO_DIR}/${APP}"/Contents/Resources/github-cache
+rm -rf "${AIO_DIR}/${APP}/Contents/Resources/github-cache"
 check
 
 $E "[....] $(tput setaf 6)Preparing AIO files (icons, paths, etc.)"
@@ -146,7 +160,7 @@ $E "[....] $(tput setaf 6)Preparing AIO files (icons, paths, etc.)"
 # Ensure that image file is writeable
 chmod -v a+rwx "${AIO_IMAGE}" && \
 # Copy icon over and set it
-ditto -v "icons/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
+cp -v "icons/${ICON}.icns" "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" && \
 chmod -v a+x set_icon.py
 python set_icon.py "${AIO_DIR}/${APP}/Contents/Resources/${ICON}.icns" "${AIO_IMAGE}" && \
 check
@@ -157,31 +171,35 @@ do
   grep -q "${SRC_APP}" $aio_file && printf '%s\n' ",s/${SRC_APP}/${APP}/g" w q | ed -s $aio_file
 done
 
-# Remove code signature of app
-rm -r "${AIO_DIR}/${APP}/"**/_CodeSignature
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    # Remove code signature of app
+    rm -r "${AIO_DIR}/${APP}/"**/_CodeSignature
 
-# remove all extended attributes from app bundle
-xattr -cr "${AIO_DIR}/${APP}" 
+    # remove all extended attributes from app bundle
+    xattr -cr "${AIO_DIR}/${APP}" 
 
-if [[ -f ".encrypted.zip" ]]; then
-    $E "Signing macOS bundles..."
-    unzip -q ".encrypted.zip"
-    KEY_CHAIN=macos-build.keychain
-    security create-keychain -p travis "${KEY_CHAIN}"
-    security default-keychain -s "${KEY_CHAIN}"
-    security unlock-keychain -p travis "${KEY_CHAIN}"
-    security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
-    security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
-    security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
-    security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
+    if [[ -f ".encrypted.zip" ]]; then
+        $E "Signing macOS bundles..."
+        unzip -q ".encrypted.zip"
+        KEY_CHAIN=macos-build.keychain
+        security create-keychain -p travis "${KEY_CHAIN}"
+        security default-keychain -s "${KEY_CHAIN}"
+        security unlock-keychain -p travis "${KEY_CHAIN}"
+        security set-keychain-settings -t 3600 -u "${KEY_CHAIN}"
+        security import "encrypted/sign.cer" -k ~/Library/Keychains/"${KEY_CHAIN}" -T /usr/bin/codesign
+        security import "encrypted/sign.p12" -k ~/Library/Keychains/"${KEY_CHAIN}" -P "${CERT_P12_PASS}" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple: -s -k travis "${KEY_CHAIN}"
 
-    codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
-    # codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
-    # Remove sensitive files again
-    rm -rf ./.encrypted.zip ./encrypted*
-    security delete-keychain "${KEY_CHAIN}"
+        codesign -s "Squeak Deutschland e.V." --force --deep "${AIO_DIR}/${APP}"
+        # codesign -dv --verbose=4 "${AIO_DIR}/${APP}"
+        # Remove sensitive files again
+        rm -rf ./.encrypted.zip ./encrypted*
+        security delete-keychain "${KEY_CHAIN}"
+    else
+        $E "Skipping codesign on macOS..."
+    fi
 else
-    $E "Skipping codesign on macOS..."
+    $E "Skipping codesign on non-macOS..."
 fi
 
 mkdir -p dist || true
@@ -196,13 +214,17 @@ fi
 
 if [ \! -f "${DIST_DIR}/${BASE}.zip" ]; then
     $E "[....] $(tput setaf 3)Compressing ${APP} "
-    ditto -ck --noqtn --noacl --zlibCompressionLevel 9 "${AIO_DIR}" "${DIST_DIR}/${BASE}.zip"
+    (cd "${AIO_DIR}" && zip -r -9 "${PROGDIR}/${DIST_DIR}/${BASE}.zip" .)
     check
 fi
 
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
-curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
+if [ -n "${DEPLOY_CREDENTIALS}" ]; then
+    curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.zip" "${DEPLOY_TARGET}" && $E ".zip uploaded."
+    curl -s -u "${DEPLOY_CREDENTIALS}" -T "${DIST_DIR}/${BASE}.txz" "${DEPLOY_TARGET}" && $E ".txz uploaded."
 
-$E "Files are in the $(tput setaf 9)dist/ directory"
+    $E "Files are in the $(tput setaf 9)dist/ directory"
+else
+    $E "Skipping upload of files to ${DEPLOY_TARGET} because DEPLOY_CREDENTIALS is not set."
+fi
 
 $E "$(tput setaf 2)Done."
