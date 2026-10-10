@@ -389,7 +389,7 @@ Project current in: [:oldProject |
 		[Flaps disableGlobalFlaps] valueSupplyingAnswer: true.
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
-		WorldState addDeferredUIMessage: [
+		ReleaseBuilder classPool at: #DeferredTask put: [
 			DisplayScreen checkForNewScreenScaleFactor; checkForNewScreenSize.
 			ReleaseBuilder openWelcomeWorkspacesWith: balloon.
 			ObjectlandMorph openObjectlandStarter. ChangesOrganizer noteChangeSetsInRelease.
@@ -397,9 +397,9 @@ Project current in: [:oldProject |
 
 			(Smalltalk at: #GSGitWorkingCopy) initializeLastImageHash "prevent 'the image is not where it used to be' popup"].
 		
-		Display platformScaleFactor: nil; platformScaleFactor: 1.0.
 		ReleaseBuilder setDisplayExtent: 1024@768.
 		Project current world doOneCycle.
+		Display platformScaleFactor: nil; platformScaleFactor: 1.0.
 		Smalltalk snapshot: true andQuit: true.
 	].
 	(Smalltalk at: #AnimMorphicProject) new enter: false.
