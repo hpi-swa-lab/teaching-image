@@ -110,6 +110,7 @@ FileDirectory class compile: 'getenv: aByteString
 
 Preferences disable: #projectZoom.
 Preferences enable: #mouseOverForKeyboardFocus.
+Model windowActiveOnFirstClick: true.
 Preferences enable: #traceMessages.
 Preferences disable: #alternativeBrowseIt.
 
@@ -363,12 +364,12 @@ Utilities setAuthorInitials: 'hpi'. "changed at end"
 ].
 MenuIcons initializeIcons.
 
-"Load fancy clean Arc UI theme. -- Skip because not checked in Squeak6.1beta"
-"FileStream
-	fileNamed: progdir, '/arc-theme.cs'
-	do: [:stream | stream fileIn].
-(Smalltalk at: #ArcDarkTheme) create.
-(Smalltalk at: #ArcLightTheme) create."
+"Load fancy clean Arc UI theme."
+Metacello new
+	baseline: 'ArcTheme';
+	repository: 'github://hpi-swa-lab/sq-arc-theme:main';
+    get;
+	load.
 
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
@@ -379,7 +380,8 @@ Project current in: [:oldProject |
 		ReleaseBuilder configureProjects.
 
 		Model useColorfulWindows: true.
-"		(UserInterfaceTheme named: 'Arc (light)') applyScaled."
+		Preferences roundedWindowCorners: true.
+		(UserInterfaceTheme named: 'Arc (light)') applyScaled.
 		ReleaseBuilder deleteAllWindows.
 		ReleaseBuilder deleteAllOtherMorphs.
 		Project current removeMainDockingBar.
