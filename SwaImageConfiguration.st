@@ -390,10 +390,12 @@ Project current in: [:oldProject |
 
 		balloon := Form fromFileNamed: progdir, '/balloon.png'.
 		WorldState addDeferredUIMessage: [
+			DisplayScreen checkForNewScreenScaleFactor; checkForNewScreenSize.
 			ReleaseBuilder openWelcomeWorkspacesWith: balloon.
+			ObjectlandMorph openObjectlandStarter. ChangesOrganizer noteChangeSetsInRelease.
 			PreferenceWizardMorph open].
 		
-		Display platformScaleFactor: 1.0.
+		Display platformScaleFactor: nil; platformScaleFactor: 1.0.
 		ReleaseBuilder setDisplayExtent: 1024@768.
 		Project current world doOneCycle.
 		Smalltalk snapshot: true andQuit: true.
