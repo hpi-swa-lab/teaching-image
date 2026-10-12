@@ -218,10 +218,11 @@ Metacello new
 Behavior compile: 'prettyPrinterClass ^ PPFormatter' classified: '*hpi-override'.
 
 FileStream
-	fileNamed: progdir, '/pretty-fix2.cs'
+	readOnlyFileNamed: progdir, '/patches/pretty-fix2.cs'
 	do: [:stream | stream fileIn].
 FileStream
-	fileNamed: progdir, '/FormatOnSavePreference.cs'
+	readOnlyFileNamed: progdir, '/patches/FormatOnSavePreference.cs'
+	do: [:stream | stream fileIn].
 	do: [:stream | stream fileIn].
 
 "-=-=-=-=-="
