@@ -99,6 +99,13 @@ Metacello new
 		load.
 Installer ss project: 'ExternalWebBrowser'; install: 'ExternalWebBrowser'.
 WebBrowser default: ExternalWebBrowser. self flag: #moveUpstream. "ExternalWebBrowser could do this by itself"
+
+"-=-=-=-=-="
+
+FileStream
+	readOnlyFileNamed: progdir, '/patches/ChangeList-selectAllDefinitionsFromHere.cs'
+	do: [:stream | stream fileIn].
+
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
