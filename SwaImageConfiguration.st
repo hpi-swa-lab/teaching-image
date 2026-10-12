@@ -238,6 +238,11 @@ FileStream
 FileStream
 	readOnlyFileNamed: progdir, '/patches/FormatOnSavePreference.cs'
 	do: [:stream | stream fileIn].
+
+"-=-=-=-=-="
+
+FileStream
+	readOnlyFileNamed: progdir, '/patches/linux-fix-windowDeactivated.st'
 	do: [:stream | stream fileIn].
 
 "-=-=-=-=-="
