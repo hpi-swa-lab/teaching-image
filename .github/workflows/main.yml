@@ -13,7 +13,7 @@ on:
       year:
         description: "Year (e.g. 2026)."
         required: true
-        default: '2027'
+        default: '2026'
       squeak-release:
         description: "Squeak release version (e.g. 6.1). Check files.squeak.org"
         required: true
