@@ -93,6 +93,14 @@ Utilities setAuthorInitials: 'hpi'. "restored at end of this script"
 
 "-=-=-=-=-="
 
+"Just for convenience, install ExternalWebBrowser by default."
+Metacello new
+		configuration: 'FFI';
+		load.
+Installer ss project: 'ExternalWebBrowser'; install: 'ExternalWebBrowser'.
+WebBrowser default: ExternalWebBrowser. self flag: #moveUpstream. "ExternalWebBrowser could do this by itself"
+"-=-=-=-=-="
+
 (Smalltalk at: #Metacello) new
   baseline: 'AutoTDD';
   repository: 'github://hpi-swa-teaching/AutoTDD:master/packages';
@@ -259,60 +267,11 @@ FileStream
 	^ aKeyboardEvent "no hit"' classified: '*hpi-override'.
 
 "-=-=-=-=-="
-"Remove Git Updates from PreferenceWizard as we use a special git version"
+"Lock preinstalled/modified packages in PreferenceWizard, but show them anyway to educate the user about them."
 	
-(Smalltalk at: #PreferenceWizardMorph) compile: 'initializePage99ExtraPackages
-	"Let the user install extra packages."
-
-	| currentPage packagesList installButton |
-	currentPage := self createPage.
-	currentPage
-		cellPositioning: #topCenter;
-		addMorphBack: self createHorizontalSpacer;
-		addMorphBack: ((self createLabel: ''Do you want to install extra packages?'' translated color: Color white)
-			hResizing: #shrinkWrap;
-			averageLineLength: 65;
-			yourself);
-		addMorphBack: ((self createLabel: ''Note that the installation process requires a network connection with Internet access and might take several minutes.'' translated color: (Color gray: 0.9))
-			hResizing: #shrinkWrap;
-			averageLineLength: 65;
-			yourself).
-	
-	currentPage submorphs last text addAttribute: TextAlignment centered.
-	currentPage submorphs last layoutChanged.
-	
-	currentPage addMorphBack: (self createVerticalSpace height: self layoutInset).
-	
-	packagesList := self createScrollPane.
-	packagesList
-		width: (self defaultTextStyle compositionWidthFor: 65);
-		hResizing: #rigid;
-		vResizing: #spaceFill.
-
-	packagesList scroller firstSubmorph addAllMorphsBack: {
-		self createCheckbox: ''Latest system updates'' translated for: #InstallLatestUpdates help: ''Install the latest patches for '' translated, SystemVersion current version.
-		self createCheckbox: ''Foreign function interface (FFI)'' translated for: #InstallFFI help: ''FFI, the Squeak Foreign Function Interface, is used to call functions located in shared libraries that are not part of the Squeak VM nor its plugins'' translated.
-		self createCheckbox: ''Access OS functions'' translated for: #InstallOSProcess help: ''OSProcess provides access to operating system functions, including pipes and child process creation'' translated.
-		self createCheckbox: ''Integrate Squeak''''s mailing lists'' translated for: #InstallSqueakInboxTalk help: ''Through Squeak Inbox Talk, you can engage with our community from within Squeak using tools that integrate our mailing lists such as squeak-dev and vm-dev'' translated.
-	}.
-		
-	currentPage addMorphBack: packagesList.
-
-	currentPage addMorphBack: ((self createLabel: ''Find more on www.squeak.org/projects'' color: (Color gray: 0.9))
-		hResizing: #shrinkWrap; yourself).
-	
-	installButton := self createButton
-		action: #installExtraPackagesVia:;
-		label: ''Yes, install selected packages.'' translated;
-		yourself.
-	installButton
-		setProperty: #label toValue: installButton label;
-		arguments: {installButton}.
-	
-	currentPage addMorphBack: installButton.
-	currentPage addMorphBack: (self createButton action: #showSqueak; label: ''No, maybe later.'' translated).
-	
-	^ currentPage' classified: '*hpi-override'.
+FileStream
+	readOnlyFileNamed: progdir, '/patches/PreferenceWizardMorph-oneWayCheckboxes.cs'
+	do: [:stream | stream fileIn].
 	
 "-=-=-=-=-="
 
