@@ -85,13 +85,6 @@ Utilities setAuthorInitials: 'hpi'. "restored at end of this script"
 "-=-=-=-=-="
 	
 "Install new Git Client made by Marius and Tom for WiSe 24/25"
-"required for GSSelfUpdater to retrieve GITHUB_TOKEN environment variable"
-FileDirectory class compile: 'getenv: aByteString
-	<primitive: ''primitiveGetenv'' module: '''' error: ec>
-	ec == #''bad argument'' ifTrue:
-		[aByteString isString ifFalse:
-			[^self getenv: aByteString asString]].
-	self primitiveFailed' classified: '*hpi-override'.
 [Metacello new
   baseline: 'GitS';
   repository: 'github://hpi-swa/git-s:latest-release/src';
