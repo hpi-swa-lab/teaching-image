@@ -102,9 +102,7 @@ WebBrowser default: ExternalWebBrowser. self flag: #moveUpstream. "ExternalWebBr
 
 "-=-=-=-=-="
 
-FileStream
-	readOnlyFileNamed: progdir, '/patches/ChangeList-selectAllDefinitionsFromHere.cs'
-	do: [:stream | stream fileIn].
+ChangeSet fileIntoNewChangeSet: progdir, '/patches/ChangeList-selectAllDefinitionsFromHere.cs'.
 
 "-=-=-=-=-="
 
@@ -232,18 +230,12 @@ Metacello new
 
 Behavior compile: 'prettyPrinterClass ^ PPFormatter' classified: '*hpi-override'.
 
-FileStream
-	readOnlyFileNamed: progdir, '/patches/pretty-fix2.cs'
-	do: [:stream | stream fileIn].
-FileStream
-	readOnlyFileNamed: progdir, '/patches/FormatOnSavePreference.cs'
-	do: [:stream | stream fileIn].
+ChangeSet fileIntoNewChangeSet: progdir, '/patches/pretty-fix2.cs'.
+ChangeSet fileIntoNewChangeSet: progdir, '/patches/FormatOnSavePreference.cs'.
 
 "-=-=-=-=-="
 
-FileStream
-	readOnlyFileNamed: progdir, '/patches/linux-fix-windowDeactivated.st'
-	do: [:stream | stream fileIn].
+ChangeSet fileIntoNewChangeSet: progdir, '/patches/linux-fix-windowDeactivated.st'.
 
 "-=-=-=-=-="
 
@@ -280,11 +272,9 @@ FileStream
 
 "-=-=-=-=-="
 "Lock preinstalled/modified packages in PreferenceWizard, but show them anyway to educate the user about them."
-	
-FileStream
-	readOnlyFileNamed: progdir, '/patches/PreferenceWizardMorph-oneWayCheckboxes.cs'
-	do: [:stream | stream fileIn].
-	
+
+ChangeSet fileIntoNewChangeSet: progdir, '/patches/PreferenceWizardMorph-oneWayCheckboxes.cs'.
+
 "-=-=-=-=-="
 
 "(options includes: '-startrack') ifTrue:
