@@ -35,3 +35,13 @@ A repository for scripts to build a teaching image
 
 - The build process runs on MacOS, as MacOS software has to be built on MacOS. Nevertheless, this also builds versions for Windows and Linux.
 - The MacOS image is certified with `.encrypted.zip.enc` to make the image trustworthy to MacOS. This certificate needs to be signed with a key which is in posession of [fniephaus](https://github.com/fniephaus) and [marceltaeumel](https://github.com/marceltaeumel).
+
+## Building Locally
+
+Like this:
+
+```bash
+RELEASE=6.1 PATCH=23976 BUNDLE_RELEASE=6.1 BUNDLE_PATCH=23976 ./build.sh
+```
+
+Also set `GITHUB_TOKEN` when you repeat these steps multiple times and otherwise encounter rate limits error messages (because git/s retrieves a changelog from the GitHub API).
