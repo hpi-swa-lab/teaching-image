@@ -326,6 +326,11 @@ Metacello new
     get;
 	load.
 
+"UI theme patches from Squeak 6.2Alpha"
+Installer new
+	primMerge: 'Morphic-ct.2239' from: MCRepository trunk; "fixes transparent Autocompletion help window in ArcTheme"
+	primMerge: 'Morphic-ct.2240' from: MCRepository trunk. "fixes search bar results widget color in ArcLightTheme"
+
 Utilities setAuthorInitials: String empty.
 Smalltalk garbageCollect.
 
