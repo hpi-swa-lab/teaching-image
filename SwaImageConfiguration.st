@@ -1,5 +1,5 @@
 "-=-=-=-=-="
-|progdir base options balloon|
+| options progdir base lecture isSwa balloon |
 
 "Initial Setup"
 FileStream startUp: true.
@@ -15,6 +15,7 @@ options := Smalltalk commandLine arguments.
 Transcript showln: 'Received options: ', options.
 progdir := (Smalltalk commandLine argumentAt: 1) ifNil: [FileDirectory default fullName].
 base := (Smalltalk commandLine argumentAt: 2) ifNil: ['SWA'].
+isSwa := base beginsWith: 'SWA'.
 
 ["Debugging convenience & fail-safety (copied from https://github.com/LinqLover/create-image/blob/36aaa650f39f8fd86d0176ec8f0d72b404f6c0a5/src/prepareImage.st#L3-L17)"
 thisContext insertSender: (Context contextOn: UnhandledError, ProvideAnswerNotification do: [:ex |
@@ -195,11 +196,12 @@ Project uiManager informUser: 'Loading book (this might take a while)...' during
 
 "-=-=-=-=-="
 	
-"(Smalltalk at: #Metacello) new
-	baseline: 'GameMecha';
-	repository: 'github://hpi-swa-teaching/GameMecha:main/src';
-	load: 'test'." "more examples and tests"
-	
+isSwa ifTrue:
+	[(Smalltalk at: #Metacello) new
+		baseline: 'GameMecha';
+		repository: 'github://hpi-swa-teaching/GameMecha:main/src';
+		load: 'test' "more examples and tests"].
+
 "-=-=-=-=-="
 
 (Smalltalk at: #Metacello) new
